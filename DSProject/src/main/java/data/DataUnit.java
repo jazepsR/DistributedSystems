@@ -5,11 +5,13 @@
  */
 package data;
 
+import java.io.Serializable;
+
 /**
  *
  * @author Angelo
  */
-public class DataUnit {
+public class DataUnit implements Serializable{
     
     private final String ipAddress;
     private final String macAddress;
@@ -31,6 +33,11 @@ public class DataUnit {
     
     public MessageType getMsgType(){
         return this.msgType;
+    }
+    
+    @Override
+    public String toString(){
+        return getClass().getSimpleName();
     }
     
 }
