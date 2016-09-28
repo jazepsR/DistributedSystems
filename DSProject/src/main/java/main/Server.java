@@ -5,6 +5,7 @@
  */
 package main;
 
+import data.DataTranslator;
 import data.DataUnit;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -46,7 +47,7 @@ public class Server implements Runnable{
                 sock.receive(incoming);
                 byte[] data = incoming.getData();
                 
-                
+                DataUnit o = DataTranslator.bytesToObject(data);
 
                 echo(o);
                 
@@ -54,8 +55,6 @@ public class Server implements Runnable{
             }
         } catch (IOException e) {
             System.err.println("IOException ..." + e);
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
