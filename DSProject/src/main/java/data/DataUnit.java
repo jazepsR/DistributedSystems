@@ -6,6 +6,8 @@
 package data;
 
 import java.io.Serializable;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -37,6 +39,7 @@ public class DataUnit implements Serializable{
     
     @Override
     public String toString(){
+        System.out.println(macAddress);
         return getClass().getSimpleName();
     }
     
