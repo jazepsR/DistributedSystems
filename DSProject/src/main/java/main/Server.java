@@ -46,11 +46,7 @@ public class Server implements Runnable{
                 sock.receive(incoming);
                 byte[] data = incoming.getData();
                 
-                ByteArrayInputStream bis = new ByteArrayInputStream(data);
-                ObjectInput in = null;
                 
-                in = new ObjectInputStream(bis);
-                DataUnit o = (DataUnit) in.readObject(); 
 
                 echo(o);
                 
