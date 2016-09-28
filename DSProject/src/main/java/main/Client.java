@@ -5,14 +5,12 @@
  */
 package main;
 
+import data.DataTranslator;
 import data.DataUnit;
 import data.MessageType;
 import java.io.BufferedReader;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.ObjectOutput;
-import java.io.ObjectOutputStream;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
@@ -45,16 +43,13 @@ public class Client {
                 //take input and send the packet
                 echo("Enter message to send : ");
                 //s = (String) cin.readLine();
-                ByteArrayOutputStream bos = new ByteArrayOutputStream();
-                ObjectOutput out = null;
-                out = new ObjectOutputStream(bos);   
-                out.writeObject(broadcastMessage());
-                out.flush();
-                byte[] yourBytes = bos.toByteArray();
+                
+                byte[] data = DataTranslator.objectToBytes(new DataUnit("testing packet", "testing packet", MessageType.DISCOVER));
                 
                 //byte[] b = s2.getBytes();
 
-                DatagramPacket dp = new DatagramPacket(yourBytes, yourBytes.length, host, port);
+
+                DatagramPacket dp = new DatagramPacket(data, data.length, host, port);
                 sock.send(dp);
 
                 //now receive reply
@@ -63,8 +58,8 @@ public class Client {
                 DatagramPacket reply = new DatagramPacket(buffer, buffer.length);
                 sock.receive(reply);
 
-                byte[] data = reply.getData();
-                s = new String(data, 0, reply.getLength());
+                byte[] data2 = reply.getData();
+                s = new String(data2, 0, reply.getLength());
 
                 //echo the details of incoming data - client ip : client port - client message
                 echo(reply.getAddress().getHostAddress() + " : " + reply.getPort() + " - " + s);
