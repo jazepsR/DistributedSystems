@@ -16,10 +16,8 @@ import java.net.DatagramSocket;
  *
  * @author Angelo
  */
-public class Server implements Runnable{
-    // TODO rename the class from Server to Listen
+public class Listen implements Runnable{
     // TODO add comments
-    // TODO movee the values to a config file
     private final int port;
     private final int packetSize;
     private DatagramSocket sock;
@@ -27,7 +25,7 @@ public class Server implements Runnable{
     private DatagramPacket incoming;
     private DataUnit msg;
     
-    public Server(){
+    public Listen(){
         this.port = Config.port;
         this.packetSize = Config.packetSize;
     }
@@ -56,10 +54,9 @@ public class Server implements Runnable{
                 msg = DataTranslator.bytesToObject(data);
                     
                 // TODO remove after debugging
-
                 echo(msg);
                 
-                // TODO add the message handler here.
+                MessageHandler.switchMsg(msg);
             }
         } catch (IOException e) {
             System.err.println("IOException ..." + e);

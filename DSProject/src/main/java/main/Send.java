@@ -8,9 +8,7 @@ package main;
 import data.DataTranslator;
 import data.DataUnit;
 import data.MessageType;
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
@@ -19,17 +17,15 @@ import java.net.InetAddress;
  *
  * @author Angelo
  */
-public class Client {
+public class Send {
     // TODO add comments
-    // TODO move the fixed variables to a config file
-    // TODO rename the class from client to send
     private final int port;
     private int counter = 0;
     private DatagramSocket sock;
     private byte[] data;
     private DatagramPacket dp;
 
-    public Client() {
+    public Send() {
         this.port = Config.port;
     }
 

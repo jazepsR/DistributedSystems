@@ -5,7 +5,9 @@
 */
 package main;
 
+import algorithms.BullyAlgo;
 import data.DataUnit;
+import data.MessageType;
 
 /**
  *
@@ -13,24 +15,23 @@ import data.DataUnit;
  */
 public class MessageHandler {
     
-    private final DataUnit data;
-    
-    public MessageHandler (DataUnit data) {
-        this.data=data;
-    }
-    
-    public void switchMsg (){
+    public static void switchMsg (DataUnit data){
+        
+        MessageType type = data.getMsgType();
        
-        switch (this.data.getMsgType()) {
+        switch (type) {
             
             case HEARTBEAT: 
                      break;
             case IAMLEADER:  
                      break;
             case WANNABELEADER: 
+                // TODO multicast to people with higher ip
                      break;
-            case DISCOVER: 
-                     break;
+            case DISCOVER:
+                // TODO add the ip to the list of ips
+                // TODO send the reply (ip) back to the poerson who broadcast-ed
+                break;
             default: break;
                 
         }

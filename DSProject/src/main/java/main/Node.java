@@ -14,7 +14,8 @@ import java.net.Socket;
  * @author Euaggelos
  */
 public class Node extends Thread {
-
+    
+    // TODO add boolean for leader 2) add boolean for election 3) add boolean into the dataunit
     private int macAddress;
     private Socket socket;
     private final int port;
@@ -30,9 +31,9 @@ public class Node extends Thread {
     public void run() {
         System.out.println("in thread");
         if (send == 1) {
-            new Thread(new Server()).start();
+            new Thread(new Listen()).start();
         } else {
-            Client c = new Client();
+            Send c = new Send();
             c.run();
         }
     }

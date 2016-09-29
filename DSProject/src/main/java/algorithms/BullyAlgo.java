@@ -9,11 +9,8 @@ package algorithms;
  *
  * @author Angelo
  */
-public class BullyAlgo extends Algo{
+public class BullyAlgo{
     
-    public BullyAlgo(int id){
-        super(id);
-    }
     
     /**
      * This is the main bully algorithm. After the comparison between
@@ -21,18 +18,19 @@ public class BullyAlgo extends Algo{
      * the next step or does nothing.
      * @param incomingID 
      */
-    public void run(int incomingID){
-        if (!compareIds(incomingID, super.getID())){
+    public static void run(int incomingID, int randomID){
+        if (!compareIds(incomingID, randomID)){
             bullyThem();
         }
     }
     
-    
-    public boolean compareIds(int incomingID, int localID){
+    public static boolean compareIds(int incomingID, int localID){
         return (incomingID < localID);
     }
     
-    public void bullyThem(){
+    public static void bullyThem(){
+        // TODO multicast to everyone with higher ip
+        // TODO 1) start the timer 2) assube everybody is dead 3) if receive reply turn to alive
         System.out.println("bully other clients");
     }
 }
