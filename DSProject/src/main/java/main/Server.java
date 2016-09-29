@@ -5,82 +5,76 @@
  */
 package main;
 
-import java.io.ByteArrayInputStream;
+import data.DataTranslator;
+import data.DataUnit;
 import java.io.IOException;
-import java.io.ObjectInput;
-import java.io.ObjectInputStream;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
 
 /**
  *
  * @author Angelo
  */
 public class Server implements Runnable{
-    
-    private int port = 7777;
-    private int packetSize = 65536;
+    // TODO rename the class from Server to Listen
+    // TODO add comments
+    // TODO movee the values to a config file
+    private final int port;
+    private final int packetSize;
+    private DatagramSocket sock;
+    private byte[] buffer, data;
+    private DatagramPacket incoming;
+    private DataUnit msg;
     
     public Server(){
-
+        this.port = Config.port;
+        this.packetSize = Config.packetSize;
     }
     
     public void run(){
-        DatagramSocket sock = null;
+        sock = null;
 
         try {
-            //1. creating a server socket, parameter is local port number
-            sock = new DatagramSocket(this.port);
+            //creating a server socket, parameter is local port number
+            sock = new DatagramSocket(this.port);                    
 
             //buffer to receive incoming data
-            byte[] buffer = new byte[this.packetSize];
-            DatagramPacket incoming = new DatagramPacket(buffer, buffer.length);
+            buffer = new byte[this.packetSize];
+            incoming = new DatagramPacket(buffer, buffer.length);
 
-            //2. Wait for an incoming data
+
+            // TODO remove this once we are done with debugging
             echo("Server socket created. Waiting for incoming data...");
 
-            //communication loop
             while (true) {
+                //receive data
                 sock.receive(incoming);
-                byte[] data = incoming.getData();
+                data = incoming.getData();
                 
-                ByteArrayInputStream bis = new ByteArrayInputStream(data);
-                ObjectInput in = null;
-                
-                in = new ObjectInputStream(bis);
-                Object o = in.readObject(); 
-                
-                
-                
-                
-                //String s = new String(data, 0, incoming.getLength());
+                //turn bytes back to java object
+                msg = DataTranslator.bytesToObject(data);
+                    
+                // TODO remove after debugging
 
-                //echo the details of incoming data - client ip : client port - client message
-                //echo(incoming.getAddress().getHostAddress() + " : " + incoming.getPort() + " - " + s);
-                echo(o);
-                //s = "OK : " + s;
-                //DatagramPacket dp = new DatagramPacket(s.getBytes(), s.getBytes().length, incoming.getAddress(), incoming.getPort());
-                //sock.send(dp);
+                echo(msg);
+                
+                // TODO add the message handler here.
             }
         } catch (IOException e) {
-            System.err.println("IOException " + e);
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
+            System.err.println("IOException ..." + e);
         }
     }
-    //simple function to echo data to terminal
+
     public static void echo(String msg) {
         System.out.println(msg);
     }
     
-    public static void echo(Object msg) {
-        System.out.println("Server prints: this is the object");
+    public static void echo(DataUnit msg) {
+        // TODO make it better
         System.out.println(msg);
+        System.out.println(msg.getCounter());
     }
-    
-    
 }
     
 

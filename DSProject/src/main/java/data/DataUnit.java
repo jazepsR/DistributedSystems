@@ -6,8 +6,6 @@
 package data;
 
 import java.io.Serializable;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -18,11 +16,13 @@ public class DataUnit implements Serializable{
     private final String ipAddress;
     private final String macAddress;
     private final MessageType msgType;
+    private final int counter;
     
-    public DataUnit(String ipAddress, String macAddress, MessageType msgType){
+    public DataUnit(String ipAddress, String macAddress, MessageType msgType, int counter){
         this.ipAddress = ipAddress;
         this.macAddress = macAddress;
         this.msgType = msgType;
+        this.counter = counter;
     }
     
     public String getIpAddress(){
@@ -37,8 +37,13 @@ public class DataUnit implements Serializable{
         return this.msgType;
     }
     
+    public int getCounter(){
+        return this.counter;
+    }
+    
     @Override
     public String toString(){
+        // TODO make it better
         System.out.println(macAddress);
         return getClass().getSimpleName();
     }

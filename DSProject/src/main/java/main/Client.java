@@ -5,14 +5,12 @@
  */
 package main;
 
+import data.DataTranslator;
 import data.DataUnit;
 import data.MessageType;
 import java.io.BufferedReader;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.ObjectOutput;
-import java.io.ObjectOutputStream;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
@@ -22,52 +20,37 @@ import java.net.InetAddress;
  * @author Angelo
  */
 public class Client {
-
-    private int port = 7777;
-    private int packetSize = 65536;
+    // TODO add comments
+    // TODO move the fixed variables to a config file
+    // TODO rename the class from client to send
+    private final int port;
+    private int counter = 0;
+    private DatagramSocket sock;
+    private byte[] data;
+    private DatagramPacket dp;
 
     public Client() {
-
+        this.port = Config.port;
     }
 
     public void run() {
-        DatagramSocket sock = null;
-        String s;
-
-        BufferedReader cin = new BufferedReader(new InputStreamReader(System.in));
+        sock = null;
 
         try {
             sock = new DatagramSocket();
-
-            InetAddress host = InetAddress.getByName("localhost");
+                
+            // TODO move this line in a field and the ip address in the config
+            InetAddress host = InetAddress.getByName("192.168.173.255");
 
             while (true) {
-                //take input and send the packet
-                echo("Enter message to send : ");
-                //s = (String) cin.readLine();
-                ByteArrayOutputStream bos = new ByteArrayOutputStream();
-                ObjectOutput out = null;
-                out = new ObjectOutputStream(bos);   
-                out.writeObject(broadcastMessage());
-                out.flush();
-                byte[] yourBytes = bos.toByteArray();
-                
-                //byte[] b = s2.getBytes();
-
-                DatagramPacket dp = new DatagramPacket(yourBytes, yourBytes.length, host, port);
+                //increase counter for the package you want to send
+                increaseCounter();
+                //translate java object to bytes
+                data = DataTranslator.objectToBytes(broadcastMessage());
+                //create the UDP packet
+                dp = new DatagramPacket(data, data.length, host, port);
+                //send the packet
                 sock.send(dp);
-
-                //now receive reply
-                //buffer to receive incoming data
-                byte[] buffer = new byte[65536];
-                DatagramPacket reply = new DatagramPacket(buffer, buffer.length);
-                sock.receive(reply);
-
-                byte[] data = reply.getData();
-                s = new String(data, 0, reply.getLength());
-
-                //echo the details of incoming data - client ip : client port - client message
-                echo(reply.getAddress().getHostAddress() + " : " + reply.getPort() + " - " + s);
             }
         } catch (IOException e) {
             System.err.println("IOException " + e);
@@ -78,9 +61,14 @@ public class Client {
         System.out.println(msg);
     }
     
+    // TODO this has to be moved away from here once debugging has finished
     private DataUnit broadcastMessage() {
-        return new DataUnit("sampleAddressFROM CLIENT", "sampleMac FROM CLIENT", MessageType.DISCOVER);
+        return new DataUnit("sampleAddressFROM CLIENT", "sampleMac FROM CLIENT", MessageType.DISCOVER, this.counter);
 
+    }
+    
+    private void increaseCounter(){
+        this.counter += 1;
     }
 
 }
