@@ -71,9 +71,10 @@ public class Tree {
     
     /**
      * @param IP to get counter
+     * @return Counter
      */
-    public void getCounter(String IP) {
-        this.hmap.get(IP);
+    public Integer getCounter(String IP) {
+        return hmap.get(IP);
     }
     
     
