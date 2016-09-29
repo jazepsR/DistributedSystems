@@ -43,6 +43,7 @@ public class Server implements Runnable{
             buffer = new byte[this.packetSize];
             incoming = new DatagramPacket(buffer, buffer.length);
 
+
             // TODO remove this once we are done with debugging
             echo("Server socket created. Waiting for incoming data...");
 
@@ -55,6 +56,7 @@ public class Server implements Runnable{
                 msg = DataTranslator.bytesToObject(data);
                     
                 // TODO remove after debugging
+
                 echo(msg);
                 
                 // TODO add the message handler here.
