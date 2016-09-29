@@ -14,11 +14,9 @@ public class Main {
     public static void main(String [] args){
         System.out.println("test");
         Thread thread1 = new Node(15, 20015, 1);
-        Thread thread3 = new Node(15, 20015, 1);
         Thread thread2 = new Node(155, 20000, 0);
         
         thread1.start();
-        thread3.start();
         thread2.start();
         
     }

@@ -20,9 +20,12 @@ import java.net.InetAddress;
  * @author Angelo
  */
 public class Client {
-
+    // TODO add comments
+    // TODO move the fixed variables to a config file
+    // TODO rename the class from client to send
     private int port = 7777;
     private int packetSize = 65536;
+    private int counter = 0;
 
     public Client() {
 
@@ -37,32 +40,17 @@ public class Client {
         try {
             sock = new DatagramSocket();
 
-            InetAddress host = InetAddress.getByName("localhost");
+            InetAddress host = InetAddress.getByName("192.168.173.255");
 
             while (true) {
-                //take input and send the packet
-                echo("Enter message to send : ");
-                //s = (String) cin.readLine();
                 
-                byte[] data = DataTranslator.objectToBytes(new DataUnit("testing packet", "testing packet", MessageType.DISCOVER));
+                increaseCounter();
                 
-                //byte[] b = s2.getBytes();
-
+                byte[] data = DataTranslator.objectToBytes(broadcastMessage());
 
                 DatagramPacket dp = new DatagramPacket(data, data.length, host, port);
+                
                 sock.send(dp);
-
-                //now receive reply
-                //buffer to receive incoming data
-                byte[] buffer = new byte[65536];
-                DatagramPacket reply = new DatagramPacket(buffer, buffer.length);
-                sock.receive(reply);
-
-                byte[] data2 = reply.getData();
-                s = new String(data2, 0, reply.getLength());
-
-                //echo the details of incoming data - client ip : client port - client message
-                echo(reply.getAddress().getHostAddress() + " : " + reply.getPort() + " - " + s);
             }
         } catch (IOException e) {
             System.err.println("IOException " + e);
@@ -73,9 +61,14 @@ public class Client {
         System.out.println(msg);
     }
     
+    // TODO this has to be moved away from here once debugging has finished
     private DataUnit broadcastMessage() {
-        return new DataUnit("sampleAddressFROM CLIENT", "sampleMac FROM CLIENT", MessageType.DISCOVER);
+        return new DataUnit("sampleAddressFROM CLIENT", "sampleMac FROM CLIENT", MessageType.DISCOVER, this.counter);
 
+    }
+    
+    private void increaseCounter(){
+        this.counter += 1;
     }
 
 }

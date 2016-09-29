@@ -7,21 +7,19 @@ package main;
 
 import data.DataTranslator;
 import data.DataUnit;
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.ObjectInput;
-import java.io.ObjectInputStream;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
 
 /**
  *
  * @author Angelo
  */
 public class Server implements Runnable{
-    
+    // TODO rename the class from Server to Listen
+    // TODO add comments
+    // TODO movee the values to a config file
     private int port = 7777;
     private int packetSize = 65536;
     
@@ -41,17 +39,18 @@ public class Server implements Runnable{
             DatagramPacket incoming = new DatagramPacket(buffer, buffer.length);
 
             //2. Wait for an incoming data
+            // TODO remove this once we are done with debugging
             echo("Server socket created. Waiting for incoming data...");
 
             while (true) {
                 sock.receive(incoming);
                 byte[] data = incoming.getData();
                 
-                DataUnit o = DataTranslator.bytesToObject(data);
+                DataUnit msg = DataTranslator.bytesToObject(data);
 
-                echo(o);
+                echo(msg);
                 
-                //ENTER HERE THE ALGORITHM THAT FIGURES OUT WHAT TO DO WITH THE MESSAGE
+                // TODO add the message handler here.
             }
         } catch (IOException e) {
             System.err.println("IOException ..." + e);
@@ -62,11 +61,11 @@ public class Server implements Runnable{
         System.out.println(msg);
     }
     
-    public static void echo(Object msg) {
+    public static void echo(DataUnit msg) {
+        // TODO make it better
         System.out.println(msg);
+        System.out.println(msg.getCounter());
     }
-    
-    
 }
     
 

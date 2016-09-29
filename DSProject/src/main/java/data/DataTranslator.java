@@ -17,10 +17,10 @@ import java.util.logging.Logger;
 
 /**
  *
- * @author Euaggelos
+ * @author Angelo
  */
 public class DataTranslator {
-    
+    // TODO add comments
     public static byte[] objectToBytes(DataUnit data){
         
         ByteArrayOutputStream byteOut = new ByteArrayOutputStream();
@@ -39,17 +39,18 @@ public class DataTranslator {
     public static DataUnit bytesToObject(byte[] data){
         ByteArrayInputStream bis = new ByteArrayInputStream(data);
         ObjectInput in = null;
+        DataUnit msg = null;
 
         try {
             in = new ObjectInputStream(bis);
-            DataUnit o = (DataUnit) in.readObject(); 
+            msg = (DataUnit) in.readObject(); 
         } catch (IOException ex) {
             Logger.getLogger(DataTranslator.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(DataTranslator.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        return new DataUnit("localhost", "asdf", MessageType.DISCOVER);
+        return msg;
     }
     
 }
