@@ -30,7 +30,7 @@ public class MessageHandler {
     public static void switchMsg (DataUnit data) throws UnknownHostException {
         
         MessageType type = data.getMsgType();
-       
+       System.out.println(data.toString());
         switch (type) {
             
             case HEARTBEAT: 
@@ -45,6 +45,7 @@ public class MessageHandler {
                 BullyAlgo.LostElection =true;
                 break;
             case DISCOVER:
+                //System.out.println("Recieved ")
                 DataUnit msg = new DataUnit(Config.ipAddress,MessageType.DISCOVERRESPONSE,1);
                 ArrayList<InetAddress> target = new ArrayList<InetAddress>();
                 target.add(InetAddress.getByName(data.getIpAddress()));
