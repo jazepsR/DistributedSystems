@@ -43,10 +43,7 @@ public class Multicast extends Send {
                     socket.send(dp);
 
                 }
-
-
                 //create the UDP packet
-
 
         } catch (IOException e) {
             System.err.println("IOException " + e);

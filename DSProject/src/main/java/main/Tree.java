@@ -5,6 +5,7 @@
  */
 package main;
 
+import java.net.InetAddress;
 import java.util.*;
 import utils.Parser;
 
@@ -89,14 +90,14 @@ public class Tree {
         return VClock;
     }
     
-    public List<Long> getHigherIps(String ip){
-        List<Long> higherIps = new ArrayList<Long>();
+    public List<InetAddress> getHigherIps(String ip){
+        List<InetAddress> higherIps = new ArrayList<InetAddress>();
         Long hostIp = Parser.parseIp(ip);
         Long tmpIp;
         for (String s : hmap.keySet()){
             tmpIp = Parser.parseIp(s);
             if (tmpIp > hostIp)
-                higherIps.add(tmpIp);
+                higherIps.add(Parser.strToInet(s));
         }
         return higherIps;
     }
