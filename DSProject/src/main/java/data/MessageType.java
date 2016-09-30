@@ -11,6 +11,6 @@ package data;
  */
 public enum MessageType {
     
-    HEARTBEAT, IAMLEADER, WANNABELEADER, DISCOVER, IAMHIGHER // TODO find a better name
+    HEARTBEAT, IAMLEADER, WANNABELEADER, DISCOVER, IAMHIGHER, DISCOVERRESPONSE // TODO find a better name
     
 }
