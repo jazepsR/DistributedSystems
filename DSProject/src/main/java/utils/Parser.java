@@ -5,14 +5,29 @@
  */
 package utils;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
- * @author Euaggelos
+ * @author Angelo
  */
 public class Parser {
     
     public static Long parseIp(String s){
         return Long.parseLong(s.replace(".", ""));
+    }
+    
+    public static InetAddress strToInet(String ip){
+        InetAddress address = null;
+        try {
+            address = InetAddress.getByName(ip);
+        } catch (UnknownHostException ex) {
+            Logger.getLogger(Parser.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return address;
     }
     
 }
