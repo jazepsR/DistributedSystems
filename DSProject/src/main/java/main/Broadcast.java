@@ -6,20 +6,28 @@
 package main;
 
 import data.DataTranslator;
+import data.DataUnit;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
+import java.net.UnknownHostException;
 
 /**
  *
  * @author Angelo
  */
 public class Broadcast extends Send{
-        
+    private DataUnit data;    
+    
     public Broadcast(){
         super();
     }
+     public Broadcast(DataUnit data) throws UnknownHostException {
+        super();
+        this.data= data;
+    }
+    
     
     @Override
     public void run() {
@@ -35,9 +43,9 @@ public class Broadcast extends Send{
                 //increase counter for the package you want to send
                 increaseCounter();
                 //translate java object to bytes
-                data = DataTranslator.objectToBytes(broadcastMessage());
+                byte[] dataBytes = DataTranslator.objectToBytes(this.data);
                 //create the UDP packet
-                dp = new DatagramPacket(data, data.length, host, port);
+                dp = new DatagramPacket(dataBytes, dataBytes.length, host, port);
                 //send the packet
                 socket.send(dp);
             }
