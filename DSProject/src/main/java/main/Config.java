@@ -13,4 +13,6 @@ public class Config {
     public static int packetSize = 65536;
     public static int port = 7777;
     public static int timeout = 10;
+    public static String ipAddress = null;
+    
 }

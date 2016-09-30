@@ -3,14 +3,16 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package data;
+package utils;
 
 /**
  *
- * @author Angelo
+ * @author Euaggelos
  */
-public enum MessageType {
+public class Parser {
     
-    HEARTBEAT, IAMLEADER, WANNABELEADER, DISCOVER, IAMHIGHER, DISCOVERRESPONSE // TODO find a better name
+    public static Long parseIp(String s){
+        return Long.parseLong(s.replace(".", ""));
+    }
     
 }
