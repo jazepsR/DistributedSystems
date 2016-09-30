@@ -5,7 +5,11 @@
  */
 package algorithms;
 
+import java.util.List;
+import main.Config;
+import main.Tree;
 import main.WaitTimer;
+import utils.Parser;
 
 /**
  *
@@ -21,18 +25,19 @@ public class BullyAlgo{
      * @param incomingID 
      */
     public static  boolean LostElection = false;
-    public static void run(int incomingID, int randomID){
-        if (!compareIds(incomingID, randomID)){
+    public static void run(String incomingId, String randomID){
+        if (!compareIds(Parser.parseIp(incomingId), Parser.parseIp(randomID))){
             bullyThem();
         }
     }
     
-    public static boolean compareIds(int incomingID, int localID){
+    public static boolean compareIds(Long incomingID, Long localID){
         return (incomingID < localID);
     }
     
     public static void bullyThem(){
-
+        List<String> higherIps = Tree.getHigherIps(Config.ipAddress);
+        
         // TODO multicast to everyone with higher ip
         // TODO 1) start the timer 2) assube everybody is dead 3) if receive reply turn to alive
         System.out.println("bully other clients");
