@@ -5,6 +5,7 @@
  */
 package algorithms;
 
+import java.net.InetAddress;
 import java.util.List;
 import main.Config;
 import main.Tree;
@@ -36,7 +37,7 @@ public class BullyAlgo{
     }
     
     public static void bullyThem(){
-        List<String> higherIps = Tree.getHigherIps(Config.ipAddress);
+        List<InetAddress> higherIps = Tree.getHigherIps(Config.ipAddress);
         
         // TODO multicast to everyone with higher ip
         // TODO 1) start the timer 2) assube everybody is dead 3) if receive reply turn to alive

@@ -90,7 +90,7 @@ public class Tree {
         return VClock;
     }
     
-    public List<InetAddress> getHigherIps(String ip){
+    public static List<InetAddress> getHigherIps(String ip){
         List<InetAddress> higherIps = new ArrayList<InetAddress>();
         Long hostIp = Parser.parseIp(ip);
         Long tmpIp;
