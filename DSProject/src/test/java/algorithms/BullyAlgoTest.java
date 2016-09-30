@@ -45,7 +45,7 @@ public class BullyAlgoTest {
         System.out.println("run");
         int incomingID = 0;
         BullyAlgo instance = null;
-        instance.run(incomingID);
+        instance.run(incomingID,2);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
@@ -58,7 +58,7 @@ public class BullyAlgoTest {
         System.out.println("compareIds");
         int incomingID = 0;
         int localID = 12;
-        BullyAlgo instance = new BullyAlgo(12);
+        BullyAlgo instance = new BullyAlgo();
         boolean expResult = true;
         boolean result = instance.compareIds(incomingID, localID);
         assertEquals(expResult, result);

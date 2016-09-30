@@ -5,6 +5,8 @@
  */
 package main;
 
+import java.net.UnknownHostException;
+
 /**
  *
  * @author Euaggelos
@@ -28,13 +30,28 @@ public class Node extends Thread {
     }
 
     @Override
-    public void run() {
+    public void run()
+    {
         System.out.println("in thread");
         if (send == 1) {
             new Thread(new Listen()).start();
-        } else {
-            Send c = new Broadcast();
+        }
+        else {
+            if(send==2)
+            {
+            Send c = null;
+            try {
+                c = new Multicast();
+            } catch (UnknownHostException e) {
+                e.printStackTrace();
+            }
             c.run();
+        }
+        else
+            {
+                Send c = new Broadcast();
+                c.run();
+            }
         }
     }
 }
