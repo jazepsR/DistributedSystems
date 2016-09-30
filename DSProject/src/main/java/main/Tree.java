@@ -5,9 +5,7 @@
  */
 package main;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.*;
 
 /**
  *
@@ -89,6 +87,14 @@ public class Tree {
             
         }
         return 1;
+    }
+
+    public List<Integer> getVectorClock(){
+        List<Integer> VClock = new ArrayList<Integer>();
+        for (Integer value : hmap.values()) {
+            VClock.add(value);
+        }
+        return VClock;
     }
     
 }

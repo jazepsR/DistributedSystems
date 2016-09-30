@@ -5,6 +5,8 @@
  */
 package algorithms;
 
+import main.WaitTimer;
+
 /**
  *
  * @author Angelo
@@ -18,6 +20,7 @@ public class BullyAlgo{
      * the next step or does nothing.
      * @param incomingID 
      */
+    public static  boolean LostElection = false;
     public static void run(int incomingID, int randomID){
         if (!compareIds(incomingID, randomID)){
             bullyThem();
@@ -29,8 +32,15 @@ public class BullyAlgo{
     }
     
     public static void bullyThem(){
+
         // TODO multicast to everyone with higher ip
         // TODO 1) start the timer 2) assube everybody is dead 3) if receive reply turn to alive
         System.out.println("bully other clients");
+        WaitTimer wt = new WaitTimer(10);
+        wt.run();
+    }
+
+    public static void BroadcastWin(){
+        // TODO broadcast winning the election
     }
 }
