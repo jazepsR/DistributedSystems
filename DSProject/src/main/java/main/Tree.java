@@ -16,7 +16,7 @@ import utils.Parser;
 
 public class Tree {
     
-    private String IPLeader;
+    private static String IPLeader;
     private static HashMap<String, Integer> hmap = new HashMap<String, Integer>();
 
     public Tree(){
@@ -31,10 +31,10 @@ public class Tree {
     }
 
     /**
-     * @param IPLeader the IPLeader to set
+
      */
-    public void setIPLeader(String IPLeader) {
-        this.IPLeader = IPLeader;
+    public static void setIPLeader(String IpLeader) {
+        IPLeader = IpLeader;
     }
 
     /**
@@ -90,8 +90,8 @@ public class Tree {
         return VClock;
     }
     
-    public static List<InetAddress> getHigherIps(String ip){
-        List<InetAddress> higherIps = new ArrayList<InetAddress>();
+    public static ArrayList<InetAddress> getHigherIps(String ip){
+        ArrayList<InetAddress> higherIps = new ArrayList<InetAddress>();
         Long hostIp = Parser.parseIp(ip);
         Long tmpIp;
         for (String s : hmap.keySet()){

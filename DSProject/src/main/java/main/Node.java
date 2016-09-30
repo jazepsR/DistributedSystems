@@ -5,7 +5,13 @@
  */
 package main;
 
+
+import data.DataUnit;
+import data.MessageType;
+
 import java.net.UnknownHostException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 /**
@@ -21,13 +27,13 @@ public class Node extends Thread {
     
     // TODO to be removed at some point
     private int send;
-    private int macAddress;
+   
 
-    public Node(int macAddress, int port, int send) {
+    public Node( int port, int send) {
         this.ipAddress = Config.ipAddress;
         this.iAmLeader = false;
         this.electionInProgress = false;
-        this.macAddress = macAddress;
+        
         this.port = port;
         this.send = send;
     }
@@ -37,7 +43,15 @@ public class Node extends Thread {
     {
         System.out.println("in thread");
         if (send == 1) {
+            try {
+                Send b = new Broadcast(new DataUnit(this.ipAddress,MessageType.DISCOVER, 0));
+            } catch (UnknownHostException ex) {
+                Logger.getLogger(Node.class.getName()).log(Level.SEVERE, null, ex);
+            }
+             //b.run();
+            // timeout 5 sec
             new Thread(new Listen()).start();
+           
         }
         else {
             if(send==2)
@@ -58,3 +72,4 @@ public class Node extends Thread {
         }
     }
 }
+           
