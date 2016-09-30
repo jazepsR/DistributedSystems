@@ -16,7 +16,7 @@ import utils.Parser;
 public class Tree {
     
     private String IPLeader;
-    private HashMap<String, Integer> hmap = new HashMap<String, Integer>();
+    private static HashMap<String, Integer> hmap = new HashMap<String, Integer>();
 
     public Tree(){
         
@@ -39,7 +39,7 @@ public class Tree {
     /**
      * @return the hmap
      */
-    public HashMap<String, Integer> getHmap() {
+    public static HashMap<String, Integer> getHmap() {
         return hmap;
     }
 
@@ -54,8 +54,8 @@ public class Tree {
      * @param ip to add host
      * @param counter
      */
-    public void addHost(String ip, int counter) {
-        this.hmap.put(ip,counter);
+    public static void addHost(String ip, int counter) {
+        hmap.put(ip,counter);
     }
     
     /**
