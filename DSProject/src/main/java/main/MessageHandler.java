@@ -39,10 +39,7 @@ public class MessageHandler {
                 Tree.setIPLeader(data.getIpAddress());
                      break;
             case WANNABELEADER:
-                //TODO find local IP
-                //BullyAlgo.compareIds(data.getIpAddress(),Config.ipAddress);
-
-                // TODO multicast to people with higher ip
+                BullyAlgo.run(data.getIpAddress(),Config.ipAddress);
                      break;
             case IAMHIGHER:
                 BullyAlgo.LostElection =true;
@@ -52,8 +49,6 @@ public class MessageHandler {
                 ArrayList<InetAddress> target = new ArrayList<InetAddress>();
                 target.add(InetAddress.getByName(data.getIpAddress()));
                 multicast.SendMulticast(target,msg);
-                // TODO add the ip to the list of ips
-                // TODO send the reply (ip) back to the poerson who broadcast-ed
                 break;
             case DISCOVERRESPONSE:
                 String ipAdr = data.getIpAddress();

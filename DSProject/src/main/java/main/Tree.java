@@ -90,8 +90,8 @@ public class Tree {
         return VClock;
     }
     
-    public static List<InetAddress> getHigherIps(String ip){
-        List<InetAddress> higherIps = new ArrayList<InetAddress>();
+    public static ArrayList<InetAddress> getHigherIps(String ip){
+        ArrayList<InetAddress> higherIps = new ArrayList<InetAddress>();
         Long hostIp = Parser.parseIp(ip);
         Long tmpIp;
         for (String s : hmap.keySet()){

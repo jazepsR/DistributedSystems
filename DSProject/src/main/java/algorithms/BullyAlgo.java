@@ -6,10 +6,13 @@
 package algorithms;
 
 import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.util.ArrayList;
 import java.util.List;
-import main.Config;
-import main.Tree;
-import main.WaitTimer;
+
+import data.DataUnit;
+import data.MessageType;
+import main.*;
 import utils.Parser;
 
 /**
@@ -28,7 +31,11 @@ public class BullyAlgo{
     public static  boolean LostElection = false;
     public static void run(String incomingId, String randomID){
         if (!compareIds(Parser.parseIp(incomingId), Parser.parseIp(randomID))){
-            bullyThem();
+            try {
+                bullyThem();
+            } catch (UnknownHostException e) {
+                e.printStackTrace();
+            }
         }
     }
     
@@ -36,11 +43,12 @@ public class BullyAlgo{
         return (incomingID < localID);
     }
     
-    public static void bullyThem(){
-        List<InetAddress> higherIps = Tree.getHigherIps(Config.ipAddress);
-        
-        // TODO multicast to everyone with higher ip
-        // TODO 1) start the timer 2) assube everybody is dead 3) if receive reply turn to alive
+    public static void bullyThem() throws UnknownHostException {
+        ArrayList<InetAddress> higherIps = Tree.getHigherIps(Config.ipAddress);
+
+        Multicast mult = new Multicast();
+        DataUnit data = new DataUnit(Config.ipAddress, MessageType.WANNABELEADER,1);
+        mult.SendMulticast(higherIps,data);
         System.out.println("bully other clients");
         WaitTimer wt = new WaitTimer(10);
         wt.run();
@@ -48,5 +56,12 @@ public class BullyAlgo{
 
     public static void BroadcastWin(){
         // TODO broadcast winning the election
+        DataUnit data = new DataUnit(Config.ipAddress,MessageType.IAMLEADER,2);
+        try {
+            Broadcast br = new Broadcast(data);
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
+
     }
 }
