@@ -50,43 +50,34 @@ public class Tree {
     }
     
     /**
-     * @param IP to add host
+     * @param ip to add host
+     * @param counter
      */
-    public void addHost(String IP, int counter) {
-        this.hmap.put(IP,counter);
+    public void addHost(String ip, int counter) {
+        this.hmap.put(ip,counter);
     }
     
     /**
-     * @param IP to delete host
+     * @param ip to delete host
      */
-    public void deleteHost(String IP) {
-        this.hmap.remove(IP);
+    public void deleteHost(String ip) {
+        this.hmap.remove(ip);
     }
     
     /**
-     * @param IP to increse counter
+     * @param ip to increase counter
+     * @param newCounter
      */
-    public void changeCounter(String IP, int newCounter) {
-        this.hmap.put(IP, newCounter);
+    public void changeCounter(String ip, int newCounter) {
+        this.hmap.put(ip, newCounter);
     }
     
     /**
-     * @param IP to get counter
+     * @param ip to get counter
      * @return Counter
      */
-    public int getCounter(String IP) {
-        return hmap.get(IP);
-    }
-    
-    public int getHigher(int ip){
-        Map mp = hmap;
-        Iterator it = mp.entrySet().iterator();
-        while (it.hasNext()) {
-            Map.Entry pair = (Map.Entry)it.next();
-            System.out.println(pair.getKey() + " = " + pair.getValue());
-            
-        }
-        return 1;
+    public int getCounter(String ip) {
+        return hmap.get(ip);
     }
 
     public List<Integer> getVectorClock(){
@@ -95,6 +86,22 @@ public class Tree {
             VClock.add(value);
         }
         return VClock;
+    }
+    
+    public List<Long> getHigherIps(String ip){
+        List<Long> higherIps = new ArrayList<Long>();
+        Long hostIp = parseIp(ip);
+        Long tmpIp;
+        for (String s : hmap.keySet()){
+            tmpIp = parseIp(s);
+            if (tmpIp > hostIp)
+                higherIps.add(tmpIp);
+        }
+        return higherIps;
+    }
+    
+    private Long parseIp(String s){
+        return Long.parseLong(s.replace(".", ""));
     }
     
 }
