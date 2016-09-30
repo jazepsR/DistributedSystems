@@ -21,6 +21,7 @@ public class Main {
         TestIP= TestIP.replace(".","");
         Double ipVal = Double.parseDouble(TestIP);
         System.out.println("test");
+        getIpAddress();
         Thread thread1 = new Node(20015, 1);
         //Thread thread2 = new Node(155, 20000, 0);
         //Thread thread3 = new Node(155, 20030, 2);
@@ -31,11 +32,12 @@ public class Main {
         
     }
     
-    private void getIpAddress(){
+    private static void getIpAddress(){
         String ip;
         try {
             ip = Inet4Address.getLocalHost().getHostAddress();
             Config.ipAddress = ip;
+            //Config.ipAddress = "192.168.173.230";
         } catch (UnknownHostException ex) {
             Logger.getLogger(Node.class.getName()).log(Level.SEVERE, null, ex);
         }

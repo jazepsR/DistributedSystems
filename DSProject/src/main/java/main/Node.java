@@ -44,10 +44,8 @@ public class Node extends Thread {
         new Thread(new Listen()).start();
         System.out.println("in thread");
         if (send == 1) {
-            Send b=null;
             Broadcast.run(new DataUnit(this.ipAddress,MessageType.DISCOVER, 0));
 
-         
             WaitTimer timer= new WaitTimer(5);
             timer.run();
             if (Tree.getHigherIps(this.ipAddress).isEmpty()){
