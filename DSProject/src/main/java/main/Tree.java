@@ -16,7 +16,7 @@ import utils.Parser;
 
 public class Tree {
     
-    private String IPLeader;
+    private static String IPLeader;
     private static HashMap<String, Integer> hmap = new HashMap<String, Integer>();
 
     public Tree(){
@@ -31,10 +31,10 @@ public class Tree {
     }
 
     /**
-     * @param IPLeader the IPLeader to set
+
      */
-    public void setIPLeader(String IPLeader) {
-        this.IPLeader = IPLeader;
+    public static void setIPLeader(String IpLeader) {
+        IPLeader = IpLeader;
     }
 
     /**
