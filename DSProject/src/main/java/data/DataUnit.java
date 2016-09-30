@@ -14,13 +14,11 @@ import java.io.Serializable;
 public class DataUnit implements Serializable{
     
     private final String ipAddress;
-    private final String macAddress;
     private final MessageType msgType;
     private final int counter;
     
-    public DataUnit(String ipAddress, String macAddress, MessageType msgType, int counter){
+    public DataUnit(String ipAddress,  MessageType msgType, int counter){
         this.ipAddress = ipAddress;
-        this.macAddress = macAddress;
         this.msgType = msgType;
         this.counter = counter;
     }
@@ -28,11 +26,7 @@ public class DataUnit implements Serializable{
     public String getIpAddress(){
         return this.ipAddress;
     }
-    
-    public String getMacAddress(){
-        return this.macAddress;
-    }
-    
+
     public MessageType getMsgType(){
         return this.msgType;
     }
@@ -44,7 +38,7 @@ public class DataUnit implements Serializable{
     @Override
     public String toString(){
         // TODO make it better
-        System.out.println(macAddress);
+        System.out.println(ipAddress);
         return getClass().getSimpleName();
     }
     
