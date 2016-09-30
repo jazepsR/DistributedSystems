@@ -6,6 +6,7 @@
 package main;
 
 import java.util.*;
+import utils.Parser;
 
 /**
  *
@@ -90,18 +91,13 @@ public class Tree {
     
     public List<Long> getHigherIps(String ip){
         List<Long> higherIps = new ArrayList<Long>();
-        Long hostIp = parseIp(ip);
+        Long hostIp = Parser.parseIp(ip);
         Long tmpIp;
         for (String s : hmap.keySet()){
-            tmpIp = parseIp(s);
+            tmpIp = Parser.parseIp(s);
             if (tmpIp > hostIp)
                 higherIps.add(tmpIp);
         }
         return higherIps;
     }
-    
-    private Long parseIp(String s){
-        return Long.parseLong(s.replace(".", ""));
-    }
-    
 }
