@@ -36,7 +36,7 @@ public abstract class Send {
     
     // TODO this has to be moved away from here once debugging has finished
     protected DataUnit broadcastMessage() {
-        return new DataUnit("sampleAddressFROM CLIENT", "sampleMac FROM CLIENT", MessageType.DISCOVER, this.counter);
+        return new DataUnit("sampleAddressFROM CLIENT",  MessageType.DISCOVER, this.counter);
 
     }
     

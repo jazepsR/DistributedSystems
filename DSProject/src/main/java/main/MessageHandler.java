@@ -9,19 +9,25 @@ import algorithms.BullyAlgo;
 import data.DataUnit;
 import data.MessageType;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
 /**
  *
  * @author roberto
  */
 public class MessageHandler {
-    Multicast multicast;
-    Broadcast broadcast;
-    MessageHandler(){
+    public static Multicast multicast;
+    public static Broadcast broadcast;
+    MessageHandler() throws UnknownHostException {
         multicast= new Multicast();
         broadcast = new Broadcast();
     }
 
-    public static void switchMsg (DataUnit data){
+    public static void switchMsg (DataUnit data) throws UnknownHostException {
         
         MessageType type = data.getMsgType();
        
@@ -29,21 +35,30 @@ public class MessageHandler {
             
             case HEARTBEAT: 
                      break;
-            case IAMLEADER:  
+            case IAMLEADER:
+                Tree.setIPLeader(data.getIpAddress());
                      break;
             case WANNABELEADER:
                 //TODO find local IP
-                //BullyAlgo.compareIds(data.getIpAddress(),)
+                //BullyAlgo.compareIds(data.getIpAddress(),Config.ipAddress);
 
                 // TODO multicast to people with higher ip
                      break;
             case IAMHIGHER:
                 BullyAlgo.LostElection =true;
+                break;
             case DISCOVER:
-                Mu
+                DataUnit msg = new DataUnit(Config.ipAddress,MessageType.DISCOVERRESPONSE,1);
+                ArrayList<InetAddress> target = new ArrayList<InetAddress>();
+                target.add(InetAddress.getByName(data.getIpAddress()));
+                multicast.SendMulticast(target,msg);
                 // TODO add the ip to the list of ips
                 // TODO send the reply (ip) back to the poerson who broadcast-ed
                 break;
+            case DISCOVERRESPONSE:
+                String ipAdr = data.getIpAddress();
+                HashMap<String, Integer> hMap = Tree.getHmap();
+                if (hMap.containsKey(ipAdr)){ Tree.addHost(ipAdr,data.getCounter());}
             default: break;
                 
         }
