@@ -18,19 +18,16 @@ import java.net.UnknownHostException;
  * @author Angelo
  */
 public class Broadcast extends Send{
-    private DataUnit data;    
+
     
     public Broadcast(){
         super();
     }
-     public Broadcast(DataUnit data) throws UnknownHostException {
-        super();
-        this.data= data;
-    }
+
     
     
-    @Override
-    public void run() {
+
+    public static void run(DataUnit data) {
         socket = null;
 
         try {
@@ -43,7 +40,7 @@ public class Broadcast extends Send{
                 //increase counter for the package you want to send
                 increaseCounter();
                 //translate java object to bytes
-                byte[] dataBytes = DataTranslator.objectToBytes(this.data);
+                byte[] dataBytes = DataTranslator.objectToBytes(data);
                 //create the UDP packet
                 dp = new DatagramPacket(dataBytes, dataBytes.length, host, port);
                 //send the packet

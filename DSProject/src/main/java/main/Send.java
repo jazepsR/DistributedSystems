@@ -16,11 +16,11 @@ import java.net.DatagramSocket;
  */
 public abstract class Send {
     // TODO add comments
-    protected final int port;
-    protected int counter = 0;
-    protected DatagramSocket socket;
-    protected byte[] data;
-    protected DatagramPacket dp;
+    protected static int port;
+    protected static int counter = 0;
+    protected static DatagramSocket socket;
+    protected static byte[] data;
+    protected static DatagramPacket dp;
 
     public Send() {
         this.port = Config.port;
@@ -36,12 +36,12 @@ public abstract class Send {
     
     // TODO this has to be moved away from here once debugging has finished
     protected DataUnit broadcastMessage() {
-        return new DataUnit("sampleAddressFROM CLIENT",  MessageType.DISCOVER, this.counter);
+        return new DataUnit("sampleAddressFROM CLIENT",  MessageType.DISCOVER, counter);
 
     }
     
-    protected void increaseCounter(){
-        this.counter += 1;
+    protected static void increaseCounter(){
+        counter += 1;
     }
 
 }

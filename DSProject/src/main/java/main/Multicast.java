@@ -28,7 +28,7 @@ public class Multicast extends Send {
 
     }
 
-    public void SendMulticast(InetAddress ip, DataUnit message) {
+    public static void SendMulticast(InetAddress ip, DataUnit message) {
         try {
             socket = new DatagramSocket();
             // TODO move this line in a field and the ip address in the config

@@ -57,11 +57,7 @@ public class BullyAlgo{
     public static void BroadcastWin(){
         // TODO broadcast winning the election
         DataUnit data = new DataUnit(Config.ipAddress,MessageType.IAMLEADER,2);
-        try {
-            Broadcast br = new Broadcast(data);
-        } catch (UnknownHostException e) {
-            e.printStackTrace();
-        }
+        Broadcast.run(data);
 
     }
 }
