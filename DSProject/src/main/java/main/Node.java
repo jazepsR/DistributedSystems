@@ -5,6 +5,7 @@
  */
 package main;
 
+import algorithms.BullyAlgo;
 import data.DataUnit;
 import data.MessageType;
 import static data.MessageType.DISCOVER;
@@ -42,14 +43,24 @@ public class Node extends Thread {
     {
         System.out.println("in thread");
         if (send == 1) {
+            Send b=null;
             try {
-                Send b = new Broadcast(new DataUnit(this.ipAddress,MessageType.DISCOVER, 0));
+                b = new Broadcast(new DataUnit(this.ipAddress,MessageType.DISCOVER, 0));
             } catch (UnknownHostException ex) {
                 Logger.getLogger(Node.class.getName()).log(Level.SEVERE, null, ex);
             }
-             //b.run();
-            // timeout 5 sec
+            
+            b.run();
+            WaitTimer timer= new WaitTimer(5);
+            timer.run();
+            
             new Thread(new Listen()).start();
+            
+            if (Tree.getHigherIps(this.ipAddress).isEmpty()){
+                this.iAmLeader=true;
+                BullyAlgo.BroadcastWin();
+            }
+            
            
         }
         else {
