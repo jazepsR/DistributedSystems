@@ -5,23 +5,23 @@
  */
 package main;
 
-
-import java.net.Socket;
-
-
 /**
  *
  * @author Euaggelos
  */
 public class Node extends Thread {
-    
-    // TODO add boolean for leader 2) add boolean for election 3) add boolean into the dataunit
-    private int macAddress;
-    private Socket socket;
+        
+    private boolean iAmLeader;
+    private boolean electionInProgress;
     private final int port;
+    
+    // TODO to be removed at some point
     private int send;
+    private int macAddress;
 
     public Node(int macAddress, int port, int send) {
+        this.iAmLeader = false;
+        this.electionInProgress = false;
         this.macAddress = macAddress;
         this.port = port;
         this.send = send;
@@ -33,11 +33,8 @@ public class Node extends Thread {
         if (send == 1) {
             new Thread(new Listen()).start();
         } else {
-            Send c = new Send();
+            Send c = new Broadcast();
             c.run();
         }
     }
-
-
-
 }

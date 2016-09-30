@@ -5,52 +5,29 @@
  */
 package main;
 
-import data.DataTranslator;
 import data.DataUnit;
 import data.MessageType;
-import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
-import java.net.InetAddress;
 
 /**
  *
  * @author Angelo
  */
-public class Send {
+public abstract class Send {
     // TODO add comments
-    private final int port;
-    private int counter = 0;
-    private DatagramSocket sock;
-    private byte[] data;
-    private DatagramPacket dp;
+    protected final int port;
+    protected int counter = 0;
+    protected DatagramSocket socket;
+    protected byte[] data;
+    protected DatagramPacket dp;
 
     public Send() {
         this.port = Config.port;
     }
 
     public void run() {
-        sock = null;
-
-        try {
-            sock = new DatagramSocket();
-                
-            // TODO move this line in a field and the ip address in the config
-            InetAddress host = InetAddress.getByName("192.168.173.255");
-
-            while (true) {
-                //increase counter for the package you want to send
-                increaseCounter();
-                //translate java object to bytes
-                data = DataTranslator.objectToBytes(broadcastMessage());
-                //create the UDP packet
-                dp = new DatagramPacket(data, data.length, host, port);
-                //send the packet
-                sock.send(dp);
-            }
-        } catch (IOException e) {
-            System.err.println("IOException " + e);
-        }
+        
     }
 
     public static void echo(String msg) {
@@ -58,12 +35,12 @@ public class Send {
     }
     
     // TODO this has to be moved away from here once debugging has finished
-    private DataUnit broadcastMessage() {
+    protected DataUnit broadcastMessage() {
         return new DataUnit("sampleAddressFROM CLIENT", "sampleMac FROM CLIENT", MessageType.DISCOVER, this.counter);
 
     }
     
-    private void increaseCounter(){
+    protected void increaseCounter(){
         this.counter += 1;
     }
 

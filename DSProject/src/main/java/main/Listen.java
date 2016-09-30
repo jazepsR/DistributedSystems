@@ -11,7 +11,6 @@ import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 
-
 /**
  *
  * @author Angelo
@@ -73,5 +72,3 @@ public class Listen implements Runnable{
         System.out.println(msg.getCounter());
     }
 }
-    
-

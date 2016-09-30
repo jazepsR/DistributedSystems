@@ -6,6 +6,8 @@
 package main;
 
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 /**
  *
@@ -52,8 +54,8 @@ public class Tree {
     /**
      * @param IP to add host
      */
-    public void addHost(String IP) {
-        this.hmap.put(IP,0);
+    public void addHost(String IP, int counter) {
+        this.hmap.put(IP,counter);
     }
     
     /**
@@ -66,17 +68,27 @@ public class Tree {
     /**
      * @param IP to increse counter
      */
-    public void increaseCounter(String IP) {
-        this.hmap.put(IP, this.hmap.get(IP) + 1);
+    public void changeCounter(String IP, int newCounter) {
+        this.hmap.put(IP, newCounter);
     }
     
     /**
      * @param IP to get counter
      * @return Counter
      */
-    public Integer getCounter(String IP) {
+    public int getCounter(String IP) {
         return hmap.get(IP);
     }
     
+    public int getHigher(int ip){
+        Map mp = hmap;
+        Iterator it = mp.entrySet().iterator();
+        while (it.hasNext()) {
+            Map.Entry pair = (Map.Entry)it.next();
+            System.out.println(pair.getKey() + " = " + pair.getValue());
+            
+        }
+        return 1;
+    }
     
 }
