@@ -80,15 +80,4 @@ public class Tree {
         return hmap.get(IP);
     }
     
-    public int getHigher(int ip){
-        Map mp = hmap;
-        Iterator it = mp.entrySet().iterator();
-        while (it.hasNext()) {
-            Map.Entry pair = (Map.Entry)it.next();
-            System.out.println(pair.getKey() + " = " + pair.getValue());
-            
-        }
-        return 1;
-    }
-    
 }
