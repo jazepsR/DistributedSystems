@@ -63,6 +63,5 @@ public class BullyAlgo{
         // TODO broadcast winning the election
         DataUnit data = new DataUnit(Config.ipAddress,MessageType.IAMLEADER);
         Broadcast br = new Broadcast(data);
-
     }
 }

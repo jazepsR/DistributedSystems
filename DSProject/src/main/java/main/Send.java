@@ -23,6 +23,7 @@ public abstract class Send {
     protected DatagramPacket udpPacket;
     protected DataUnit dataObject;
 
+
     public Send() {
         this.port = Config.port;
     }
@@ -38,11 +39,10 @@ public abstract class Send {
     // TODO this has to be moved away from here once debugging has finished
     protected DataUnit broadcastMessage() {
         return new DataUnit("sampleAddressFROM CLIENT",  MessageType.DISCOVER);
-
     }
     
     protected void increaseCounter(){
-        this.counter += 1;
+        counter += 1;
     }
 
 }

@@ -37,18 +37,15 @@ public class Node extends Thread {
     }
 
     @Override
-    public void run()
-    {
-        System.out.println("in thread");
+    public void run(){
         new Thread(new Listen()).start();
+        System.out.println("in thread");
         if (send == 1) {
-            Send b=null;
-            b = new Broadcast(new DataUnit(this.ipAddress,MessageType.DISCOVER));
+            Broadcast b = new Broadcast(new DataUnit(this.ipAddress,MessageType.DISCOVER));
             
             b.run();
             WaitTimer timer= new WaitTimer(5);
             timer.run();
-
             if (Tree.getHigherIps(this.ipAddress).isEmpty()){
                 this.iAmLeader=true;
                 BullyAlgo.BroadcastWin();

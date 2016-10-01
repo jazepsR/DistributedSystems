@@ -11,14 +11,13 @@ import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
-import java.net.UnknownHostException;
 
 /**
  *
  * @author Angelo
  */
 public class Broadcast extends Send{
-    
+
     public Broadcast(){
         super();
     }
@@ -26,8 +25,8 @@ public class Broadcast extends Send{
         super();
         dataObject = data;
     }
-    
-    @Override
+
+
     public void run() {
         socket = null;
 
@@ -35,13 +34,14 @@ public class Broadcast extends Send{
             socket = new DatagramSocket();
                 
             // TODO move this line in a field and the ip address in the config
-            InetAddress host = InetAddress.getByName("192.168.173.255");
+            InetAddress host = InetAddress.getByName("192.168.1.255");
 
             while (true) {
                 //increase counter for the package you want to send
                 increaseCounter();
                 //translate java object to bytes
                 dataBytes = DataTranslator.objectToBytes(dataObject);
+
                 //create the UDP packet
                 udpPacket = new DatagramPacket(dataBytes, dataBytes.length, host, port);
                 //send the packet
@@ -51,5 +51,6 @@ public class Broadcast extends Send{
             System.err.println("IOException " + e);
         }
     }
+
     
 }

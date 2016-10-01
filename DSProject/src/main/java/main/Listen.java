@@ -63,7 +63,7 @@ public class Listen implements Runnable{
                 mh.switchMsg(msg);
             }
         } catch (IOException e) {
-            System.err.println("IOException ..." + e);
+            System.err.println("IOException " + e);
         }
     }
 
