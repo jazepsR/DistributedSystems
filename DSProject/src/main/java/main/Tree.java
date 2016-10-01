@@ -16,69 +16,58 @@ import utils.Parser;
 
 public class Tree {
     
-    private static String IPLeader;
-    private static HashMap<String, Integer> hmap = new HashMap<String, Integer>();
-
-    public Tree(){
-        
-    }
+    private static InetAddress ipLeader;
+    private static HashMap<InetAddress, Integer> hmap = new HashMap<InetAddress, Integer>();
 
     /**
      * @return the IPLeader
      */
-    public String getIPLeader() {
-        return IPLeader;
+    public InetAddress getIPLeader() {
+        return ipLeader;
     }
 
     /**
-
+     * @param ip
      */
-    public static void setIPLeader(String IpLeader) {
-        IPLeader = IpLeader;
+    public static void setIPLeader(InetAddress ip) {
+        ipLeader = ip;
     }
 
     /**
      * @return the hmap
      */
-    public static HashMap<String, Integer> getHmap() {
+    public static HashMap<InetAddress, Integer> getHmap() {
         return hmap;
-    }
-
-    /**
-     * @param hmap the hmap to set
-     */
-    public void setHmap(HashMap<String, Integer> hmap) {
-        this.hmap = hmap;
     }
     
     /**
      * @param ip to add host
      * @param counter
      */
-    public static void addHost(String ip, int counter) {
+    public static void addHost(InetAddress ip, int counter) {
         hmap.put(ip,counter);
     }
     
     /**
      * @param ip to delete host
      */
-    public void deleteHost(String ip) {
-        this.hmap.remove(ip);
+    public void deleteHost(InetAddress ip) {
+        hmap.remove(ip);
     }
     
     /**
-     * @param ip to increase counter
+     * @param ip
      * @param newCounter
      */
-    public void changeCounter(String ip, int newCounter) {
-        this.hmap.put(ip, newCounter);
+    public void changeCounter(InetAddress ip, int newCounter) {
+        hmap.put(ip, newCounter);
     }
     
     /**
      * @param ip to get counter
      * @return Counter
      */
-    public int getCounter(String ip) {
+    public int getCounter(InetAddress ip) {
         return hmap.get(ip);
     }
 
@@ -94,11 +83,15 @@ public class Tree {
         ArrayList<InetAddress> higherIps = new ArrayList<InetAddress>();
         Long hostIp = Parser.parseIp(ip);
         Long tmpIp;
-        for (String s : hmap.keySet()){
+        for (InetAddress s : hmap.keySet()){
             tmpIp = Parser.parseIp(s);
             if (tmpIp > hostIp)
-                higherIps.add(Parser.strToInet(s));
+                higherIps.add(s);
         }
         return higherIps;
+    }
+    
+    public static ArrayList<InetAddress> getHigherIps(InetAddress ip){
+        return getHigherIps(Parser.inetToStr(ip));
     }
 }

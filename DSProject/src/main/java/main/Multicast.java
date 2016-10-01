@@ -11,8 +11,8 @@ import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.util.ArrayList;
+import utils.Parser;
 
 /**
  *
@@ -20,7 +20,7 @@ import java.util.ArrayList;
  */
 public class Multicast extends Send {
 
-    public Multicast() throws UnknownHostException {
+    public Multicast() {
         super();
         socket = null;
         //IpList.add(InetAddress.getByName("192.168.173.1"));
@@ -32,22 +32,24 @@ public class Multicast extends Send {
         try {
             socket = new DatagramSocket();
             // TODO move this line in a field and the ip address in the config
-            data = DataTranslator.objectToBytes(message);
-            dp = new DatagramPacket(data, data.length, ip, port);
+            dataBytes = DataTranslator.objectToBytes(message);
+            udpPacket = new DatagramPacket(dataBytes, dataBytes.length, ip, port);
             //send the packet
-            socket.send(dp);
+            socket.send(udpPacket);
         } catch (IOException e) {
             System.err.println("IOException " + e);
         }
     }
 
-    public void SendMulticast(ArrayList<InetAddress> IpList, DataUnit message) {
-
+    public void SendMulticast(ArrayList<InetAddress> ipList, DataUnit message) {
         for (InetAddress ip
-                : IpList) {
+                : ipList) {
             SendMulticast(ip, message);
 
         }
-
+    }
+    
+    public void SendMulticast(String ipAddress, DataUnit message){
+        SendMulticast(Parser.strToInet(ipAddress), message);
     }
 }

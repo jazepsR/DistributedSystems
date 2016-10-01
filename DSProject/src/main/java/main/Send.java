@@ -19,8 +19,9 @@ public abstract class Send {
     protected final int port;
     protected int counter = 0;
     protected DatagramSocket socket;
-    protected byte[] data;
-    protected DatagramPacket dp;
+    protected byte[] dataBytes;
+    protected DatagramPacket udpPacket;
+    protected DataUnit dataObject;
 
     public Send() {
         this.port = Config.port;
@@ -36,7 +37,7 @@ public abstract class Send {
     
     // TODO this has to be moved away from here once debugging has finished
     protected DataUnit broadcastMessage() {
-        return new DataUnit("sampleAddressFROM CLIENT",  MessageType.DISCOVER, this.counter);
+        return new DataUnit("sampleAddressFROM CLIENT",  MessageType.DISCOVER);
 
     }
     

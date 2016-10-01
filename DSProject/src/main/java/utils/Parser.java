@@ -20,6 +20,14 @@ public class Parser {
         return Long.parseLong(s.replace(".", ""));
     }
     
+    public static Long parseIp(InetAddress s){
+        return Long.parseLong(inetToStr(s).replace(".", ""));
+    }
+    
+    public static String inetToStr(InetAddress ip){
+        return ip.getHostAddress();
+    }
+    
     public static InetAddress strToInet(String ip){
         InetAddress address = null;
         try {

@@ -10,6 +10,9 @@ import data.DataUnit;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
+import java.net.UnknownHostException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -17,16 +20,18 @@ import java.net.DatagramSocket;
  */
 public class Listen implements Runnable{
     // TODO add comments
-    private final int port;
-    private final int packetSize;
+    private final int port, packetSize;
     private DatagramSocket sock;
     private byte[] buffer, data;
     private DatagramPacket incoming;
     private DataUnit msg;
+    private final MessageHandler mh;
     
     public Listen(){
         this.port = Config.port;
         this.packetSize = Config.packetSize;
+        this.mh = new MessageHandler();
+        
     }
     
     public void run(){
@@ -55,7 +60,7 @@ public class Listen implements Runnable{
                 // TODO remove after debugging
                 echo(msg);
                 
-                MessageHandler.switchMsg(msg);
+                mh.switchMsg(msg);
             }
         } catch (IOException e) {
             System.err.println("IOException ..." + e);
@@ -69,6 +74,5 @@ public class Listen implements Runnable{
     public static void echo(DataUnit msg) {
         // TODO make it better
         System.out.println(msg);
-        System.out.println(msg.getCounter());
     }
 }
