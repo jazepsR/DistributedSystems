@@ -36,7 +36,7 @@ public class Broadcast extends Send{
             // TODO move this line in a field and the ip address in the config
             InetAddress host = InetAddress.getByName("192.168.1.255");
 
-            while (true) {
+            //while (true) {
                 //increase counter for the package you want to send
                 increaseCounter();
                 //translate java object to bytes
@@ -46,7 +46,7 @@ public class Broadcast extends Send{
                 udpPacket = new DatagramPacket(dataBytes, dataBytes.length, host, port);
                 //send the packet
                 socket.send(udpPacket);
-            }
+            //}
         } catch (IOException e) {
             System.err.println("IOException " + e);
         }

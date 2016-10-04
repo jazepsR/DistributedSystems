@@ -17,9 +17,6 @@ import java.util.logging.Logger;
 public class Main {
     
     public static void main(String [] args){
-        String TestIP = "234.345.567";
-        TestIP= TestIP.replace(".","");
-        Double ipVal = Double.parseDouble(TestIP);
         System.out.println("test");
         getIpAddress();
         Thread thread1 = new Node(20015, 1);
@@ -36,7 +33,8 @@ public class Main {
         String ip;
         try {
             ip = Inet4Address.getLocalHost().getHostAddress();
-            Config.ipAddress = ip;
+            Config.ipAddress = "192.168.0.103";
+            //int o= 0;
             //Config.ipAddress = "192.168.173.230";
         } catch (UnknownHostException ex) {
             Logger.getLogger(Node.class.getName()).log(Level.SEVERE, null, ex);

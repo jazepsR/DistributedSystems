@@ -11,6 +11,7 @@ import data.MessageType;
 
 import java.net.InetAddress;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 
 /**
@@ -29,7 +30,13 @@ public class MessageHandler {
     public void switchMsg(DataUnit data) {
 
         MessageType type = data.getMsgType();
+        String recieved = data.getIpAddress().toString().substring(1);
+        //if (Config.ipAddress.equals(recieved))
+        //    return;
         System.out.println(data.toString());
+
+
+
         switch (type) {
 
             case HEARTBEAT:
@@ -48,15 +55,14 @@ public class MessageHandler {
                 multicast = new Multicast();
                 DataUnit msg = new DataUnit(Config.ipAddress, MessageType.DISCOVERRESPONSE);
                 ArrayList<InetAddress> target = new ArrayList<InetAddress>();
-
                 target.add(data.getIpAddress());
-
                 multicast.SendMulticast(target, msg);
                 break;
             case DISCOVERRESPONSE:
-               
                 InetAddress ipAdr = data.getIpAddress();  
                 Tree.addHost(ipAdr, 0);
+                //HashMap<InetAddress,Integer> aa = Tree.getHmap();
+                //int o =0;
 //               TODO this should be removed? i really do not understand this code.
 //                HashMap<String, Integer> hMap = Tree.getHmap();
 //                if (hMap.containsKey(ipAdr)) {

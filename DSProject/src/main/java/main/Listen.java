@@ -58,7 +58,7 @@ public class Listen implements Runnable{
                 msg = DataTranslator.bytesToObject(data);
                     
                 // TODO remove after debugging
-                echo(msg);
+                //echo(msg);
                 
                 mh.switchMsg(msg);
             }
