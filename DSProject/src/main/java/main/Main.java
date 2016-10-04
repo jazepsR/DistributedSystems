@@ -31,22 +31,15 @@ public class Main {
     
     private static void getIpAddress(){
         String ip;
-<<<<<<< HEAD
-        try {
-            ip = Inet4Address.getLocalHost().getHostAddress();
-            Config.ipAddress = "192.168.0.103";
-            //int o= 0;
-=======
 
-       // try {
+        // try {
             //ip = Inet4Address.getLocalHost().getHostAddress();
             Config.ipAddress = "192.168.1.102";
 
->>>>>>> parent of 58ff53f... testing
             //Config.ipAddress = "192.168.173.230";
-        } catch (UnknownHostException ex) {
+       /* } catch (UnknownHostException ex) {
             Logger.getLogger(Node.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        }*/
         
     }
     
