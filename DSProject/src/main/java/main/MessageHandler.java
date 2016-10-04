@@ -55,6 +55,8 @@ public class MessageHandler {
                 ArrayList<InetAddress> target = new ArrayList<InetAddress>();
                 target.add(data.getIpAddress());
                 multicast.SendMulticast(target, msg);
+                InetAddress ipAdrr = data.getIpAddress();
+                Tree.addHost(ipAdrr, 0);
                 break;
             case DISCOVERRESPONSE:
                 InetAddress ipAdr = data.getIpAddress();  

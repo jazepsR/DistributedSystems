@@ -42,7 +42,7 @@ public class Main {
 
        // try {
             //ip = Inet4Address.getLocalHost().getHostAddress();
-            Config.ipAddress = "192.168.1.102";
+            Config.ipAddress = "192.168.1.103";
 
             //Config.ipAddress = "192.168.173.230";
        /* } catch (UnknownHostException ex) {

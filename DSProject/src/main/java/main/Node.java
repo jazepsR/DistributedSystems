@@ -47,7 +47,10 @@ public class Node extends Thread {
             timer.run();
             if (Tree.getHigherIps(this.ipAddress).isEmpty()){
                 this.iAmLeader=true;
+                System.out.println("I am leader");
                 BullyAlgo.BroadcastWin();
+            }else{
+                System.out.println("I am not the leader");
             }
         }
         else {
