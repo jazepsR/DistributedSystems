@@ -54,7 +54,7 @@ public class BullyAlgo{
         Multicast mult = new Multicast();
         DataUnit data = new DataUnit(Config.ipAddress, MessageType.WANNABELEADER);
         mult.SendMulticast(higherIps,data);
-        System.out.println("bully other clients");
+        System.out.println("bully other clients"+higherIps.toString());
         WaitTimer wt = new WaitTimer(10);
         wt.run();
     }
@@ -63,5 +63,6 @@ public class BullyAlgo{
         // TODO broadcast winning the election
         DataUnit data = new DataUnit(Config.ipAddress,MessageType.IAMLEADER);
         Broadcast br = new Broadcast(data);
+        br.run();
     }
 }

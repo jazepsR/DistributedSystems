@@ -46,9 +46,15 @@ public class Node extends Thread {
             WaitTimer timer= new WaitTimer(5);
             timer.run();
             if (Tree.getHigherIps(this.ipAddress).isEmpty()){
+                System.out.println("imLeader");
                 this.iAmLeader=true;
                 BullyAlgo.BroadcastWin();
             }
+            
+            // test become a leader
+            /*WaitTimer timer2= new WaitTimer(15);
+            timer2.run();
+            BullyAlgo.bullyThem();*/
         }
         else {
             if(send==2)

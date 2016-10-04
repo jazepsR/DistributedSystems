@@ -40,6 +40,7 @@ public class Main {
     private static void getIpAddress(){
         String ip;
 
+
        // try {
             //ip = Inet4Address.getLocalHost().getHostAddress();
             Config.ipAddress = "192.168.1.102";

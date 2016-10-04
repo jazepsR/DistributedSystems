@@ -47,6 +47,7 @@ public class MessageHandler {
                 break;
             case IAMHIGHER:
                 BullyAlgo.LostElection = true;
+                 System.out.println("no leader");
                 break;
             case DISCOVER:
                 //System.out.println("Recieved ")
@@ -55,10 +56,13 @@ public class MessageHandler {
                 ArrayList<InetAddress> target = new ArrayList<InetAddress>();
                 target.add(data.getIpAddress());
                 multicast.SendMulticast(target, msg);
+                InetAddress ipAdrr = data.getIpAddress();  
+                Tree.addHost(ipAdrr, 0);
                 break;
             case DISCOVERRESPONSE:
                 InetAddress ipAdr = data.getIpAddress();  
                 Tree.addHost(ipAdr, 0);
+                
                 //HashMap<InetAddress,Integer> aa = Tree.getHmap();
                 //int o =0;
 //               TODO this should be removed? i really do not understand this code.

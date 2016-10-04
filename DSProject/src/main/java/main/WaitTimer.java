@@ -22,6 +22,8 @@ public class WaitTimer implements Runnable{
         if (BullyAlgo.LostElection = false)
         {
            BullyAlgo.BroadcastWin();
+        } else{
+             System.out.println("no leader 2");
         }
     }
 }
