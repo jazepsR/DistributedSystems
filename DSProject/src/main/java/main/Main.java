@@ -17,10 +17,14 @@ import java.util.logging.Logger;
 public class Main {
     
     public static void main(String [] args){
+
        /* String TestIP = "234.345.567";
         TestIP= TestIP.replace(".","");
         Double ipVal = Double.parseDouble(TestIP);
         System.out.println("test");*/
+
+        System.out.println("test");
+
         getIpAddress();
         System.out.println("myIP0"+Config.ipAddress);
         Thread thread1 = new Node(20015, 1);
@@ -35,9 +39,11 @@ public class Main {
     
     private static void getIpAddress(){
         String ip;
+
        // try {
             //ip = Inet4Address.getLocalHost().getHostAddress();
             Config.ipAddress = "192.168.1.102";
+
             //Config.ipAddress = "192.168.173.230";
        /* } catch (UnknownHostException ex) {
             Logger.getLogger(Node.class.getName()).log(Level.SEVERE, null, ex);
