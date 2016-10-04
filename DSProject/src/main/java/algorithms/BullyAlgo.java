@@ -29,6 +29,10 @@ public class BullyAlgo{
     public static void run(String incomingId, String randomID){
         if (!compareIds(Parser.parseIp(incomingId), Parser.parseIp(randomID))){
             bullyThem();
+        }else{
+            Multicast mult = new Multicast();
+            DataUnit data = new DataUnit(Config.ipAddress, MessageType.IAMHIGHER);
+            mult.SendMulticast(incomingId,data);
         }
     }
     
@@ -50,11 +54,10 @@ public class BullyAlgo{
     
     public static void bullyThem() {
         ArrayList<InetAddress> higherIps = Tree.getHigherIps(Config.ipAddress);
-
         Multicast mult = new Multicast();
         DataUnit data = new DataUnit(Config.ipAddress, MessageType.WANNABELEADER);
         mult.SendMulticast(higherIps,data);
-        System.out.println("bully other clients");
+        System.out.println("bully other clients"+higherIps.toString());
         WaitTimer wt = new WaitTimer(10);
         wt.run();
     }
@@ -63,5 +66,6 @@ public class BullyAlgo{
         // TODO broadcast winning the election
         DataUnit data = new DataUnit(Config.ipAddress,MessageType.IAMLEADER);
         Broadcast br = new Broadcast(data);
+        br.run();
     }
 }
