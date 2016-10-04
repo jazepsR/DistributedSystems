@@ -29,7 +29,7 @@ public class MessageHandler {
     public void switchMsg(DataUnit data) {
 
         MessageType type = data.getMsgType();
-        System.out.println(data.toString());
+        //System.out.println(data.toString());
         switch (type) {
 
             case HEARTBEAT:
