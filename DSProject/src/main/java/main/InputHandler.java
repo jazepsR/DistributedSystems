@@ -17,7 +17,7 @@ public class InputHandler implements Runnable {
     Multicast multicast;
     InputHandler(Tree tree){
         this.tree = tree;
-
+        multicast = new Multicast();
     }
     public void run() {
         while (true) {
