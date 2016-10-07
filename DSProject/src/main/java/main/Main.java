@@ -37,26 +37,24 @@ public class Main {
     
     
     public static void getIpAddress() {
-            try {
-                Enumeration<NetworkInterface> networkInterfaces = NetworkInterface
-                        .getNetworkInterfaces();
-                while (networkInterfaces.hasMoreElements()) {
-                    NetworkInterface ni = (NetworkInterface) networkInterfaces
-                            .nextElement();
-                    Enumeration<InetAddress> nias = ni.getInetAddresses();
-                    while(nias.hasMoreElements()) {
-                        InetAddress ia= (InetAddress) nias.nextElement();
-                        if (!ia.isLinkLocalAddress() 
-                         && !ia.isLoopbackAddress()
-                         && ia instanceof Inet4Address) {
-                            Config.ipAddress=ia.getHostAddress();
-                        }
-                    }
+        Enumeration<NetworkInterface> n = null;
+        try {
+            n = NetworkInterface.getNetworkInterfaces();
+            for (; n.hasMoreElements();){
+                NetworkInterface e = n.nextElement();
+                Enumeration<InetAddress> a = e.getInetAddresses();
+                for (; a.hasMoreElements();){
+                    InetAddress addr = a.nextElement();
+                    String ind = addr.getHostAddress();
+                    if(ind.contains("192.168.") || ind.contains("10.") || ind.contains("172.16.") || ind.contains("172.17.") || ind.contains("172.18.") || ind.contains("172.19.") || ind.contains("172.20.") || ind.contains("172.21.") || ind.contains("172.22.") || ind.contains("172.23.") || ind.contains("172.24.") || ind.contains("172.25.") || ind.contains("172.26.") || ind.contains("172.27.") || ind.contains("172.28.") || ind.contains("172.29.") || ind.contains("172.30.") || ind.contains("172.31."))
+                        Config.ipAddress=ind;
                 }
-            } catch (SocketException e) {
-                  Logger.getLogger(Node.class.getName()).log(Level.SEVERE, null, e);
             }
+        } catch (SocketException ex) {
             
+            Logger.getLogger(Node.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
+    }
     
 }
