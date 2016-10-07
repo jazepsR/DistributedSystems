@@ -55,9 +55,9 @@ public class Node extends Thread {
             }
             
             // test become a leader
-            /*WaitTimer timer2= new WaitTimer(15);
+            WaitTimer timer2= new WaitTimer(15);
             timer2.run();
-            BullyAlgo.bullyThem();*/
+            BullyAlgo.bullyThem();
         }
         else {
             if(send==2)
