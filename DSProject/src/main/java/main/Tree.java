@@ -15,7 +15,7 @@ import utils.Parser;
  * @author roberto
  */
 
-public class Tree implements Serializable{
+public class Tree implements Serializable, Comparable<Tree>{
     
     private InetAddress ipLeader;
     private HashMap<InetAddress, Integer> hmap = new HashMap<InetAddress, Integer>();
@@ -47,6 +47,10 @@ public class Tree implements Serializable{
      */
     public void addHost(InetAddress ip, int counter) {
         hmap.put(ip,counter);
+    }
+    
+    public void addHost(String ip, int counter){
+        addHost(Parser.strToInet(ip), counter);
     }
     
     /**
@@ -94,5 +98,14 @@ public class Tree implements Serializable{
     
     public ArrayList<InetAddress> getHigherIps(InetAddress ip){
         return getHigherIps(Parser.inetToStr(ip));
+    }
+
+    public int compareTo(Tree tree) {
+         return getVectorClock().compareTo(tree.getVectorClock());
+    }
+    
+    @Override
+    public String toString(){
+        return getVectorClock().toString();
     }
 }
