@@ -26,7 +26,7 @@ public class Listen implements Runnable{
     private DatagramSocket sock;
     private byte[] buffer, data;
     private DatagramPacket incoming;
-    private ChatDataUnit msg;
+    private DataUnit msg;
     private final MessageHandler mh;
     
     public Listen(Tree tree, BullyAlgo bAlgo, Node node){
@@ -58,7 +58,7 @@ public class Listen implements Runnable{
                 data = incoming.getData();
                 
                 //turn bytes back to java object
-                msg = (ChatDataUnit) DataTranslator.bytesToObject(data);
+                msg =  DataTranslator.bytesToObject(data);
                     
                 // TODO remove after debugging
                 //echo(msg);

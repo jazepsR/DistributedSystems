@@ -33,7 +33,7 @@ public class MessageHandler {
         this.node = node;
     }
 
-    public void switchMsg(ChatDataUnit data) {
+    public void switchMsg(DataUnit data) {
 
         MessageType type = data.getMsgType();
 
@@ -63,8 +63,9 @@ public class MessageHandler {
                 this.tree.addHost(ipAdrr, 0);
                 break;
             case CHATMESSAGE:
-                System.out.println(data.getMsg());
-                node.messageLog.add(data);
+                ChatDataUnit aa = (ChatDataUnit)data;
+                System.out.println(aa.getMsg());
+                node.messageLog.add(aa);
             case DISCOVERRESPONSE:
                 InetAddress ipAdr = data.getIpAddress();  
                 this.tree.addHost(ipAdr, 0);

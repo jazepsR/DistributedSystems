@@ -20,14 +20,16 @@ public class InputHandler implements Runnable {
 
     }
     public void run() {
-        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-        try {
-            text = reader.readLine();
-        } catch (IOException e) {
-            e.printStackTrace();
+        while (true) {
+            BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+            try {
+                text = reader.readLine();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            //Placeholder code
+            ChatDataUnit chatMessage = new ChatDataUnit(Config.ipAddress, MessageType.CHATMESSAGE, tree, text);
+            multicast.SendMulticast(tree.getHigherIps("0.0.0.0"), chatMessage);
         }
-         //Placeholder code
-        ChatDataUnit chatMessage = new ChatDataUnit(Config.ipAddress,MessageType.CHATMESSAGE,tree,text);
-        multicast.SendMulticast(tree.getHigherIps("0.0.0.0"),chatMessage);
     }
 }
