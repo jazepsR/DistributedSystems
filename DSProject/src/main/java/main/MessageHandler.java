@@ -6,6 +6,8 @@
 package main;
 
 import algorithms.BullyAlgo;
+import com.company.ChatMessage;
+import data.ChatDataUnit;
 import data.DataUnit;
 import data.MessageType;
 
@@ -23,13 +25,15 @@ public class MessageHandler {
     private static Broadcast broadcast;
     private final Tree tree;
     private final BullyAlgo bAlgo;
+    private final Node node;
 
-    MessageHandler(Tree tree, BullyAlgo bAlgo) {
+    MessageHandler(Tree tree, BullyAlgo bAlgo, Node node) {
         this.tree = tree;
         this.bAlgo = bAlgo;
+        this.node = node;
     }
 
-    public void switchMsg(DataUnit data) {
+    public void switchMsg(ChatDataUnit data) {
 
         MessageType type = data.getMsgType();
 
@@ -58,6 +62,9 @@ public class MessageHandler {
                 InetAddress ipAdrr = data.getIpAddress();
                 this.tree.addHost(ipAdrr, 0);
                 break;
+            case CHATMESSAGE:
+                System.out.println(data.getMsg());
+                node.messageLog.add(data);
             case DISCOVERRESPONSE:
                 InetAddress ipAdr = data.getIpAddress();  
                 this.tree.addHost(ipAdr, 0);

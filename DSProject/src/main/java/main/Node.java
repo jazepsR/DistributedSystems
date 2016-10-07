@@ -46,8 +46,8 @@ public class Node extends Thread {
 
     @Override
     public void run(){
-        new Thread(new Listen(this.tree, bullyAlgo)).start();
-        new Thread(new Listen(this.tree, bullyAlgo)).start();
+        new Thread(new Listen(this.tree, bullyAlgo,this)).start();
+        new Thread(new InputHandler(this.tree)).start();
         System.out.println("in thread");
         if (send == 1) {
             Broadcast b = new Broadcast(new DataUnit(this.ipAddress, MessageType.DISCOVER, this.tree));

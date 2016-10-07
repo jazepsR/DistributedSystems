@@ -6,6 +6,7 @@
 package main;
 
 import algorithms.BullyAlgo;
+import data.ChatDataUnit;
 import data.DataTranslator;
 import data.DataUnit;
 import java.io.IOException;
@@ -25,14 +26,14 @@ public class Listen implements Runnable{
     private DatagramSocket sock;
     private byte[] buffer, data;
     private DatagramPacket incoming;
-    private DataUnit msg;
+    private ChatDataUnit msg;
     private final MessageHandler mh;
     
-    public Listen(Tree tree, BullyAlgo bAlgo){
+    public Listen(Tree tree, BullyAlgo bAlgo, Node node){
         this.port = Config.port;
         this.packetSize = Config.packetSize;
         
-        this.mh = new MessageHandler(tree, bAlgo);
+        this.mh = new MessageHandler(tree, bAlgo, node);
         
     }
     
@@ -57,7 +58,7 @@ public class Listen implements Runnable{
                 data = incoming.getData();
                 
                 //turn bytes back to java object
-                msg = DataTranslator.bytesToObject(data);
+                msg = (ChatDataUnit) DataTranslator.bytesToObject(data);
                     
                 // TODO remove after debugging
                 //echo(msg);
