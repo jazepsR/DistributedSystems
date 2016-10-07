@@ -8,9 +8,11 @@ import algorithms.BullyAlgo;
 public class WaitTimer implements Runnable{
     public int waitTime;
     private Thread t;
-    public WaitTimer(int waitForSeconds){
+    private BullyAlgo bAlgo;
+    
+    public WaitTimer(int waitForSeconds, BullyAlgo bAlgo){
         waitTime = waitForSeconds;
-
+        this.bAlgo = bAlgo;
     }
 
     public void run() {
@@ -19,10 +21,10 @@ public class WaitTimer implements Runnable{
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        if (BullyAlgo.LostElection = false)
+        if (bAlgo.LostElection = false)
         {
             System.out.println("Won election");
-           BullyAlgo.BroadcastWin();
+           bAlgo.BroadcastWin();
         } else{
              System.out.println("no leader 2");
         }

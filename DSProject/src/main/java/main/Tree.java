@@ -5,6 +5,7 @@
  */
 package main;
 
+import java.io.Serializable;
 import java.net.InetAddress;
 import java.util.*;
 import utils.Parser;
@@ -14,10 +15,10 @@ import utils.Parser;
  * @author roberto
  */
 
-public class Tree {
+public class Tree implements Serializable{
     
-    private static InetAddress ipLeader;
-    private static HashMap<InetAddress, Integer> hmap = new HashMap<InetAddress, Integer>();
+    private InetAddress ipLeader;
+    private HashMap<InetAddress, Integer> hmap = new HashMap<InetAddress, Integer>();
 
     /**
      * @return the IPLeader
@@ -29,14 +30,14 @@ public class Tree {
     /**
      * @param ip
      */
-    public static void setIPLeader(InetAddress ip) {
+    public void setIPLeader(InetAddress ip) {
         ipLeader = ip;
     }
 
     /**
      * @return the hmap
      */
-    public static HashMap<InetAddress, Integer> getHmap() {
+    public HashMap<InetAddress, Integer> getHmap() {
         return hmap;
     }
     
@@ -44,7 +45,7 @@ public class Tree {
      * @param ip to add host
      * @param counter
      */
-    public static void addHost(InetAddress ip, int counter) {
+    public void addHost(InetAddress ip, int counter) {
         hmap.put(ip,counter);
     }
     
@@ -79,7 +80,7 @@ public class Tree {
         return VClock;
     }
     
-    public static ArrayList<InetAddress> getHigherIps(String ip){
+    public ArrayList<InetAddress> getHigherIps(String ip){
         ArrayList<InetAddress> higherIps = new ArrayList<InetAddress>();
         Long hostIp = Parser.parseIp(ip);
         Long tmpIp;
@@ -91,7 +92,7 @@ public class Tree {
         return higherIps;
     }
     
-    public static ArrayList<InetAddress> getHigherIps(InetAddress ip){
+    public ArrayList<InetAddress> getHigherIps(InetAddress ip){
         return getHigherIps(Parser.inetToStr(ip));
     }
 }

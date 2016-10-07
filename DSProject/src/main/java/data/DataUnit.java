@@ -7,6 +7,7 @@ package data;
 
 import java.io.Serializable;
 import java.net.InetAddress;
+import main.Tree;
 import utils.Parser;
 
 /**
@@ -17,14 +18,16 @@ public class DataUnit implements Serializable{
     
     private final InetAddress ipAddress;
     private final MessageType msgType;
+    private final Tree tree;
     
-    public DataUnit(String ip, MessageType msgType){
-        this(Parser.strToInet(ip), msgType);
+    public DataUnit(String ip, MessageType msgType, Tree tree){
+        this(Parser.strToInet(ip), msgType, tree);
     }
     
-    public DataUnit(InetAddress ipAddress,  MessageType msgType){
+    public DataUnit(InetAddress ipAddress,  MessageType msgType, Tree tree){
         this.ipAddress = ipAddress;
         this.msgType = msgType;
+        this.tree = tree;
     }
     
     public InetAddress getIpAddress(){
