@@ -6,9 +6,13 @@
 package main;
 
 import algorithms.BullyAlgo;
+import data.ChatDataUnit;
 import data.DataUnit;
 import data.MessageType;
 import java.net.InetAddress;
+import java.util.ArrayList;
+import java.util.List;
+
 import utils.Parser;
 
 
@@ -24,12 +28,13 @@ public class Node extends Thread {
     private final InetAddress ipAddress;
     private final Tree tree;
     private final BullyAlgo bullyAlgo;
-    
+    public List<ChatDataUnit> messageLog;
     // TODO to be removed at some point
     private int send;
    
 
     public Node( int port, int send) {
+        messageLog = new ArrayList<ChatDataUnit>();
         this.ipAddress = Parser.strToInet(Config.ipAddress);
         this.iAmLeader = false;
         this.electionInProgress = false;
@@ -41,6 +46,7 @@ public class Node extends Thread {
 
     @Override
     public void run(){
+        new Thread(new Listen(this.tree, bullyAlgo)).start();
         new Thread(new Listen(this.tree, bullyAlgo)).start();
         System.out.println("in thread");
         if (send == 1) {
