@@ -14,6 +14,7 @@ import main.Tree;
 public class ChatDataUnit extends DataUnit{
     
     private final String msg;
+
     
     public ChatDataUnit(String ip, MessageType msgType, Tree tree, String msg){
         super(ip, msgType, tree);
@@ -22,6 +23,12 @@ public class ChatDataUnit extends DataUnit{
     
     public String getMsg(){
         return this.msg;
+    }
+    
+    @Override
+    public String toString(){
+        System.out.println();
+        return this.msg + "---" + super.tree.toString();
     }
     
 }

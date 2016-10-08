@@ -18,7 +18,7 @@ public class DataUnit implements Serializable{
     
     private final InetAddress ipAddress;
     private final MessageType msgType;
-    private final Tree tree;
+    protected final Tree tree;
     
     public DataUnit(String ip, MessageType msgType, Tree tree){
         this(Parser.strToInet(ip), msgType, tree);
@@ -36,6 +36,10 @@ public class DataUnit implements Serializable{
 
     public MessageType getMsgType(){
         return this.msgType;
+    }
+    
+    public Tree getTree(){
+        return this.tree;
     }
     
     @Override
