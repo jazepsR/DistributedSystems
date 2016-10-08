@@ -5,6 +5,7 @@
  */
 package main;
 
+import algorithms.BullyAlgo;
 import data.DataTranslator;
 import data.DataUnit;
 import java.io.IOException;
@@ -27,10 +28,11 @@ public class Listen implements Runnable{
     private DataUnit msg;
     private final MessageHandler mh;
     
-    public Listen(){
+    public Listen(Tree tree, BullyAlgo bAlgo){
         this.port = Config.port;
         this.packetSize = Config.packetSize;
-        this.mh = new MessageHandler();
+        
+        this.mh = new MessageHandler(tree, bAlgo);
         
     }
     

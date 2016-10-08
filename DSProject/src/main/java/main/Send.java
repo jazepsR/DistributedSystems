@@ -37,8 +37,8 @@ public abstract class Send {
     }
     
     // TODO this has to be moved away from here once debugging has finished
-    protected DataUnit broadcastMessage() {
-        return new DataUnit("sampleAddressFROM CLIENT",  MessageType.DISCOVER);
+    protected DataUnit broadcastMessage(Tree tree) {
+        return new DataUnit("sampleAddressFROM CLIENT",  MessageType.DISCOVER, tree);
     }
     
     protected void increaseCounter(){

@@ -24,47 +24,52 @@ public class BullyAlgo{
      * the incoming id and the local id the method either proceeds to
      * the next step or does nothing. 
      */
-    public static  boolean LostElection = false;
+    public boolean LostElection = false;
+    private Tree tree;
     
-    public static void run(String incomingId, String randomID){
+    public BullyAlgo(Tree tree){
+        this.tree = tree;
+    }
+    
+    public void run(String incomingId, String randomID, Tree tree){
         if (!compareIds(Parser.parseIp(incomingId), Parser.parseIp(randomID))){
             bullyThem();
         }else{
             Multicast mult = new Multicast();
-            DataUnit data = new DataUnit(Config.ipAddress, MessageType.IAMHIGHER);
+            DataUnit data = new DataUnit(Config.ipAddress, MessageType.IAMHIGHER, tree);
             mult.SendMulticast(incomingId,data);
         }
     }
     
-    public static void run(InetAddress incomingInetId, InetAddress randomInetId){
-        run(Parser.inetToStr(incomingInetId), Parser.inetToStr(randomInetId));
+    public void run(InetAddress incomingInetId, InetAddress randomInetId, Tree tree){
+        run(Parser.inetToStr(incomingInetId), Parser.inetToStr(randomInetId), tree);
     }
     
-    public static void run(InetAddress incomingInetId, String randomStringId){
-        run(Parser.inetToStr(incomingInetId), randomStringId);
+    public void run(InetAddress incomingInetId, String randomStringId, Tree tree){
+        run(Parser.inetToStr(incomingInetId), randomStringId, tree);
     }
     
-    public static void run(String incomingStrId, InetAddress randomInetId){
-        run(Parser.strToInet(incomingStrId), Parser.inetToStr(randomInetId));
+    public void run(String incomingStrId, InetAddress randomInetId, Tree tree){
+        run(Parser.strToInet(incomingStrId), Parser.inetToStr(randomInetId), tree);
     }
     
-    public static boolean compareIds(Long incomingID, Long localID){
+    public boolean compareIds(Long incomingID, Long localID){
         return (incomingID < localID);
     }
     
-    public static void bullyThem() {
-        ArrayList<InetAddress> higherIps = Tree.getHigherIps(Config.ipAddress);
+    public void bullyThem() {
+        ArrayList<InetAddress> higherIps = tree.getHigherIps(Config.ipAddress);
         Multicast mult = new Multicast();
-        DataUnit data = new DataUnit(Config.ipAddress, MessageType.WANNABELEADER);
+        DataUnit data = new DataUnit(Config.ipAddress, MessageType.WANNABELEADER, tree);
         mult.SendMulticast(higherIps,data);
         System.out.println("bully other clients"+higherIps.toString());
-        WaitTimer wt = new WaitTimer(10);
+        WaitTimer wt = new WaitTimer(10, this);
         wt.run();
     }
 
-    public static void BroadcastWin(){
+    public void BroadcastWin(){
         // TODO broadcast winning the election
-        DataUnit data = new DataUnit(Config.ipAddress,MessageType.IAMLEADER);
+        DataUnit data = new DataUnit(Config.ipAddress,MessageType.IAMLEADER, tree);
         Broadcast br = new Broadcast(data);
         br.run();
     }

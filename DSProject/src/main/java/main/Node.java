@@ -22,6 +22,8 @@ public class Node extends Thread {
     private boolean electionInProgress;
     private final int port;
     private final InetAddress ipAddress;
+    private final Tree tree;
+    private final BullyAlgo bullyAlgo;
     
     // TODO to be removed at some point
     private int send;
@@ -31,25 +33,26 @@ public class Node extends Thread {
         this.ipAddress = Parser.strToInet(Config.ipAddress);
         this.iAmLeader = false;
         this.electionInProgress = false;
-        
+        this.tree = new Tree();
+        this.bullyAlgo = new BullyAlgo(tree);
         this.port = port;
         this.send = send;
     }
 
     @Override
     public void run(){
-        new Thread(new Listen()).start();
+        new Thread(new Listen(this.tree, bullyAlgo)).start();
         System.out.println("in thread");
         if (send == 1) {
-            Broadcast b = new Broadcast(new DataUnit(this.ipAddress,MessageType.DISCOVER));
+            Broadcast b = new Broadcast(new DataUnit(this.ipAddress, MessageType.DISCOVER, this.tree));
             b.run();
-            WaitTimer timer= new WaitTimer(5);
+            WaitTimer timer = new WaitTimer(5, bullyAlgo);
             timer.run();
-            if (Tree.getHigherIps(this.ipAddress).isEmpty()){
+            if (tree.getHigherIps(this.ipAddress).isEmpty()){
                 System.out.println("imLeader");
                 this.iAmLeader=true;
                 System.out.println("I am leader");
-                BullyAlgo.BroadcastWin();
+                this.bullyAlgo.BroadcastWin();
             }else{
                 System.out.println("I am not the leader");
             }
