@@ -71,22 +71,27 @@ public class Listen implements Runnable{
 
 
                     //Relibalilty check
-                    if(!reliability.containsKey(msg.getIpAddress()) && msg.getIpAddress().toString() != "/"+Config.ipAddress){
+                    if(!reliability.containsKey(msg.getIpAddress()) ){
                         mh.switchMsg(msg);
                     }else {
-                        int seqNR = msg.getSequenceNr();
-                        int currentSeqNr = reliability.get(msg.getIpAddress());
-                        if ( seqNR == currentSeqNr+ 1) {
-                            reliability.put(msg.getIpAddress(),msg.getSequenceNr());
-                            mh.switchMsg(msg);
+                        if(msg.getIpAddress().toString() != "/"+Config.ipAddress) {
+                            
+                        }else{
 
-                        } else {
-                            for(int i = currentSeqNr;i<seqNR;i++) {
-                                System.out.println(msg.toString());
-                                ChatDataUnit msg = new ChatDataUnit(Config.ipAddress, MessageType.NEGATIVEACK, this.tree, Integer.toString(i));
-                                ArrayList<InetAddress> target = new ArrayList<InetAddress>();
-                                target.add(msg.getIpAddress());
-                                multicast.SendMulticast(target, msg);
+                            int seqNR = msg.getSequenceNr();
+                            int currentSeqNr = reliability.get(msg.getIpAddress());
+                            if ( seqNR == currentSeqNr+ 1) {
+                                reliability.put(msg.getIpAddress(),msg.getSequenceNr());
+                                mh.switchMsg(msg);
+
+                            } else {
+                                for(int i = currentSeqNr;i<seqNR;i++) {
+                                    //System.out.println(msg.toString());
+                                    ChatDataUnit msg = new ChatDataUnit(Config.ipAddress, MessageType.NEGATIVEACK, this.tree, Integer.toString(i));
+                                    ArrayList<InetAddress> target = new ArrayList<InetAddress>();
+                                    target.add(msg.getIpAddress());
+                                    multicast.SendMulticast(target, msg);
+                                }
                             }
                         }
                     }
