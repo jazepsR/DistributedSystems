@@ -68,12 +68,14 @@ public class Listen implements Runnable{
                 
                 //turn bytes back to java object
                 msg =  DataTranslator.bytesToObject(data);
-                int seqNR = msg.getSequenceNr();
-                int currentSeqNr = reliability.get(msg.getIpAddress());
+
+
                     //Relibalilty check
-                    if(!reliability.containsKey(msg.getIpAddress())){
+                    if(!reliability.containsKey(msg.getIpAddress()) && msg.getIpAddress().toString() != "/"+Config.ipAddress){
                         mh.switchMsg(msg);
                     }else {
+                        int seqNR = msg.getSequenceNr();
+                        int currentSeqNr = reliability.get(msg.getIpAddress());
                         if ( seqNR == currentSeqNr+ 1) {
                             reliability.put(msg.getIpAddress(),msg.getSequenceNr());
                             mh.switchMsg(msg);
