@@ -36,7 +36,7 @@ public class BullyAlgo{
             bullyThem();
         }else{
             Multicast mult = new Multicast();
-            DataUnit data = new DataUnit(Config.ipAddress, MessageType.IAMHIGHER, tree);
+            DataUnit data = new DataUnit(Config.ipAddress, MessageType.IAMHIGHER, tree,Config.SentMsg);
             mult.SendMulticast(incomingId,data);
         }
     }
@@ -60,7 +60,7 @@ public class BullyAlgo{
     public void bullyThem() {
         ArrayList<InetAddress> higherIps = tree.getHigherIps(Config.ipAddress);
         Multicast mult = new Multicast();
-        DataUnit data = new DataUnit(Config.ipAddress, MessageType.WANNABELEADER, tree);
+        DataUnit data = new DataUnit(Config.ipAddress, MessageType.WANNABELEADER, tree,Config.SentMsg);
         mult.SendMulticast(higherIps,data);
         System.out.println("bully other clients"+higherIps.toString());
         WaitTimer wt = new WaitTimer(10, this);
@@ -69,7 +69,7 @@ public class BullyAlgo{
 
     public void BroadcastWin(){
         // TODO broadcast winning the election
-        DataUnit data = new DataUnit(Config.ipAddress,MessageType.IAMLEADER, tree);
+        DataUnit data = new DataUnit(Config.ipAddress,MessageType.IAMLEADER, tree,Config.SentMsg);
         Broadcast br = new Broadcast(data);
         br.run();
     }

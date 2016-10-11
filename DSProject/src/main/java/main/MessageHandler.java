@@ -31,6 +31,7 @@ public class MessageHandler {
         this.tree = tree;
         this.bAlgo = bAlgo;
         this.node = node;
+        multicast = new Multicast();
     }
 
     public void switchMsg(DataUnit data) {
@@ -38,6 +39,7 @@ public class MessageHandler {
         MessageType type = data.getMsgType();
 
         System.out.println(data.toString());
+        tree.getReliability().put(data.getIpAddress(),data.getSequenceNr());
         switch (type) {
 
             case HEARTBEAT:
@@ -54,8 +56,8 @@ public class MessageHandler {
                 break;
             case DISCOVER:
                 //System.out.println("Recieved ")
-                multicast = new Multicast();
-                DataUnit msg = new DataUnit(Config.ipAddress, MessageType.DISCOVERRESPONSE, this.tree);
+
+                DataUnit msg = new DataUnit(Config.ipAddress, MessageType.DISCOVERRESPONSE, this.tree,Config.SentMsg);
                 ArrayList<InetAddress> target = new ArrayList<InetAddress>();
                 target.add(data.getIpAddress());
                 multicast.SendMulticast(target, msg);
@@ -66,10 +68,15 @@ public class MessageHandler {
                 ChatDataUnit aa = (ChatDataUnit)data;
                 System.out.println(aa.getMsg());
                 node.messageLog.add(aa);
+                break;
+            case ACK:
+                break;
+            case NEGATIVEACK:
+                System.out.println(data.toString());
             case DISCOVERRESPONSE:
                 InetAddress ipAdr = data.getIpAddress();  
                 this.tree.addHost(ipAdr, 0);
-                
+
                 //HashMap<InetAddress,Integer> aa = Tree.getHmap();
                 //int o =0;
 //               TODO this should be removed? i really do not understand this code.
@@ -81,6 +88,12 @@ public class MessageHandler {
             default:
                 break;
 
+        }
+        if(type!=MessageType.ACK){
+            DataUnit msg = new DataUnit(Config.ipAddress, MessageType.ACK, this.tree,Config.SentMsg);
+            ArrayList<InetAddress> target = new ArrayList<InetAddress>();
+            target.add(data.getIpAddress());
+            multicast.SendMulticast(target, msg);
         }
     }
 

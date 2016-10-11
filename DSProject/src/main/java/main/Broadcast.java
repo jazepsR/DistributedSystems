@@ -34,8 +34,8 @@ public class Broadcast extends Send{
             socket = new DatagramSocket();
                 
             // TODO move this line in a field and the ip address in the config
-            InetAddress host = InetAddress.getByName("192.168.1.255");
-
+            InetAddress host = InetAddress.getByName("192.168.43.255");
+            //InetAddress host = InetAddress.getByName("192.168.173.107");
            // while (true) {
 
                 //increase counter for the package you want to send
@@ -48,6 +48,7 @@ public class Broadcast extends Send{
                 //send the packet
                 
                 socket.send(udpPacket);
+            Config.SentMsg++;
 
             //}
 

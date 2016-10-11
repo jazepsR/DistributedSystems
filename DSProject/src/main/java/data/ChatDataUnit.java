@@ -5,6 +5,7 @@
  */
 package data;
 
+import main.Config;
 import main.Tree;
 
 /**
@@ -17,7 +18,7 @@ public class ChatDataUnit extends DataUnit{
 
     
     public ChatDataUnit(String ip, MessageType msgType, Tree tree, String msg){
-        super(ip, msgType, tree);
+        super(ip, msgType, tree, Config.SentMsg);
         this.msg = msg;
     }
     

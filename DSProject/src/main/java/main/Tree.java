@@ -19,6 +19,7 @@ public class Tree implements Serializable, Comparable<Tree>{
     
     private InetAddress ipLeader;
     private HashMap<InetAddress, Integer> hmap = new HashMap<InetAddress, Integer>();
+    private HashMap<InetAddress, Integer> Reliability = new HashMap<InetAddress, Integer>();
 
     /**
      * @return the IPLeader
@@ -37,8 +38,11 @@ public class Tree implements Serializable, Comparable<Tree>{
     /**
      * @return the hmap
      */
-    public HashMap<InetAddress, Integer> getHmap() {
-        return hmap;
+    public HashMap<InetAddress, Integer> getReliability() {
+        return Reliability;
+    }
+    public HashMap<InetAddress, Integer> getHmap(){
+        return Reliability;
     }
     
     /**
@@ -47,6 +51,7 @@ public class Tree implements Serializable, Comparable<Tree>{
      */
     public void addHost(InetAddress ip, int counter) {
         hmap.put(ip,counter);
+        Reliability.put(ip,0);
     }
     
     public void addHost(String ip, int counter){
@@ -101,7 +106,8 @@ public class Tree implements Serializable, Comparable<Tree>{
     }
 
     public int compareTo(Tree tree) {
-         return getVectorClock().compareTo(tree.getVectorClock());
+        return  0;
+         //return getVectorClock().compareTo(tree.getVectorClock());
     }
     
     @Override

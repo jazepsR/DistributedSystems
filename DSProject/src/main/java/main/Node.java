@@ -50,7 +50,7 @@ public class Node extends Thread {
         new Thread(new InputHandler(this.tree)).start();
         System.out.println("in thread");
         if (send == 1) {
-            Broadcast b = new Broadcast(new DataUnit(this.ipAddress, MessageType.DISCOVER, this.tree));
+            Broadcast b = new Broadcast(new DataUnit(this.ipAddress, MessageType.DISCOVER, this.tree,Config.SentMsg));
             b.run();
             WaitTimer timer = new WaitTimer(5, bullyAlgo);
             timer.run();
