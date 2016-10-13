@@ -2,6 +2,7 @@ package main;
 
 import data.ChatDataUnit;
 import data.DataUnit;
+import data.MessageLogger;
 import data.MessageType;
 
 import java.io.BufferedReader;
@@ -27,9 +28,17 @@ public class InputHandler implements Runnable {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            //Placeholder code
+
+            ChatDataUnit chatMessage2 = new ChatDataUnit(Config.ipAddress, MessageType.CHATMESSAGE, tree, "TESTING BUFFER");
+            MessageLogger.MessageLog.put(Config.SentMsg,chatMessage2);
+            Config.SentMsg++;
+
             ChatDataUnit chatMessage = new ChatDataUnit(Config.ipAddress, MessageType.CHATMESSAGE, tree, text);
             multicast.SendMulticast(tree.getHigherIps("0.0.0.0"), chatMessage);
+            MessageLogger.MessageLog.put(Config.SentMsg-1,chatMessage);
+            //For testing
+            int o = 0;
+
         }
     }
 }
