@@ -9,6 +9,7 @@ import algorithms.BullyAlgo;
 import com.company.ChatMessage;
 import data.ChatDataUnit;
 import data.DataUnit;
+import data.MessageLogger;
 import data.MessageType;
 
 import java.net.InetAddress;
@@ -37,9 +38,9 @@ public class MessageHandler {
     public void switchMsg(DataUnit data) {
 
         MessageType type = data.getMsgType();
-
+        //Config.SentMsg++;
         System.out.println(data.toString());
-        tree.getReliability().put(data.getIpAddress(),data.getSequenceNr());
+        //tree.getReliability().put(data.getIpAddress(),data.getSequenceNr());
         switch (type) {
 
             case HEARTBEAT:
@@ -55,29 +56,33 @@ public class MessageHandler {
                  System.out.println("no leader");
                 break;
             case DISCOVER:
-                //System.out.println("Recieved ")
-
                 DataUnit msg = new DataUnit(Config.ipAddress, MessageType.DISCOVERRESPONSE, this.tree,Config.SentMsg);
                 ArrayList<InetAddress> target = new ArrayList<InetAddress>();
                 target.add(data.getIpAddress());
                 multicast.SendMulticast(target, msg);
                 InetAddress ipAdrr = data.getIpAddress();
+                this.tree.addHost(ipAdrr, data.getSequenceNr());
                 this.tree.addHost(ipAdrr, 0);
                 break;
             case CHATMESSAGE:
-                ChatDataUnit aa = (ChatDataUnit)data;
-                System.out.println(aa.getMsg());
-                node.messageLog.add(aa);
+                ChatDataUnit ChatMsg = (ChatDataUnit)data;
+                System.out.println(ChatMsg.toString()+" Message:" + ChatMsg.getMsg());
+                node.messageLog.add(ChatMsg);
                 break;
             case ACK:
                 break;
             case NEGATIVEACK:
-                System.out.println(data.toString());
+                System.out.println("NEGATIVE ACK!!!");
+                ArrayList<InetAddress> targetAdr = new ArrayList<InetAddress>();
+                targetAdr.add(data.getIpAddress());
+                ChatDataUnit recievedData = (ChatDataUnit)data;
+                DataUnit message = MessageLogger.MessageLog.get(Integer.parseInt(recievedData.getMsg()));
+                multicast.SendMulticast(targetAdr,message );
+                Config.SentMsg--;
                 break;
             case DISCOVERRESPONSE:
                 InetAddress ipAdr = data.getIpAddress();  
-                this.tree.addHost(ipAdr, 0);
-
+                this.tree.addHost(ipAdr, data.getSequenceNr());
                 //HashMap<InetAddress,Integer> aa = Tree.getHmap();
                 //int o =0;
 //               TODO this should be removed? i really do not understand this code.
@@ -90,7 +95,7 @@ public class MessageHandler {
                 break;
 
         }
-        if(type!=MessageType.ACK){
+        if(type==MessageType.CHATMESSAGE){
             DataUnit msg = new DataUnit(Config.ipAddress, MessageType.ACK, this.tree,Config.SentMsg);
             ArrayList<InetAddress> target = new ArrayList<InetAddress>();
             target.add(data.getIpAddress());

@@ -26,10 +26,10 @@ public class ChatDataUnit extends DataUnit{
         return this.msg;
     }
     
-    @Override
+    /*@Override
     public String toString(){
         System.out.println();
         return this.msg + "---" + super.tree.toString();
-    }
+    }*/
     
 }

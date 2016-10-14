@@ -6,16 +6,10 @@
 package main;
 
 import algorithms.BullyAlgo;
-import data.ChatDataUnit;
-import data.DataTranslator;
-import data.DataUnit;
-import data.MessageType;
+import data.*;
 
 import java.io.IOException;
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
+import java.net.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.logging.Level;
@@ -65,40 +59,52 @@ public class Listen implements Runnable{
                 //receive data
                 sock.receive(incoming);
                 data = incoming.getData();
-                
+
                 //turn bytes back to java object
-                msg =  DataTranslator.bytesToObject(data);
-System.out.println("aaaaaaaaaaaaaaaaaa");
+                msg = DataTranslator.bytesToObject(data);
+                //System.out.println(msg.toString());
+                try {
 
-                    //Relibalilty check
-                    if(!reliability.containsKey(msg.getIpAddress()) ){
-                        mh.switchMsg(msg);
-                        
-System.out.println("e");
-                    }else {
-                        if(msg.getIpAddress().toString() != "/"+Config.ipAddress) {
-                            
-                        }else{
 
-                            int seqNR = msg.getSequenceNr();
-                            System.out.println("S: "+seqNR);
-                            int currentSeqNr = reliability.get(msg.getIpAddress());
-                            if ( seqNR == currentSeqNr+ 1) {
-                                reliability.put(msg.getIpAddress(),msg.getSequenceNr());
-                                mh.switchMsg(msg);
 
-                            } else {
-                                
-                                    System.out.println(msg.toString());
-                                for(int i = currentSeqNr;i<seqNR;i++) {
-                                    ChatDataUnit msg = new ChatDataUnit(Config.ipAddress, MessageType.NEGATIVEACK, this.tree, Integer.toString(i));
-                                    ArrayList<InetAddress> target = new ArrayList<InetAddress>();
-                                    target.add(msg.getIpAddress());
-                                    multicast.SendMulticast(target, msg);
-                                }
+                //Relibalilty check
+                if (msg.getMsgType() != MessageType.CHATMESSAGE)
+                {mh.switchMsg(msg);}
+
+                    int seqNR = msg.getSequenceNr();
+                    int currentSeqNr = reliability.get(msg.getIpAddress());
+                    System.out.println("RECIEVED:" + seqNR + " CURRENT:" + currentSeqNr);
+                if(msg.getMsgType() == MessageType.CHATMESSAGE){
+                        if (seqNR == currentSeqNr + 1)
+                        {
+                            reliability.put(msg.getIpAddress(), msg.getSequenceNr());
+                            mh.switchMsg(msg);
+                            System.out.println("GOOD CHAT MSG");
+                            int BufferKey = seqNR+1;
+                            while(MessageLogger.Buffer.containsKey(BufferKey)){
+                                mh.switchMsg(MessageLogger.Buffer.get(BufferKey));
+                                MessageLogger.Buffer.remove(BufferKey);
+                                reliability.put(msg.getIpAddress(), msg.getSequenceNr());
+                                BufferKey++;
                             }
+                        } else
+                            {
+                            ArrayList<InetAddress> target = new ArrayList<InetAddress>();
+                            target.add(msg.getIpAddress());
+                                MessageLogger.Buffer.put(seqNR,msg);
+                            for (int i = currentSeqNr; i < seqNR; i++) {
+                                ChatDataUnit msg = new ChatDataUnit(Config.ipAddress, MessageType.NEGATIVEACK, this.tree, Integer.toString(i));
+                                multicast.SendMulticast(target, msg);
+                            }
+
                         }
-                    }
+                    }else
+                        {
+
+                }
+                }catch (Exception e){}
+
+            }
 
 
 
@@ -106,10 +112,12 @@ System.out.println("e");
                 //echo(msg);
                 
 
-            }
-        } catch (IOException e) {
-            System.err.println("IOException " + e);
+            } catch (SocketException e1) {
+            e1.printStackTrace();
+        } catch (IOException e1) {
+            e1.printStackTrace();
         }
+
     }
 
     public static void echo(String msg) {

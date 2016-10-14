@@ -48,7 +48,7 @@ public class DataUnit implements Serializable{
     @Override
     public String toString(){
         // TODO make it better
-        System.out.println(ipAddress +" Type:"+ msgType.toString() );
+        System.out.println(ipAddress +" Type:"+ msgType.toString() +" Counter: " + Integer.toString(sequenceNr));
         return getClass().getSimpleName();
     }
 

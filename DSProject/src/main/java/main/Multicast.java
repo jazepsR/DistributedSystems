@@ -12,6 +12,8 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.util.ArrayList;
+
+import data.MessageType;
 import utils.Parser;
 
 /**
@@ -46,11 +48,11 @@ public class Multicast extends Send {
                 : ipList) {
             SendMulticast(ip, message);
         }
-        Config.SentMsg++;
+        if(message.getMsgType() == MessageType.CHATMESSAGE){Config.SentMsg++;}
     }
     
     public void SendMulticast(String ipAddress, DataUnit message){
         SendMulticast(Parser.strToInet(ipAddress), message);
-        Config.SentMsg++;
+        if(message.getMsgType() == MessageType.CHATMESSAGE){Config.SentMsg++;}
     }
 }
