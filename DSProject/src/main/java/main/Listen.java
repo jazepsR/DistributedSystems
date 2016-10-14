@@ -68,25 +68,29 @@ public class Listen implements Runnable{
                 
                 //turn bytes back to java object
                 msg =  DataTranslator.bytesToObject(data);
-
+System.out.println("aaaaaaaaaaaaaaaaaa");
 
                     //Relibalilty check
                     if(!reliability.containsKey(msg.getIpAddress()) ){
                         mh.switchMsg(msg);
+                        
+System.out.println("e");
                     }else {
                         if(msg.getIpAddress().toString() != "/"+Config.ipAddress) {
                             
                         }else{
 
                             int seqNR = msg.getSequenceNr();
+                            System.out.println("S: "+seqNR);
                             int currentSeqNr = reliability.get(msg.getIpAddress());
                             if ( seqNR == currentSeqNr+ 1) {
                                 reliability.put(msg.getIpAddress(),msg.getSequenceNr());
                                 mh.switchMsg(msg);
 
                             } else {
+                                
+                                    System.out.println(msg.toString());
                                 for(int i = currentSeqNr;i<seqNR;i++) {
-                                    //System.out.println(msg.toString());
                                     ChatDataUnit msg = new ChatDataUnit(Config.ipAddress, MessageType.NEGATIVEACK, this.tree, Integer.toString(i));
                                     ArrayList<InetAddress> target = new ArrayList<InetAddress>();
                                     target.add(msg.getIpAddress());

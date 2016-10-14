@@ -72,7 +72,7 @@ public class MessageHandler {
             case ACK:
                 break;
             case NEGATIVEACK:
-                //System.out.println(data.toString());
+                System.out.println(data.toString());
                 break;
             case DISCOVERRESPONSE:
                 InetAddress ipAdr = data.getIpAddress();  
