@@ -41,7 +41,7 @@ public class Multicast extends Send {
         } catch (IOException e) {
             System.err.println("IOException " + e);
         }
-        if(message.getMsgType() == MessageType.CHATMESSAGE){Config.msgCounter++;}
+
     }
 
     public void SendMulticast(ArrayList<InetAddress> ipList, DataUnit message) {

@@ -5,6 +5,7 @@
  */
 package data;
 
+import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
@@ -28,9 +29,9 @@ public class Buffer {
         listOfChatMsgs.add(msg);
     }
     
-    public boolean contains(int i){
+    public boolean contains(int i, InetAddress ip){
         for(ChatDataUnit data : listOfChatMsgs){
-            if(data.getSequenceNumber() == i)
+            if(data.getSequenceNumber() == i && data.getIpAddress().equals(ip))
                 return true;
         }
         return false;
