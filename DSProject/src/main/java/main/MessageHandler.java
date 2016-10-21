@@ -23,15 +23,13 @@ public class MessageHandler {
 
     private static Multicast multicast;
     private static Broadcast broadcast;
-    private final Tree tree;
     private final BullyAlgo bAlgo;
     private DataUnit replyMsg;
     private final VectorChat vChat;
     private final VectorClock vClock;
     private final Buffer buff;
 
-    MessageHandler(Tree tree, BullyAlgo bAlgo, VectorClock vClock, VectorChat vChat, Buffer buff) {
-        this.tree = tree;
+    MessageHandler(BullyAlgo bAlgo, VectorClock vClock, VectorChat vChat, Buffer buff) {
         this.bAlgo = bAlgo;
         this.vClock = vClock;
         this.vChat = vChat;
@@ -53,20 +51,20 @@ public class MessageHandler {
                 vClock.setIPLeader(data.getIpAddress());
                 break;
             case WANNABELEADER:
-                bAlgo.run(data.getIpAddress(), Config.ipAddress, tree);
+                bAlgo.run(data.getIpAddress(), Config.ipAddress, vClock);
                 break;
             case IAMHIGHER:
                 bAlgo.LostElection = true;
                 System.out.println("no leader");
                 break;
             case DISCOVER:
-                replyMsg = new DataUnit(Config.ipAddress, MessageType.DISCOVERRESPONSE, this.tree);
+                replyMsg = new DataUnit(Config.ipAddress, MessageType.DISCOVERRESPONSE, vClock);
                 multicast.SendMulticast(data.getIpAddress(), replyMsg);
                 //this.tree.addHost(data.getIpAddress(), data.getSequenceNr());
                 break;
             case CHATMESSAGE:
-                ChatDataUnit chatMsg = (ChatDataUnit)data;
-                System.out.println(chatMsg.toString()+" Message:" + chatMsg.getMsg());
+                ChatDataUnit chatMsg = (ChatDataUnit) data;
+                System.out.println(chatMsg.toString() + " Message:" + chatMsg.getMsg());
                 int seqNumber = chatMsg.getSequenceNumber();
                 int currentSeqNumber = vChat.getCounter(chatMsg.getIpAddress());
                 System.out.println("RECIEVED:" + seqNumber + " CURRENT:" + currentSeqNumber);
@@ -74,34 +72,34 @@ public class MessageHandler {
                     vChat.addHost(chatMsg.getIpAddress(), chatMsg.getSequenceNumber());
                     System.out.println("GOOD CHAT MSG");
                     int BufferKey = seqNumber + 1;
-                    while(buff.contains(BufferKey)){
+                    while (buff.contains(BufferKey)) {
                         this.switchMsg(buff.get(BufferKey));
                         buff.remove(BufferKey);
                         vChat.addHost(chatMsg.getIpAddress(), chatMsg.getSequenceNumber());
                         BufferKey++;
                     }
-                }
-                else{
+                    replyMsg = new DataUnit(Config.ipAddress, MessageType.ACK, vClock);
+                    multicast.SendMulticast(data.getIpAddress(), replyMsg);
+                } else {
                     buff.addMsg(chatMsg);
-                    for (int i = currentSeqNumber; i < seqNumber; i++){
-                        multicast.SendMulticast(Config.ipAddress, new ChatDataUnit(Config.ipAddress, MessageType.NEGATIVEACK, tree, Integer.toString(i)));
+                    for (int i = currentSeqNumber; i < seqNumber; i++) {
+                        multicast.SendMulticast(Config.ipAddress, new ChatDataUnit(Config.ipAddress, MessageType.NEGATIVEACK, vClock, Integer.toString(i)));
+                    }
                 }
-                }
-                node.messageLog.add(chatMsg);
-                replyMsg = new DataUnit(Config.ipAddress, MessageType.ACK, this.tree);
-                multicast.SendMulticast(data.getIpAddress(), replyMsg);
+                //buff.messageLog.add(chatMsg);
+
                 break;
             case ACK:
                 break;
             case NEGATIVEACK:
                 System.out.println("NEGATIVE ACK!!!");
-                ChatDataUnit recievedData = (ChatDataUnit)data;
+                ChatDataUnit recievedData = (ChatDataUnit) data;
                 DataUnit message = MessageLogger.MessageLog.get(Integer.parseInt(recievedData.getMsg()));
                 multicast.SendMulticast(data.getIpAddress(), message);
                 Config.msgCounter--;
                 break;
             case DISCOVERRESPONSE:
-                this.tree.addHost(data.getIpAddress(), this.tree.getCounter(data.getIpAddress()) + 1);
+                vClock.addHost(data.getIpAddress(), vClock.getCounter(data.getIpAddress()) + 1);
                 //HashMap<InetAddress,Integer> aa = Tree.getHmap();
                 //int o =0;
 //               TODO this should be removed? i really do not understand this code.

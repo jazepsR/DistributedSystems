@@ -27,21 +27,17 @@ public class Listen implements Runnable {
     private DatagramPacket incoming;
     private DataUnit msg;
     private final MessageHandler mh;
-    private final Tree tree;
-    private final HashMap<InetAddress, Integer> reliability;
     private final Multicast multicast;
     private final VectorChat vChat;
     private final VectorClock vClock;
 
-    public Listen(Tree tree, BullyAlgo bAlgo, VectorClock vClock, VectorChat vChat) {
+    public Listen(BullyAlgo bAlgo, VectorClock vClock, VectorChat vChat, Node node, Buffer buff) {
         multicast = new Multicast();
         this.port = Config.port;
         this.packetSize = Config.packetSize;
-        this.tree = tree;
         this.vClock = vClock;
         this.vChat = vChat;
-        this.mh = new MessageHandler(tree, bAlgo, vClock, vChat);
-        reliability = tree.getHmap();
+        this.mh = new MessageHandler(bAlgo, vClock, vChat, buff);
     }
 
     public void run() {

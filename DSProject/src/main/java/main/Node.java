@@ -7,6 +7,7 @@ package main;
 
 import data.Tree;
 import algorithms.BullyAlgo;
+import data.Buffer;
 import data.ChatDataUnit;
 import data.DataUnit;
 import data.MessageType;
@@ -35,6 +36,7 @@ public class Node extends Thread {
     private int send;
     private final VectorClock vectorClock;
     private final VectorChat vectorChat;
+    private Buffer buffer;
    
 
     public Node( int port, int send) {
@@ -47,11 +49,13 @@ public class Node extends Thread {
         this.bullyAlgo = new BullyAlgo(this.vectorClock);
         this.port = port;
         this.send = send;
+        this.buffer = new Buffer();
+        
     }
 
     @Override
     public void run(){
-        new Thread(new Listen(this.vectorClock, bullyAlgo,this)).start();
+        new Thread(new Listen(bullyAlgo, vectorClock, vectorChat, this, buffer)).start();
         new Thread(new InputHandler(this.vectorChat)).start();
         // TODO add bully in a loop 
         // TODO remove the tree from the DataUnit

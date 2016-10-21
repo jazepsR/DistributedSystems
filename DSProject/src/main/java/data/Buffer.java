@@ -53,8 +53,6 @@ public class Buffer {
         }
     }
     
-    
-    
     public void addMsgs(ArrayList<ChatDataUnit> lst){
         for(ChatDataUnit data : lst){
             addMsg(data);
