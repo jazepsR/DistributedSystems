@@ -7,26 +7,53 @@ package data;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import main.Tree;
+import java.util.Iterator;
+import java.util.ListIterator;
 
 /**
  *
  * @author Euaggelos
  */
 public class Buffer {
+    
+    // THIS IS ONLY FOR VECTOR CLOCK SORTING
 
-    private List list;
+    private final ArrayList<ChatDataUnit> listOfChatMsgs;
 
     public Buffer() {
-        list = new ArrayList();
+        listOfChatMsgs = new ArrayList();
     }
 
     public void addMsg(ChatDataUnit msg) {
-        list.add(msg);
-
+        listOfChatMsgs.add(msg);
     }
+    
+    public boolean contains(int i){
+        for(ChatDataUnit data : listOfChatMsgs){
+            if(data.getSequenceNumber() == i)
+                return true;
+        }
+        return false;
+    }
+    
+    public ChatDataUnit get(int i){
+        for(ChatDataUnit data : listOfChatMsgs){
+            if(data.getSequenceNumber() == i)
+                return data;
+        }
+        return null;
+    }
+    
+    public void remove(int i){
+        ListIterator<ChatDataUnit> iter = listOfChatMsgs.listIterator();
+        while(iter.hasNext()){
+            if(iter.next().getSequenceNumber() == i){
+                iter.remove();
+            }
+        }
+    }
+    
+    
     
     public void addMsgs(ArrayList<ChatDataUnit> lst){
         for(ChatDataUnit data : lst){
@@ -34,25 +61,11 @@ public class Buffer {
         }
     }
     
-    public List getMsgs(){
-        return this.list;
+    public ArrayList<ChatDataUnit> getMsgs(){
+        return this.listOfChatMsgs;
     }
-
-    public void cmpr() {
-        Collections.sort(list, new Comparator<ChatDataUnit>() {
-
-            public int compare(ChatDataUnit o1, ChatDataUnit o2) {
-                Tree tree1 = o1.getTree();
-                Tree tree2 = o2.getTree();
-
-                int v = tree1.compareTo(tree2);
-
-                return v;
-
-            }
-
-        }
-        );
+    
+    public void sortBuffer(){
+        Collections.sort(listOfChatMsgs, ChatDataUnit.Comparators.cmp);
     }
-
 }

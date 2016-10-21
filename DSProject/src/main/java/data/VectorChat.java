@@ -7,10 +7,14 @@ package data;
 
 /**
  *
- * @author Angelo
+ * @author Euaggelos
  */
-public enum MessageType {
+public class VectorChat extends Tree{
     
-    HEARTBEAT, IAMLEADER, WANNABELEADER, DISCOVER, IAMHIGHER, DISCOVERRESPONSE, CHATMESSAGE, ACK, NEGATIVEACK
+    
+    
+    public VectorChat(){
+        super();
+    }
     
 }

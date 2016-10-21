@@ -5,6 +5,7 @@
  */
 package main;
 
+import data.Tree;
 import data.DataUnit;
 import data.MessageType;
 import java.net.DatagramPacket;
@@ -38,7 +39,7 @@ public abstract class Send {
     
     // TODO this has to be moved away from here once debugging has finished
     protected DataUnit broadcastMessage(Tree tree) {
-        return new DataUnit("sampleAddressFROM CLIENT",  MessageType.DISCOVER, tree,Config.SentMsg);
+        return new DataUnit("sampleAddressFROM CLIENT",  MessageType.DISCOVER, tree);
     }
     
     protected void increaseCounter(){

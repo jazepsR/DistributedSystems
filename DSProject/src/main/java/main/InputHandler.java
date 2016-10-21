@@ -1,9 +1,11 @@
 package main;
 
+import data.Tree;
 import data.ChatDataUnit;
 import data.DataUnit;
 import data.MessageLogger;
 import data.MessageType;
+import data.VectorChat;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -13,13 +15,16 @@ import java.io.InputStreamReader;
  * Created by User on 07.10.2016.
  */
 public class InputHandler implements Runnable {
+
     String text;
-    Tree tree;
+    Tree vector;
     Multicast multicast;
-    InputHandler(Tree tree){
-        this.tree = tree;
+
+    InputHandler(VectorChat vector) {
+        this.vector = vector;
         multicast = new Multicast();
     }
+
     public void run() {
         while (true) {
             BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
@@ -29,13 +34,13 @@ public class InputHandler implements Runnable {
                 e.printStackTrace();
             }
 
-            ChatDataUnit chatMessage2 = new ChatDataUnit(Config.ipAddress, MessageType.CHATMESSAGE, tree, "TESTING BUFFER");
-            MessageLogger.MessageLog.put(Config.SentMsg,chatMessage2);
-            Config.SentMsg++;
+            ChatDataUnit chatMessage2 = new ChatDataUnit(Config.ipAddress, MessageType.CHATMESSAGE, vector, "TESTING BUFFER");
+            MessageLogger.MessageLog.put(Config.msgCounter, chatMessage2);
+            Config.msgCounter++;
 
-            ChatDataUnit chatMessage = new ChatDataUnit(Config.ipAddress, MessageType.CHATMESSAGE, tree, text);
-            multicast.SendMulticast(tree.getHigherIps("0.0.0.0"), chatMessage);
-            MessageLogger.MessageLog.put(Config.SentMsg-1,chatMessage);
+            ChatDataUnit chatMessage = new ChatDataUnit(Config.ipAddress, MessageType.CHATMESSAGE, vector, text);
+            multicast.SendMulticast(vector.getAllIps(), chatMessage);
+            MessageLogger.MessageLog.put(Config.msgCounter - 1, chatMessage);
             //For testing
             int o = 0;
 

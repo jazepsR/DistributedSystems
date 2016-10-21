@@ -3,11 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package main;
+package data;
 
 import java.io.Serializable;
 import java.net.InetAddress;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashMap;
 import utils.Parser;
 
 /**
@@ -15,30 +17,14 @@ import utils.Parser;
  * @author roberto
  */
 
-public class Tree implements Serializable, Comparable<Tree>{
+public abstract class Tree implements Serializable, Comparable<Tree>{
     
-    private InetAddress ipLeader;
-    private HashMap<InetAddress, Integer> hmap = new HashMap<InetAddress, Integer>();
-     private HashMap<InetAddress, Integer> reliability = new HashMap<InetAddress, Integer>();
-
-    /**
-     * @return the IPLeader
-     */
-    public InetAddress getIPLeader() {
-        return ipLeader;
+    private final HashMap<InetAddress, Integer> vectorHmap;
+    
+    public Tree(){
+        vectorHmap = new HashMap<InetAddress, Integer>(); 
     }
 
-    /**
-     * @param ip
-     */
-    public void setIPLeader(InetAddress ip) {
-        ipLeader = ip;
-    }
-    
-    public void setIPLeader(String ip){
-        setIPLeader(Parser.strToInet(ip));
-    }
-    
     public void increaseCounter(InetAddress ip){
         changeCounter(ip, getCounter(ip) + 1);
     }
@@ -52,7 +38,7 @@ public class Tree implements Serializable, Comparable<Tree>{
      * @return reliability
      */
     public HashMap<InetAddress, Integer> getHmap(){
-        return reliability;
+        return vectorHmap;
     }
     
     /**
@@ -60,8 +46,10 @@ public class Tree implements Serializable, Comparable<Tree>{
      * @param counter
      */
     public void addHost(InetAddress ip, int counter) {
-        hmap.put(ip,counter);
-        reliability.put(ip,0);
+        if(vectorHmap.get(ip) == null)
+            vectorHmap.put(ip, 0);
+        else
+            vectorHmap.put(ip,counter);
     }
     
     public void addHost(String ip, int counter){
@@ -72,7 +60,7 @@ public class Tree implements Serializable, Comparable<Tree>{
      * @param ip to delete host
      */
     public void deleteHost(InetAddress ip) {
-        hmap.remove(ip);
+        vectorHmap.remove(ip);
     }
     
     /**
@@ -80,7 +68,7 @@ public class Tree implements Serializable, Comparable<Tree>{
      * @param newCounter
      */
     public void changeCounter(InetAddress ip, int newCounter) {
-        hmap.put(ip, newCounter);
+        vectorHmap.put(ip, newCounter);
     }
     
     public void changeCounter(String ip, int newCounter){
@@ -92,26 +80,26 @@ public class Tree implements Serializable, Comparable<Tree>{
      * @return Counter
      */
     public int getCounter(InetAddress ip) {
-        return hmap.get(ip);
+        return vectorHmap.get(ip);
     }
     
     public int getCounter(String ip){
         return getCounter(Parser.strToInet(ip));
     }
 
-    public ArrayList<Integer> getVectorClock(){
-        ArrayList<Integer> VClock = new ArrayList<Integer>();
-        for (Integer value : hmap.values()) {
-            VClock.add(value);
+    public ArrayList<Integer> getVector(){
+        ArrayList<Integer> vector = new ArrayList<Integer>();
+        for (Integer value : vectorHmap.values()) {
+            vector.add(value);
         }
-        return VClock;
+        return vector;
     }
     
     public ArrayList<InetAddress> getHigherIps(String ip){
         ArrayList<InetAddress> higherIps = new ArrayList<InetAddress>();
         Long hostIp = Parser.parseIp(ip);
         Long tmpIp;
-        for (InetAddress s : hmap.keySet()){
+        for (InetAddress s : vectorHmap.keySet()){
             tmpIp = Parser.parseIp(s);
             if (tmpIp > hostIp)
                 higherIps.add(s);
@@ -119,13 +107,19 @@ public class Tree implements Serializable, Comparable<Tree>{
         return higherIps;
     }
     
+
+    
     public ArrayList<InetAddress> getHigherIps(InetAddress ip){
         return getHigherIps(Parser.inetToStr(ip));
     }
+    
+    public ArrayList<InetAddress> getAllIps(){
+        return (ArrayList<InetAddress>) vectorHmap.keySet();
+    }
 
     public int compareTo(Tree tree) {
-        ArrayList<Integer> v1 = this.getVectorClock();
-        ArrayList<Integer> v2 = tree.getVectorClock();
+        ArrayList<Integer> v1 = this.getVector();
+        ArrayList<Integer> v2 = tree.getVector();
         boolean smallerFound = false, biggerFound = false;
         
         for(int i = 0; i < v1.size(); i++){
@@ -146,7 +140,7 @@ public class Tree implements Serializable, Comparable<Tree>{
     
     @Override
     public String toString(){
-        return getVectorClock().toString();
+        return getVector().toString();
     }
     
     public static class Comparators{

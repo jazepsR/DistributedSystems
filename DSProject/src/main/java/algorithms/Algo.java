@@ -11,7 +11,7 @@ package algorithms;
  */
 public abstract class Algo {
     
-    private int id;
+    private final int id;
     
     public Algo(int id){
         this.id = id;

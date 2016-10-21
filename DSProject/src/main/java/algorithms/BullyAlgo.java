@@ -5,6 +5,7 @@
  */
 package algorithms;
 
+import data.Tree;
 import java.net.InetAddress;
 import java.util.ArrayList;
 import data.DataUnit;
@@ -25,7 +26,7 @@ public class BullyAlgo{
      * the next step or does nothing. 
      */
     public boolean LostElection = false;
-    private Tree tree;
+    private final Tree tree;
     
     public BullyAlgo(Tree tree){
         this.tree = tree;
@@ -36,7 +37,7 @@ public class BullyAlgo{
             bullyThem();
         }else{
             Multicast mult = new Multicast();
-            DataUnit data = new DataUnit(Config.ipAddress, MessageType.IAMHIGHER, tree,Config.SentMsg);
+            DataUnit data = new DataUnit(Config.ipAddress, MessageType.IAMHIGHER, tree);
             mult.SendMulticast(incomingId,data);
         }
     }
@@ -60,7 +61,7 @@ public class BullyAlgo{
     public void bullyThem() {
         ArrayList<InetAddress> higherIps = tree.getHigherIps(Config.ipAddress);
         Multicast mult = new Multicast();
-        DataUnit data = new DataUnit(Config.ipAddress, MessageType.WANNABELEADER, tree,Config.SentMsg);
+        DataUnit data = new DataUnit(Config.ipAddress, MessageType.WANNABELEADER, tree);
         mult.SendMulticast(higherIps,data);
         System.out.println("bully other clients"+higherIps.toString());
         WaitTimer wt = new WaitTimer(10, this);
@@ -68,8 +69,7 @@ public class BullyAlgo{
     }
 
     public void BroadcastWin(){
-        // TODO broadcast winning the election
-        DataUnit data = new DataUnit(Config.ipAddress,MessageType.IAMLEADER, tree,Config.SentMsg);
+        DataUnit data = new DataUnit(Config.ipAddress,MessageType.IAMLEADER, tree);
         Broadcast br = new Broadcast(data);
         br.run();
     }

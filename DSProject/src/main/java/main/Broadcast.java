@@ -26,32 +26,26 @@ public class Broadcast extends Send{
         dataObject = data;
     }
 
-
     public void run() {
         socket = null;
 
         try {
             socket = new DatagramSocket();
                 
-            // TODO move this line in a field and the ip address in the config
             String BroadcastAddr =  Config.ipAddress.substring(0,Config.ipAddress.lastIndexOf('.'))+".255";
             InetAddress host = InetAddress.getByName(BroadcastAddr);
-            //InetAddress host = InetAddress.getByName("192.168.173.107");
-           // while (true) {
 
-                //increase counter for the package you want to send
-                increaseCounter();
-                //translate java object to bytes
-                dataBytes = DataTranslator.objectToBytes(dataObject);
 
-                //create the UDP packet
-                udpPacket = new DatagramPacket(dataBytes, dataBytes.length,host, port);
-                //send the packet
-                
-                socket.send(udpPacket);
-            //Config.SentMsg++;
+            //increase counter for the package you want to send
+            increaseCounter();
+            //translate java object to bytes
+            dataBytes = DataTranslator.objectToBytes(dataObject);
 
-            //}
+            //create the UDP packet
+            udpPacket = new DatagramPacket(dataBytes, dataBytes.length,host, port);
+            //send the packet
+
+            socket.send(udpPacket);
 
         } catch (IOException e) {
             System.err.println("IOException " + e);

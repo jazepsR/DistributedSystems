@@ -14,6 +14,6 @@ public class Config {
     public static int port = 7777;
     public static int timeout = 10;
     public static String ipAddress = "192.168.173.1";
-    public static int SentMsg = 1;
+    public static int msgCounter = 1;
     
 }

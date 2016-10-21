@@ -30,7 +30,7 @@ public class Multicast extends Send {
 
     }
 
-    private void SendMulticast(InetAddress ip, DataUnit message) {
+    public void SendMulticast(InetAddress ip, DataUnit message) {
         try {
             socket = new DatagramSocket();
             // TODO move this line in a field and the ip address in the config
@@ -41,6 +41,7 @@ public class Multicast extends Send {
         } catch (IOException e) {
             System.err.println("IOException " + e);
         }
+        if(message.getMsgType() == MessageType.CHATMESSAGE){Config.msgCounter++;}
     }
 
     public void SendMulticast(ArrayList<InetAddress> ipList, DataUnit message) {
@@ -48,11 +49,13 @@ public class Multicast extends Send {
                 : ipList) {
             SendMulticast(ip, message);
         }
-        if(message.getMsgType() == MessageType.CHATMESSAGE){Config.SentMsg++;}
+        // MOVED THIS TO THE MAIN SENDMULTICAST ABOVE
+        //if(message.getMsgType() == MessageType.CHATMESSAGE){Config.msgCounter++;}
     }
     
     public void SendMulticast(String ipAddress, DataUnit message){
         SendMulticast(Parser.strToInet(ipAddress), message);
-        if(message.getMsgType() == MessageType.CHATMESSAGE){Config.SentMsg++;}
+        // MOVED THIS TO THE MAIN SENDMULTICAST ABOVE
+        //if(message.getMsgType() == MessageType.CHATMESSAGE){Config.msgCounter++;}
     }
 }

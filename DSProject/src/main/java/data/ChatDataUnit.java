@@ -5,20 +5,22 @@
  */
 package data;
 
+import java.util.Comparator;
 import main.Config;
-import main.Tree;
 
 /**
  *
  * @author Angelo
  */
-public class ChatDataUnit extends DataUnit{
+public class ChatDataUnit extends DataUnit implements Comparable<ChatDataUnit>{
     
     private final String msg;
+    private int sequenceNumber;
 
     
     public ChatDataUnit(String ip, MessageType msgType, Tree tree, String msg){
-        super(ip, msgType, tree, Config.SentMsg);
+        super(ip, msgType, tree);
+        this.sequenceNumber = Config.msgCounter;
         this.msg = msg;
     }
     
@@ -26,10 +28,29 @@ public class ChatDataUnit extends DataUnit{
         return this.msg;
     }
     
-    /*@Override
+    public int getSequenceNumber(){
+        return sequenceNumber;
+    }
+    
+    @Override
     public String toString(){
         System.out.println();
-        return this.msg + "---" + super.tree.toString();
-    }*/
+        return super.tree.toString()  + " Counter: " + Integer.toString(sequenceNumber);
+    }
+
+    public int compareTo(ChatDataUnit incomingMsg) {
+        Tree inTree = incomingMsg.getTree();
+        Tree thisTree = this.getTree();
+        
+        return inTree.compareTo(thisTree);
+    }
+    
+    public static class Comparators{
+        public static Comparator<ChatDataUnit> cmp = new Comparator<ChatDataUnit>() {
+            public int compare(ChatDataUnit o1, ChatDataUnit o2) {
+                return o1.compareTo(o2);
+            }
+        };
+    }
     
 }

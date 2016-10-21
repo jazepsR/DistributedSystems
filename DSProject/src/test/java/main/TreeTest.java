@@ -5,6 +5,7 @@
  */
 package main;
 
+import data.Tree;
 import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -120,7 +121,7 @@ public class TreeTest {
     @Test
     public void testVectorClock(){
         System.out.println("testing vector clock...");
-        ArrayList<Integer> vClock = tree.getVectorClock();
+        ArrayList<Integer> vClock = tree.getVector();
         for(Integer i : vClock) {
             System.out.println(i);
         }
@@ -142,8 +143,8 @@ public class TreeTest {
         treeList.add(tree);
         treeList.add(tree2);
         treeList.add(tree3);
-        System.out.println(tree.getVectorClock());
-        System.out.println(tree2.getVectorClock());
+        System.out.println(tree.getVector());
+        System.out.println(tree2.getVector());
         System.out.println(treeList);
         Collections.sort(treeList, Tree.Comparators.cmp);
         System.out.println(treeList);
