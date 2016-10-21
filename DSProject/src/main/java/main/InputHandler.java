@@ -42,6 +42,10 @@ public class InputHandler implements Runnable {
             multicast.SendMulticast(vector.getAllIps(), chatMessage);
             MessageLogger.MessageLog.put(Config.msgCounter - 1, chatMessage);
             //For testing
+
+            //ChatDataUnit chatMessage = new ChatDataUnit(Config.ipAddress, MessageType.CHATMESSAGE, vector, text);
+           // multicast.SendMulticast(vector.getAllIps(), chatMessage);
+            //MessageLogger.MessageLog.put(Config.msgCounter , chatMessage);
             int o = 0;
 
         }

@@ -71,9 +71,9 @@ public class Listen implements Runnable {
             //System.out.println(msg.toString());
 
             //Relibalilty check
-            if (msg.getMsgType() != MessageType.CHATMESSAGE) {
-                mh.switchMsg(msg);
-            }
+
+            mh.switchMsg(msg);
+
 
             //int seqNR = msg.getSequenceNr(); // WE DO NEED THE SEQ NUMBER
             //int currentSeqNr = reliability.get(msg.getIpAddress());

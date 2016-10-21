@@ -48,6 +48,7 @@ public abstract class Tree implements Serializable, Comparable<Tree>{
     public void addHost(InetAddress ip, int counter) {
         if(vectorHmap.get(ip) == null)
             vectorHmap.put(ip, 0);
+
         else
             vectorHmap.put(ip,counter);
     }
@@ -80,7 +81,11 @@ public abstract class Tree implements Serializable, Comparable<Tree>{
      * @return Counter
      */
     public int getCounter(InetAddress ip) {
-        return vectorHmap.get(ip);
+        try {
+            return vectorHmap.get(ip);
+        }catch (Exception e){
+            return 0;
+        }
     }
     
     public int getCounter(String ip){
@@ -114,7 +119,7 @@ public abstract class Tree implements Serializable, Comparable<Tree>{
     }
     
     public ArrayList<InetAddress> getAllIps(){
-        return (ArrayList<InetAddress>) vectorHmap.keySet();
+        return new ArrayList<InetAddress>( vectorHmap.keySet());
     }
 
     public int compareTo(Tree tree) {

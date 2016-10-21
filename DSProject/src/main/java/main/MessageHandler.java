@@ -41,7 +41,7 @@ public class MessageHandler {
 
         MessageType type = data.getMsgType();
         //Config.msgCounter++;
-        System.out.println(data.toString());
+        //System.out.println(data.toString());
         //tree.getReliability().put(data.getIpAddress(),data.getSequenceNr());
         switch (type) {
 
@@ -67,10 +67,10 @@ public class MessageHandler {
                 System.out.println(chatMsg.toString() + " Message:" + chatMsg.getMsg());
                 int seqNumber = chatMsg.getSequenceNumber();
                 int currentSeqNumber = vChat.getCounter(chatMsg.getIpAddress());
-                System.out.println("RECIEVED:" + seqNumber + " CURRENT:" + currentSeqNumber);
+                //System.out.println("RECIEVED:" + seqNumber + " CURRENT:" + currentSeqNumber);
                 if (seqNumber == currentSeqNumber + 1) {
                     vChat.addHost(chatMsg.getIpAddress(), chatMsg.getSequenceNumber());
-                    System.out.println("GOOD CHAT MSG");
+                    //System.out.println("GOOD CHAT MSG");
                     int BufferKey = seqNumber + 1;
                     while (buff.contains(BufferKey)) {
                         this.switchMsg(buff.get(BufferKey));
@@ -82,7 +82,7 @@ public class MessageHandler {
                     multicast.SendMulticast(data.getIpAddress(), replyMsg);
                 } else {
                     buff.addMsg(chatMsg);
-                    for (int i = currentSeqNumber; i < seqNumber; i++) {
+                    for (int i = currentSeqNumber+1; i < seqNumber; i++) {
                         multicast.SendMulticast(Config.ipAddress, new ChatDataUnit(Config.ipAddress, MessageType.NEGATIVEACK, vClock, Integer.toString(i)));
                     }
                 }
@@ -92,7 +92,7 @@ public class MessageHandler {
             case ACK:
                 break;
             case NEGATIVEACK:
-                System.out.println("NEGATIVE ACK!!!");
+                //System.out.println("NEGATIVE ACK!!!");
                 ChatDataUnit recievedData = (ChatDataUnit) data;
                 DataUnit message = MessageLogger.MessageLog.get(Integer.parseInt(recievedData.getMsg()));
                 multicast.SendMulticast(data.getIpAddress(), message);
@@ -100,8 +100,9 @@ public class MessageHandler {
                 break;
             case DISCOVERRESPONSE:
                 vClock.addHost(data.getIpAddress(), vClock.getCounter(data.getIpAddress()) + 1);
+                vChat.addHost(data.getIpAddress(), vChat.getCounter(data.getIpAddress()) + 1);
                 //HashMap<InetAddress,Integer> aa = Tree.getHmap();
-                //int o =0;
+                int o =0;
 //               TODO this should be removed? i really do not understand this code.
 //                HashMap<String, Integer> hMap = Tree.getHmap();
 //                if (hMap.containsKey(ipAdr)) {
