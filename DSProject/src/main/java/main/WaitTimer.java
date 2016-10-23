@@ -28,7 +28,7 @@ public class WaitTimer implements Runnable{
         if (bAlgo.LostElection == false)
         {
             Tree tree=bAlgo.getTree();
-          tree.deleteHigherIps(Parser.strToInet(Config.ipAddress));
+         // tree.deleteHigherIps(Parser.strToInet(Config.ipAddress));
             System.out.println("Won election");
            bAlgo.BroadcastWin();
            

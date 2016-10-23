@@ -16,6 +16,8 @@ import data.VectorClock;
 import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import utils.Parser;
 
@@ -65,6 +67,12 @@ public class Node extends Thread {
         if (send == 1) {
             Broadcast b = new Broadcast(new DataUnit(this.ipAddress, MessageType.DISCOVER, vectorClock));
             b.run();
+            
+           /* try {
+                Thread.sleep(5000);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(Node.class.getName()).log(Level.SEVERE, null, ex);
+            }*/
             WaitTimer timer = new WaitTimer(5, bullyAlgo);
             timer.run();
             if (vectorClock.getHigherIps(this.ipAddress).isEmpty()){
@@ -78,7 +86,7 @@ public class Node extends Thread {
             
             // test become a leader
             while(true){
-                WaitTimer timer2= new WaitTimer(7,bullyAlgo);
+                WaitTimer timer2= new WaitTimer(15,bullyAlgo);
                 timer2.run();
                 bullyAlgo.bullyThem();
             }

@@ -67,7 +67,7 @@ public class BullyAlgo{
         DataUnit data = new DataUnit(Config.ipAddress, MessageType.WANNABELEADER, tree);
         mult.SendMulticast(higherIps,data);
         System.out.println("bully other clients"+higherIps.toString());
-        WaitTimer wt = new WaitTimer(4, this);
+        WaitTimer wt = new WaitTimer(5, this);
         wt.run();
     }
 
