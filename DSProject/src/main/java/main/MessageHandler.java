@@ -83,7 +83,7 @@ public class MessageHandler {
                         ChatDataUnit MessageFormBuf = (ChatDataUnit)MessageLogger.Buffer.get(BufferKey);
                         System.out.println("CHAT MSG FROM BUFFER: " + MessageFormBuf.getMsg());
                         if(MessageFormBuf.getIpAddress().equals(Config.ipAddress)){
-                            int o = 0;
+                            //int o = 0;
                         }
                         //this.switchMsg();
                         MessageLogger.Buffer.remove(BufferKey);
