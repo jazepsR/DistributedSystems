@@ -5,6 +5,7 @@
  */
 package main;
 
+import com.company.ChatMessage;
 import data.Tree;
 import algorithms.BullyAlgo;
 import data.Buffer;
@@ -41,7 +42,8 @@ public class MessageHandler {
 
         MessageType type = data.getMsgType();
         //Config.msgCounter++;
-        System.out.println(data.toString());
+        if (type != MessageType.ACK)
+            System.out.println(data.toString());
         //tree.getReliability().put(data.getIpAddress(),data.getSequenceNr());
         switch (type) {
 
@@ -60,6 +62,8 @@ public class MessageHandler {
             case DISCOVER:
                 replyMsg = new DataUnit(Config.ipAddress, MessageType.DISCOVERRESPONSE, vClock);
                 multicast.SendMulticast(data.getIpAddress(), replyMsg);
+                vClock.addHost(data.getIpAddress(), vClock.getCounter(data.getIpAddress()) + 1);
+                vChat.addHost(data.getIpAddress(), vChat.getCounter(data.getIpAddress()) + 1);
                 //this.tree.addHost(data.getIpAddress(), data.getSequenceNr());
                 break;
             case CHATMESSAGE:
@@ -68,20 +72,30 @@ public class MessageHandler {
                 int seqNumber = chatMsg.getSequenceNumber();
                 int currentSeqNumber = vChat.getCounter(chatMsg.getIpAddress());
                 System.out.println("RECIEVED:" + seqNumber + " CURRENT:" + currentSeqNumber);
+
                 if (seqNumber == currentSeqNumber + 1) {
                     vChat.addHost(chatMsg.getIpAddress(), chatMsg.getSequenceNumber());
-                    //System.out.println("GOOD CHAT MSG");
-                    int BufferKey = seqNumber + 1;
-                    while (buff.contains(BufferKey,chatMsg.getIpAddress())) {
-                        this.switchMsg(buff.get(BufferKey));
-                        buff.remove(BufferKey);
+                    System.out.println("GOOD CHAT MSG: " + chatMsg.getMsg());
+
+                    int BufKeyNumber = seqNumber + 1;
+                    String BufferKey = chatMsg.getIpAddress().toString().substring(1)+":" +(BufKeyNumber);
+                    while (MessageLogger.Buffer.containsKey(BufferKey)) {
+                        ChatDataUnit MessageFormBuf = (ChatDataUnit)MessageLogger.Buffer.get(BufferKey);
+                        System.out.println("CHAT MSG FROM BUFFER: " + MessageFormBuf.getMsg());
+                        if(MessageFormBuf.getIpAddress().equals(Config.ipAddress)){
+                            int o = 0;
+                        }
+                        //this.switchMsg();
+                        MessageLogger.Buffer.remove(BufferKey);
                         vChat.addHost(chatMsg.getIpAddress(), chatMsg.getSequenceNumber());
-                        BufferKey++;
+                        BufKeyNumber++;
+                        BufferKey = chatMsg.getIpAddress()+":" +(BufKeyNumber);
                     }
                     replyMsg = new DataUnit(Config.ipAddress, MessageType.ACK, vClock);
                     multicast.SendMulticast(data.getIpAddress(), replyMsg);
                 } else {
-                    buff.addMsg(chatMsg);
+                    MessageLogger.Buffer.put(chatMsg.getIpAddress().toString().substring(1)+":" +chatMsg.getSequenceNumber(),chatMsg);
+                    //buff.addMsg(chatMsg);
                     for (int i = currentSeqNumber+1; i < seqNumber; i++) {
                         multicast.SendMulticast(Config.ipAddress, new ChatDataUnit(Config.ipAddress, MessageType.NEGATIVEACK, vClock, Integer.toString(i)));
                     }
@@ -95,7 +109,7 @@ public class MessageHandler {
             case NEGATIVEACK:
                 System.out.println("NEGATIVE ACK!!!");
                 ChatDataUnit recievedData = (ChatDataUnit) data;
-                DataUnit message = MessageLogger.MessageLog.get(Integer.parseInt(recievedData.getMsg()));
+                DataUnit message = MessageLogger.MessageLog.get(Config.ipAddress+":"+recievedData.getMsg());
                 multicast.SendMulticast(data.getIpAddress(), message);
                 int o =0 ;
                 //Config.msgCounter--;
