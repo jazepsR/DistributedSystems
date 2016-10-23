@@ -64,6 +64,17 @@ public abstract class Tree implements Serializable, Comparable<Tree>{
         vectorHmap.remove(ip);
     }
     
+     /**
+     * @param ip to delete host
+     */
+    public void deleteHigherIps(InetAddress ip) {
+        ArrayList<InetAddress> h= getHigherIps(ip);
+        for(int i=0;i<h.size();i++){
+            vectorHmap.remove( h.indexOf(i));
+        }
+       
+    }
+    
     /**
      * @param ip
      * @param newCounter

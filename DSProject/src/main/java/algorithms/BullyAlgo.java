@@ -42,6 +42,9 @@ public class BullyAlgo{
         }
     }
     
+    public Tree getTree(){
+        return tree;
+    }
     public void run(InetAddress incomingInetId, InetAddress randomInetId, Tree tree){
         run(Parser.inetToStr(incomingInetId), Parser.inetToStr(randomInetId), tree);
     }
@@ -64,7 +67,7 @@ public class BullyAlgo{
         DataUnit data = new DataUnit(Config.ipAddress, MessageType.WANNABELEADER, tree);
         mult.SendMulticast(higherIps,data);
         System.out.println("bully other clients"+higherIps.toString());
-        WaitTimer wt = new WaitTimer(10, this);
+        WaitTimer wt = new WaitTimer(4, this);
         wt.run();
     }
 

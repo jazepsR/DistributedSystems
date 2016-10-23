@@ -34,9 +34,9 @@ public class InputHandler implements Runnable {
                 e.printStackTrace();
             }
 
-            ChatDataUnit chatMessage2 = new ChatDataUnit(Config.ipAddress, MessageType.CHATMESSAGE, vector, "TESTING BUFFER");
-            MessageLogger.MessageLog.put(Config.ipAddress+":" +Config.msgCounter, chatMessage2);
-            Config.msgCounter++;
+            ///ChatDataUnit chatMessage2 = new ChatDataUnit(Config.ipAddress, MessageType.CHATMESSAGE, vector, "TESTING BUFFER");
+            //MessageLogger.MessageLog.put(Config.ipAddress+":" +Config.msgCounter, chatMessage2);
+            //Config.msgCounter++;
 
             ChatDataUnit chatMessage = new ChatDataUnit(Config.ipAddress, MessageType.CHATMESSAGE, vector, text);
             multicast.SendMulticast(vector.getAllIps(), chatMessage);
