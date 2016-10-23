@@ -97,7 +97,7 @@ public class MessageHandler {
                     MessageLogger.Buffer.put(chatMsg.getIpAddress().toString().substring(1)+":" +chatMsg.getSequenceNumber(),chatMsg);
                     //buff.addMsg(chatMsg);
                     for (int i = currentSeqNumber+1; i < seqNumber; i++) {
-                        multicast.SendMulticast(Config.ipAddress, new ChatDataUnit(Config.ipAddress, MessageType.NEGATIVEACK, vClock, Integer.toString(i)));
+                        multicast.SendMulticast(chatMsg.getIpAddress(), new ChatDataUnit(Config.ipAddress, MessageType.NEGATIVEACK, vClock, Integer.toString(i)));
                     }
                 }
                 //buff.messageLog.add(chatMsg);
