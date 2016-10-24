@@ -78,7 +78,16 @@ public abstract class Tree implements Serializable, Comparable<Tree>{
         }
        
     }
-    
+
+    public HashMap<InetAddress,Boolean> getTreeForAck(){
+        HashMap<InetAddress,Boolean> hmapForAck = new HashMap<InetAddress, Boolean>();
+        for(InetAddress ip: vectorHmap.keySet()){
+            hmapForAck.put(ip,false);
+        }
+        return hmapForAck;
+
+    }
+
     /**
      * @param ip
      * @param newCounter

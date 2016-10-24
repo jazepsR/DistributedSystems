@@ -67,12 +67,7 @@ public class Node extends Thread {
         if (send == 1) {
             Broadcast b = new Broadcast(new DataUnit(this.ipAddress, MessageType.DISCOVER, vectorClock));
             b.run();
-            
-           /* try {
-                Thread.sleep(5000);
-            } catch (InterruptedException ex) {
-                Logger.getLogger(Node.class.getName()).log(Level.SEVERE, null, ex);
-            }*/
+
            try {
                     Thread.sleep(5000);
                 } catch (InterruptedException ex) {

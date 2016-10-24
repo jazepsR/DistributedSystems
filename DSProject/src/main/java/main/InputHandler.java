@@ -1,11 +1,6 @@
 package main;
 
-import data.Tree;
-import data.ChatDataUnit;
-import data.DataUnit;
-import data.MessageLogger;
-import data.MessageType;
-import data.VectorChat;
+import data.*;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -39,6 +34,18 @@ public class InputHandler implements Runnable {
             //Config.msgCounter++;
 
             ChatDataUnit chatMessage = new ChatDataUnit(Config.ipAddress, MessageType.CHATMESSAGE, vector, text);
+            //Checking Ack buffer
+            final AckObject ack = new AckObject(vector,"/"+Config.ipAddress+":" +(Config.msgCounter));
+            MessageLogger.AckLog.put("/"+Config.ipAddress+":" +(Config.msgCounter),ack);
+            new java.util.Timer().schedule(
+                    new java.util.TimerTask() {
+                        @Override
+                        public void run() {
+                            ack.testAcks();
+                        }
+                    },
+                    500
+            );
             multicast.SendMulticast(vector.getAllIps(), chatMessage);
             MessageLogger.MessageLog.put(Config.ipAddress+":" +Config.msgCounter , chatMessage);
             //For testing
@@ -47,6 +54,7 @@ public class InputHandler implements Runnable {
            // multicast.SendMulticast(vector.getAllIps(), chatMessage);
             //MessageLogger.MessageLog.put(Config.msgCounter , chatMessage);
             Config.msgCounter++;
+
             int o = 0;
 
         }

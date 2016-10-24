@@ -57,13 +57,13 @@ public class MessageHandler {
                 break;
             case IAMHIGHER:
                 bAlgo.LostElection = true;
-                System.out.println("no leader");
+                System.out.println("Recieved IAMHIGHER");
                 break;
             case DISCOVER:
                 replyMsg = new DataUnit(Config.ipAddress, MessageType.DISCOVERRESPONSE, vClock);
                 multicast.SendMulticast(data.getIpAddress(), replyMsg);
-                vClock.addHost(data.getIpAddress(), vClock.getCounter(data.getIpAddress()) + 1);
-                vChat.addHost(data.getIpAddress(), vChat.getCounter(data.getIpAddress()) + 1);
+                vClock.addHost(data.getIpAddress(), vClock.getCounter(data.getIpAddress()) );
+                vChat.addHost(data.getIpAddress(), vChat.getCounter(data.getIpAddress()) );
                 //this.tree.addHost(data.getIpAddress(), data.getSequenceNr());
                 break;
             case CHATMESSAGE:
@@ -91,7 +91,7 @@ public class MessageHandler {
                         BufKeyNumber++;
                         BufferKey = chatMsg.getIpAddress()+":" +(BufKeyNumber);
                     }
-                    replyMsg = new DataUnit(Config.ipAddress, MessageType.ACK, vClock);
+                    replyMsg = new ChatDataUnit(Config.ipAddress, MessageType.ACK, vClock,data.getIpAddress().toString()+":" + ((ChatDataUnit) data).getSequenceNumber());
                     multicast.SendMulticast(data.getIpAddress(), replyMsg);
                 } else {
                     MessageLogger.Buffer.put(chatMsg.getIpAddress().toString().substring(1)+":" +chatMsg.getSequenceNumber(),chatMsg);
@@ -104,6 +104,8 @@ public class MessageHandler {
 
                 break;
             case ACK:
+                ChatDataUnit recieveData = (ChatDataUnit) data;
+                MessageLogger.AckLog.get(recieveData.getMsg()).AckHashMap.put(recieveData.getIpAddress(),true);
                 int a = 0;
                 break;
             case NEGATIVEACK:
@@ -115,8 +117,8 @@ public class MessageHandler {
                 //Config.msgCounter--;
                 break;
             case DISCOVERRESPONSE:
-                vClock.addHost(data.getIpAddress(), vClock.getCounter(data.getIpAddress()) + 1);
-                vChat.addHost(data.getIpAddress(), vChat.getCounter(data.getIpAddress()) + 1);
+                vClock.addHost(data.getIpAddress(), vClock.getCounter(data.getIpAddress()) );
+                vChat.addHost(data.getIpAddress(), vChat.getCounter(data.getIpAddress()) );
                 //HashMap<InetAddress,Integer> aa = Tree.getHmap();
                 int oo =0;
 //               TODO this should be removed? i really do not understand this code.
