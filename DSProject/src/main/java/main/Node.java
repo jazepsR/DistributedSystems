@@ -73,12 +73,14 @@ public class Node extends Thread {
             } catch (InterruptedException ex) {
                 Logger.getLogger(Node.class.getName()).log(Level.SEVERE, null, ex);
             }*/
-            WaitTimer timer = new WaitTimer(5, bullyAlgo);
-            timer.run();
+           try {
+                    Thread.sleep(5000);
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(Node.class.getName()).log(Level.SEVERE, null, ex);
+                }
             if (vectorClock.getHigherIps(this.ipAddress).isEmpty()){
                 System.out.println("imLeader");
                 this.iAmLeader=true;
-                System.out.println("I am leader");
                 this.bullyAlgo.BroadcastWin();
             }else{
                 System.out.println("I am not the leader");
@@ -86,8 +88,11 @@ public class Node extends Thread {
             
             // test become a leader
             while(true){
-                WaitTimer timer2= new WaitTimer(15,bullyAlgo);
-                timer2.run();
+                try {
+                    Thread.sleep(7000);
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(Node.class.getName()).log(Level.SEVERE, null, ex);
+                }
                 bullyAlgo.bullyThem();
             }
         }

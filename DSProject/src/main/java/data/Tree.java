@@ -119,11 +119,13 @@ public abstract class Tree implements Serializable, Comparable<Tree>{
         ArrayList<InetAddress> higherIps = new ArrayList<InetAddress>();
         Long hostIp = Parser.parseIp(ip);
         Long tmpIp;
+        
         for (InetAddress s : vectorHmap.keySet()){
             tmpIp = Parser.parseIp(s);
             if (tmpIp > hostIp)
                 higherIps.add(s);
         }
+        System.out.println("higherIps"+higherIps.toString());
         return higherIps;
     }
     

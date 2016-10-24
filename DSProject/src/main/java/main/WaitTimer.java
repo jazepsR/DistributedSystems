@@ -37,7 +37,7 @@ public class WaitTimer implements Runnable{
         }
         
         
-        bAlgo.LostElection = false;
+       bAlgo.LostElection = false;
                 
     }
 }
