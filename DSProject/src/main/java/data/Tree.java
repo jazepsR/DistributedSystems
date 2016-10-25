@@ -105,11 +105,10 @@ public abstract class Tree implements Serializable, Comparable<Tree>{
      * @return Counter
      */
     public int getCounter(InetAddress ip) {
-        try {
-            return vectorHmap.get(ip);
-        }catch (Exception e){
+        Integer counter = vectorHmap.get(ip);
+        if (counter == null)
             return 0;
-        }
+        return counter;
     }
     
     public int getCounter(String ip){

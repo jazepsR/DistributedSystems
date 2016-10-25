@@ -45,21 +45,13 @@ public class Node extends Thread {
     private Buffer buffer;
    
     public Node( int port, int send, ClientGUI cg) {
+        this(port, send);
         this.cg =cg;
-        sdf = new SimpleDateFormat("HH:mm:ss");
-        messageLog = new ArrayList<ChatDataUnit>();
-        this.ipAddress = Parser.strToInet(Config.ipAddress);
-        this.iAmLeader = false;
-        this.electionInProgress = false;
-        this.vectorClock = new VectorClock();
-        this.vectorChat = new VectorChat();
-        this.bullyAlgo = new BullyAlgo(this.vectorClock);
-        this.port = port;
-        this.send = send;
-        this.buffer = new Buffer();
         
     }
+    
     public Node( int port, int send) {
+        sdf = new SimpleDateFormat("HH:mm:ss"); 
         messageLog = new ArrayList<ChatDataUnit>();
         this.ipAddress = Parser.strToInet(Config.ipAddress);
         this.iAmLeader = false;
@@ -70,7 +62,6 @@ public class Node extends Thread {
         this.port = port;
         this.send = send;
         this.buffer = new Buffer();
-        
     }
 
     @Override
