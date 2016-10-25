@@ -41,12 +41,13 @@ public class Node extends Thread {
     // TODO to be removed at some point
     private int send;
     private final VectorClock vectorClock;
-    private final VectorChat vectorChat;
+    public final VectorChat vectorChat;
     private Buffer buffer;
    
     public Node( int port, int send, ClientGUI cg) {
         this(port, send);
         this.cg =cg;
+      
         
     }
     
@@ -57,7 +58,7 @@ public class Node extends Thread {
         this.iAmLeader = false;
         this.electionInProgress = false;
         this.vectorClock = new VectorClock();
-        this.vectorChat = new VectorChat();
+        this.vectorChat= new VectorChat();
         this.bullyAlgo = new BullyAlgo(this.vectorClock);
         this.port = port;
         this.send = send;
@@ -66,8 +67,8 @@ public class Node extends Thread {
 
     @Override
     public void run(){
-        new Thread(new Listen(bullyAlgo, vectorClock, vectorChat, this, buffer)).start();
-        new Thread(new InputHandler(this.vectorChat)).start();
+        new Thread(new Listen(bullyAlgo, vectorClock, cg.vectorChat, this, buffer)).start();
+        //new Thread(new InputHandler(this.vectorChat)).start();
         // TODO add bully in a loop 
         // TODO remove the tree from the DataUnit
         // TODO de-couple the wait timer
@@ -95,14 +96,14 @@ public class Node extends Thread {
             }
             
             // test become a leader
-            while(true){
+            /*while(true){
                 try {
                     Thread.sleep(7000);
                 } catch (InterruptedException ex) {
                     Logger.getLogger(Node.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                bullyAlgo.bullyThem();
-            }
+                bullyAlgo.bullyThem(this);
+            }*/
         }
         else {
             if(send==2)
@@ -119,7 +120,7 @@ public class Node extends Thread {
         }
     }
     
-    private void displayEvent(String msg) {
+    public void displayEvent(String msg) {
             String time = sdf.format(new Date()) + " " + msg;
             if(cg == null)
                 System.out.println(time);
@@ -127,7 +128,7 @@ public class Node extends Thread {
                 cg.appendEvent(time + "\n");
         }
     
-     private void displayChat(String msg) {
+     public void displayChat(String msg) {
             String time = sdf.format(new Date()) + " " + msg;
             if(cg == null)
                 System.out.println(time);

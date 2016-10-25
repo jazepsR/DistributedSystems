@@ -12,10 +12,17 @@ public class WaitTimer implements Runnable{
     public int waitTime;
     private Thread t;
     private BullyAlgo bAlgo;
+    private Node node;
     
     public WaitTimer(int waitForSeconds, BullyAlgo bAlgo){
         waitTime = waitForSeconds;
         this.bAlgo = bAlgo;
+    }
+    
+    public WaitTimer(int waitForSeconds, BullyAlgo bAlgom, Node node){
+        waitTime = waitForSeconds;
+        this.bAlgo = bAlgo;
+        this.node=node;
     }
 
     public void run() {
@@ -30,6 +37,7 @@ public class WaitTimer implements Runnable{
             Tree tree=bAlgo.getTree();
          // tree.deleteHigherIps(Parser.strToInet(Config.ipAddress));
             System.out.println("Won election");
+            node.displayEvent("Connected");
            bAlgo.BroadcastWin();
            
         } else{

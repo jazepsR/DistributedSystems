@@ -37,7 +37,7 @@ public class Listen implements Runnable {
         this.packetSize = Config.packetSize;
         this.vClock = vClock;
         this.vChat = vChat;
-        this.mh = new MessageHandler(bAlgo, vClock, vChat, buff);
+        this.mh = new MessageHandler(bAlgo, vClock, vChat, buff, node);
     }
 
     public void run() {

@@ -28,8 +28,18 @@ public class MessageHandler {
     private final VectorChat vChat;
     private final VectorClock vClock;
     private final Buffer buff;
+    private Node node;
 
     MessageHandler(BullyAlgo bAlgo, VectorClock vClock, VectorChat vChat, Buffer buff) {
+        this.bAlgo = bAlgo;
+        this.vClock = vClock;
+        this.vChat = vChat;
+        this.buff = buff;
+        multicast = new Multicast();
+    }
+    
+    MessageHandler(BullyAlgo bAlgo, VectorClock vClock, VectorChat vChat, Buffer buff, Node node) {
+        this.node = node;
         this.bAlgo = bAlgo;
         this.vClock = vClock;
         this.vChat = vChat;
@@ -67,6 +77,7 @@ public class MessageHandler {
                 break;
             case CHATMESSAGE:
                 ChatDataUnit chatMsg = (ChatDataUnit) data;
+                node.displayChat(chatMsg.toString() + " Message:" + chatMsg.getMsg());
                 System.out.println(chatMsg.toString() + " Message:" + chatMsg.getMsg());
                 int seqNumber = chatMsg.getSequenceNumber();
                 int currentSeqNumber = vChat.getCounter(chatMsg.getIpAddress());

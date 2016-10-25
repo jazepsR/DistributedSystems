@@ -70,6 +70,16 @@ public class BullyAlgo{
         WaitTimer wt = new WaitTimer(5, this);
         wt.run();
     }
+    
+     public void bullyThem(Node node) {
+        ArrayList<InetAddress> higherIps = tree.getHigherIps(Config.ipAddress);
+        Multicast mult = new Multicast();
+        DataUnit data = new DataUnit(Config.ipAddress, MessageType.WANNABELEADER, tree);
+        mult.SendMulticast(higherIps,data);
+        System.out.println("bully other clients"+higherIps.toString());
+        WaitTimer wt = new WaitTimer(5, this, node);
+        wt.run();
+    }
 
     public void BroadcastWin(){
         DataUnit data = new DataUnit(Config.ipAddress,MessageType.IAMLEADER, tree);

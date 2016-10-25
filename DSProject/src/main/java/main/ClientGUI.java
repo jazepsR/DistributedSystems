@@ -3,6 +3,7 @@ package main;
 /**
  * Created by User on 20.09.2016.
  */
+import data.VectorChat;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -38,6 +39,8 @@ public class ClientGUI extends JFrame implements ActionListener {
     // the default port number
     private int defaultPort;
     private String defaultHost;
+      public final VectorChat vectorChat;
+    
     
      private JTextArea chat, event;
 
@@ -46,7 +49,7 @@ public class ClientGUI extends JFrame implements ActionListener {
         super("Chat Client");
         String host="123";
         int port=000;
-        
+        vectorChat= new VectorChat();
         defaultPort = port;
         defaultHost = host;
 
@@ -169,6 +172,9 @@ public class ClientGUI extends JFrame implements ActionListener {
         if(connected) {
             // just have to send the message
             //client.sendMessage(new ChatMessage(ChatMessage.MESSAGE, tf.getText()));
+            System.out.println("aaaaaaaaaaa");
+            SendMsg s=new SendMsg(this.vectorChat);
+            s.send(tf.getText());
             tf.setText("");
             return;
         }
@@ -181,12 +187,13 @@ public class ClientGUI extends JFrame implements ActionListener {
         //Thread thread3 = new Node(155, 20030, 2);
         
         thread1.start();
+        connected = true;
             // disable login button
             login.setEnabled(false);
             // enable the 2 buttons
             logout.setEnabled(true);
             //whoIsIn.setEnabled(true);
-           
+            tf.addActionListener(this);
         }
 
     }
