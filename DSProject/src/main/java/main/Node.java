@@ -14,8 +14,12 @@ import data.MessageType;
 import data.VectorChat;
 import data.VectorClock;
 import java.net.InetAddress;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import utils.Parser;
 
@@ -29,6 +33,8 @@ public class Node extends Thread {
     private boolean iAmLeader;
     private boolean electionInProgress;
     private final int port;
+    private SimpleDateFormat sdf;
+     private ClientGUI cg;
     private final InetAddress ipAddress;
     private final BullyAlgo bullyAlgo;
     public List<ChatDataUnit> messageLog;
@@ -38,8 +44,14 @@ public class Node extends Thread {
     private final VectorChat vectorChat;
     private Buffer buffer;
    
-
+    public Node( int port, int send, ClientGUI cg) {
+        this(port, send);
+        this.cg =cg;
+        
+    }
+    
     public Node( int port, int send) {
+        sdf = new SimpleDateFormat("HH:mm:ss"); 
         messageLog = new ArrayList<ChatDataUnit>();
         this.ipAddress = Parser.strToInet(Config.ipAddress);
         this.iAmLeader = false;
@@ -50,7 +62,6 @@ public class Node extends Thread {
         this.port = port;
         this.send = send;
         this.buffer = new Buffer();
-        
     }
 
     @Override
@@ -61,25 +72,37 @@ public class Node extends Thread {
         // TODO remove the tree from the DataUnit
         // TODO de-couple the wait timer
         // 
-        System.out.println("in thread");
+        System.out.println("Connected");
+        displayEvent("Connected");
+        displayChat("test");
         if (send == 1) {
             Broadcast b = new Broadcast(new DataUnit(this.ipAddress, MessageType.DISCOVER, vectorClock));
             b.run();
-            WaitTimer timer = new WaitTimer(5, bullyAlgo);
-            timer.run();
+
+           try {
+                    Thread.sleep(5000);
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(Node.class.getName()).log(Level.SEVERE, null, ex);
+                }
             if (vectorClock.getHigherIps(this.ipAddress).isEmpty()){
+                displayEvent("imLeader");
                 System.out.println("imLeader");
                 this.iAmLeader=true;
-                System.out.println("I am leader");
                 this.bullyAlgo.BroadcastWin();
             }else{
+                 displayEvent("I am not the leader");
                 System.out.println("I am not the leader");
             }
             
             // test become a leader
-            WaitTimer timer2= new WaitTimer(15,bullyAlgo);
-            timer2.run();
-            bullyAlgo.bullyThem();
+            while(true){
+                try {
+                    Thread.sleep(7000);
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(Node.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                bullyAlgo.bullyThem();
+            }
         }
         else {
             if(send==2)
@@ -95,5 +118,21 @@ public class Node extends Thread {
             }
         }
     }
+    
+    private void displayEvent(String msg) {
+            String time = sdf.format(new Date()) + " " + msg;
+            if(cg == null)
+                System.out.println(time);
+            else
+                cg.appendEvent(time + "\n");
+        }
+    
+     private void displayChat(String msg) {
+            String time = sdf.format(new Date()) + " " + msg;
+            if(cg == null)
+                System.out.println(time);
+            else
+                cg.appendChat(time + "\n");
+        }
 }
            

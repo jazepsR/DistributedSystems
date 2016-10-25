@@ -8,7 +8,6 @@ package data;
 import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.ListIterator;
 
 /**

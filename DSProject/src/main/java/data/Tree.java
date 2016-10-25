@@ -64,6 +64,30 @@ public abstract class Tree implements Serializable, Comparable<Tree>{
         vectorHmap.remove(ip);
     }
     
+     /**
+     * @param ip to delete host
+     */
+    public void deleteHigherIps(InetAddress ip) {
+        System.out.println("cmdso");
+        
+        ArrayList<InetAddress> h= getHigherIps(ip);
+        System.out.println("ip"+h.indexOf(0));
+        for(int i=0;i<h.size();i++){
+             System.out.println("ip"+h.indexOf(i));
+            vectorHmap.remove( h.indexOf(i));
+        }
+       
+    }
+
+    public HashMap<InetAddress,Boolean> getTreeForAck(){
+        HashMap<InetAddress,Boolean> hmapForAck = new HashMap<InetAddress, Boolean>();
+        for(InetAddress ip: vectorHmap.keySet()){
+            hmapForAck.put(ip,false);
+        }
+        return hmapForAck;
+
+    }
+
     /**
      * @param ip
      * @param newCounter
@@ -81,11 +105,10 @@ public abstract class Tree implements Serializable, Comparable<Tree>{
      * @return Counter
      */
     public int getCounter(InetAddress ip) {
-        try {
-            return vectorHmap.get(ip);
-        }catch (Exception e){
+        Integer counter = vectorHmap.get(ip);
+        if (counter == null)
             return 0;
-        }
+        return counter;
     }
     
     public int getCounter(String ip){
@@ -104,11 +127,13 @@ public abstract class Tree implements Serializable, Comparable<Tree>{
         ArrayList<InetAddress> higherIps = new ArrayList<InetAddress>();
         Long hostIp = Parser.parseIp(ip);
         Long tmpIp;
+        
         for (InetAddress s : vectorHmap.keySet()){
             tmpIp = Parser.parseIp(s);
             if (tmpIp > hostIp)
                 higherIps.add(s);
         }
+        System.out.println("higherIps"+higherIps.toString());
         return higherIps;
     }
     

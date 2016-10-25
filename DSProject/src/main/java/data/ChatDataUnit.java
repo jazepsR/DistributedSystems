@@ -15,7 +15,7 @@ import main.Config;
 public class ChatDataUnit extends DataUnit implements Comparable<ChatDataUnit>{
     
     private final String msg;
-    private int sequenceNumber;
+    private final int sequenceNumber;
 
     
     public ChatDataUnit(String ip, MessageType msgType, Tree tree, String msg){
