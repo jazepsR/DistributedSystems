@@ -5,8 +5,7 @@
  */
 package main;
 
-import com.company.ChatMessage;
-import data.Tree;
+
 import algorithms.BullyAlgo;
 import data.Buffer;
 import data.ChatDataUnit;
@@ -121,23 +120,11 @@ public class MessageHandler {
                 vChat.addHost(data.getIpAddress(), vChat.getCounter(data.getIpAddress()) );
                 //HashMap<InetAddress,Integer> aa = Tree.getHmap();
                 int oo =0;
-//               TODO this should be removed? i really do not understand this code.
-//                HashMap<String, Integer> hMap = Tree.getHmap();
-//                if (hMap.containsKey(ipAdr)) {
-//                    Tree.addHost(ipAdr, 0);
-//                }
                 break;
             default:
                 break;
 
         }
-        // MOVED THIS ABOVE
-//        if(type==MessageType.CHATMESSAGE){
-//            DataUnit msg = new DataUnit(Config.ipAddress, MessageType.ACK, this.tree,Config.msgCounter);
-//            ArrayList<InetAddress> target = new ArrayList<InetAddress>();
-//            target.add(data.getIpAddress());
-//            multicast.SendMulticast(target, msg);
-//        }
     }
 
 }

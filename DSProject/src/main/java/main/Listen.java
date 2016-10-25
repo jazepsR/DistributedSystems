@@ -68,38 +68,8 @@ public class Listen implements Runnable {
 
             //turn bytes back to java object
             msg = DataTranslator.bytesToObject(data);
-            //System.out.println(msg.toString());
-
-            //Relibalilty check
 
             mh.switchMsg(msg);
-
-
-            //int seqNR = msg.getSequenceNr(); // WE DO NEED THE SEQ NUMBER
-            //int currentSeqNr = reliability.get(msg.getIpAddress());
-            //System.out.println("RECIEVED:" + seqNR + " CURRENT:" + currentSeqNr);
-            //if (msg.getMsgType() == MessageType.CHATMESSAGE) {
-                //if (seqNR == currentSeqNr + 1) {
-                    //reliability.put(msg.getIpAddress(), msg.getSequenceNr());
-                    //mh.switchMsg(msg);
-                    //System.out.println("GOOD CHAT MSG");
-                    //int BufferKey = seqNR + 1;
-//                    while (MessageLogger.Buffer.containsKey(BufferKey)) {
-//                        mh.switchMsg(MessageLogger.Buffer.get(BufferKey));
-//                        MessageLogger.Buffer.remove(BufferKey);
-//                        reliability.put(msg.getIpAddress(), msg.getSequenceNr());
-//                        BufferKey++;
-//                    }
-//                } else {
-//                    MessageLogger.Buffer.put(seqNR, msg);
-//                    for (int i = currentSeqNr; i < seqNR; i++) {
-//                        ChatDataUnit msg = new ChatDataUnit(Config.ipAddress, MessageType.NEGATIVEACK, this.tree, Integer.toString(i));
-//                        multicast.SendMulticast(msg.getIpAddress(), msg);
-//                    }
-
-//                }
-//            }
-
         }
 
     }
