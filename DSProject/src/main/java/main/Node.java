@@ -34,7 +34,7 @@ public class Node extends Thread {
     private boolean electionInProgress;
     private final int port;
     private SimpleDateFormat sdf;
-     private ClientGUI cg;
+     public ClientGUI cg;
     private final InetAddress ipAddress;
     private final BullyAlgo bullyAlgo;
     public List<ChatDataUnit> messageLog;
@@ -47,7 +47,7 @@ public class Node extends Thread {
     public Node( int port, int send, ClientGUI cg) {
         this(port, send);
         this.cg =cg;
-        
+       // this.vectorChat=cg.vectorChat;
     }
     
     public Node( int port, int send) {
@@ -67,7 +67,7 @@ public class Node extends Thread {
     @Override
     public void run(){
         new Thread(new Listen(bullyAlgo, vectorClock, vectorChat, this, buffer)).start();
-        new Thread(new InputHandler(this.vectorChat)).start();
+      //  new Thread(new InputHandler(vectorChat)).start();
         // TODO add bully in a loop 
         // TODO remove the tree from the DataUnit
         // TODO de-couple the wait timer
@@ -75,10 +75,12 @@ public class Node extends Thread {
         System.out.println("Connected");
         displayEvent("Connected");
         displayChat("test");
+        System.out.println("1");
         if (send == 1) {
+             System.out.println("2");
             Broadcast b = new Broadcast(new DataUnit(this.ipAddress, MessageType.DISCOVER, vectorClock));
             b.run();
-
+ System.out.println("3");
            try {
                     Thread.sleep(5000);
                 } catch (InterruptedException ex) {
@@ -95,14 +97,14 @@ public class Node extends Thread {
             }
             
             // test become a leader
-            while(true){
+           /* while(true){
                 try {
                     Thread.sleep(7000);
                 } catch (InterruptedException ex) {
                     Logger.getLogger(Node.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 bullyAlgo.bullyThem();
-            }
+            }*/
         }
         else {
             if(send==2)

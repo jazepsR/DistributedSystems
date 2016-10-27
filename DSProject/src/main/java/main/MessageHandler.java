@@ -41,8 +41,9 @@ public class MessageHandler {
 
         MessageType type = data.getMsgType();
         //Config.msgCounter++;
+        System.out.println("l3");
         if (type != MessageType.ACK)
-            System.out.println(data.toString());
+            System.out.println("-----RECIEVED "+type);
         //tree.getReliability().put(data.getIpAddress(),data.getSequenceNr());
         switch (type) {
 
@@ -56,10 +57,11 @@ public class MessageHandler {
                 break;
             case IAMHIGHER:
                 bAlgo.LostElection = true;
-                System.out.println("Recieved IAMHIGHER");
+               // System.out.println("Recieved IAMHIGHER");
                 break;
             case DISCOVER:
                 replyMsg = new DataUnit(Config.ipAddress, MessageType.DISCOVERRESPONSE, vClock);
+               // System.out.println("DR send");
                 multicast.SendMulticast(data.getIpAddress(), replyMsg);
                 vClock.addHost(data.getIpAddress(), vClock.getCounter(data.getIpAddress()) );
                 vChat.addHost(data.getIpAddress(), vChat.getCounter(data.getIpAddress()) );
@@ -70,7 +72,7 @@ public class MessageHandler {
                 System.out.println(chatMsg.toString() + " Message:" + chatMsg.getMsg());
                 int seqNumber = chatMsg.getSequenceNumber();
                 int currentSeqNumber = vChat.getCounter(chatMsg.getIpAddress());
-                System.out.println("RECIEVED:" + seqNumber + " CURRENT:" + currentSeqNumber);
+                //System.out.println("RECIEVED:" + seqNumber + " CURRENT:" + currentSeqNumber);
 
                 if (seqNumber == currentSeqNumber + 1) {
                     vChat.addHost(chatMsg.getIpAddress(), chatMsg.getSequenceNumber());

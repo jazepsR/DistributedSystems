@@ -42,14 +42,17 @@ public class Listen implements Runnable {
 
     public void run() {
         sock = null;
-
+        System.out.println("l1");
         try {
+             System.out.println("l5 port: "+this.port);
             //creating a server socket, parameter is local port number
+             
             sock = new DatagramSocket(this.port);
         } catch (SocketException ex) {
+             System.out.println("l6");
             Logger.getLogger(Listen.class.getName()).log(Level.SEVERE, null, ex);
         }
-
+ System.out.println("l7");
         //buffer to receive incoming data
         buffer = new byte[this.packetSize];
         incoming = new DatagramPacket(buffer, buffer.length);
@@ -58,17 +61,22 @@ public class Listen implements Runnable {
         echo("Server socket created. Waiting for incoming data...");
 
         while (true) {
+             System.out.println("l8");
             try {
                 //receive data
+                System.out.println("l8c");
                 sock.receive(incoming);
+                System.out.println("l9");
             } catch (IOException ex) {
+                System.out.println("l10");
                 Logger.getLogger(Listen.class.getName()).log(Level.SEVERE, null, ex);
             }
+             System.out.println("l11");
             data = incoming.getData();
 
             //turn bytes back to java object
             msg = DataTranslator.bytesToObject(data);
-
+             System.out.println("l2");
             mh.switchMsg(msg);
         }
 

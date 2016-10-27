@@ -47,7 +47,7 @@ public class Broadcast extends Send{
             //send the packet
 
             socket.send(udpPacket);
-
+ System.out.println("4");
         } catch (IOException e) {
             System.err.println("IOException " + e);
         }
