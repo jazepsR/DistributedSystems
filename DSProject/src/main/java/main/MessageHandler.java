@@ -72,7 +72,7 @@ public class MessageHandler {
             case CHATMESSAGE:
               
                 ChatDataUnit chatMsg = (ChatDataUnit) data;
-                node.displayChat(data.getTree().getVector()+" "+chatMsg.toString());
+                node.displayChat(data.getTree().getVector()+" "+chatMsg.getMsg());
           
                 /*if(chatMsg.getTree().compareTo(vChat)!=0){ // need to check the order
                     //wait until compare=0 and save the previous message
