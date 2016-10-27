@@ -9,18 +9,19 @@ import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.ListIterator;
+import utils.Parser;
 
 /**
  *
  * @author Euaggelos
  */
-public class Buffer {
+public abstract class Buffers {
     
     // THIS IS ONLY FOR VECTOR CLOCK SORTING
 
-    private final ArrayList<ChatDataUnit> listOfChatMsgs;
+    protected final ArrayList<ChatDataUnit> listOfChatMsgs;
 
-    public Buffer() {
+    public Buffers() {
         listOfChatMsgs = new ArrayList();
     }
 
@@ -36,7 +37,12 @@ public class Buffer {
         return false;
     }
     
-    public ChatDataUnit get(int i){
+
+    public boolean containsSeq(int i, String ip){
+        return Buffers.this.contains(i, Parser.strToInet(ip));
+    }
+    
+    public ChatDataUnit getOnSeq(int i){
         for(ChatDataUnit data : listOfChatMsgs){
             if(data.getSequenceNumber() == i)
                 return data;
@@ -48,6 +54,19 @@ public class Buffer {
         ListIterator<ChatDataUnit> iter = listOfChatMsgs.listIterator();
         while(iter.hasNext()){
             if(iter.next().getSequenceNumber() == i){
+                iter.remove();
+            }
+        }
+    }
+    
+    public void remove(ChatDataUnit chatData){
+        listOfChatMsgs.remove(chatData);
+    }
+    
+    public void remove(String UUID){
+        ListIterator<ChatDataUnit> iter = listOfChatMsgs.listIterator();
+        while(iter.hasNext()){
+            if(iter.next().getUUID().equals(UUID)){
                 iter.remove();
             }
         }

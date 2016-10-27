@@ -22,80 +22,52 @@ public class ClientGUI extends JFrame implements ActionListener {
 
     private static final long serialVersionUID = 1L;
     // will first hold "Username:", later on "Enter message"
-    private JLabel label;
-    // to hold the Username and later on the messages
     private JTextField tf;
-    // to hold the server address an the port number
-    private JTextField tfServer, tfPort;
     // to Logout and get the list of the users
     private JButton login, logout, whoIsIn;
-    // for the chat room
-    private JTextArea ta;
+
     // if it is for connection
     private boolean connected;
-    // the Client object
-    //private Client client;
-    // the default port number
-    private int defaultPort;
-    private String defaultHost;
-    
-     private JTextArea chat, event;
+
+    private JTextArea chat, event;
 
     // Constructor connection receiving a socket number
     ClientGUI() {
         super("Chat Client");
-        String host="123";
-        int port=000;
-        
-        defaultPort = port;
-        defaultHost = host;
 
         // The NorthPanel with:
-        JPanel northPanel = new JPanel(new GridLayout(3,1));
+        JPanel northPanel = new JPanel(new GridLayout(3, 1));
         // the server name anmd the port number
-        JPanel serverAndPort = new JPanel(new GridLayout(1,5, 1, 3));
-        // the two JTextField with default value for server address and port number
-        tfServer = new JTextField(host);
-        tfPort = new JTextField("" + port);
-        tfPort.setHorizontalAlignment(SwingConstants.RIGHT);
-        
-        String s=getIpAddress();
+        JPanel serverAndPort = new JPanel(new GridLayout(1, 5, 1, 3));
 
-        serverAndPort.add(new JLabel("Address:  "+s));
-        //serverAndPort.add(tfServer);
-               
-        // adds the Server an port field to the GUI
+
+        String s = getIpAddress();
+
+        serverAndPort.add(new JLabel("Address:  " + s));
+
         northPanel.add(serverAndPort);
 
-        // the Label and the TextField
-        //label = new JLabel("Enter your username below", SwingConstants.CENTER);
-        //northPanel.add(label);
+
         tf = new JTextField("");
         tf.setBackground(Color.WHITE);
+        tf.addActionListener(action);
         northPanel.add(tf);
         add(northPanel, BorderLayout.NORTH);
 
-        /*
-        // The CenterPanel which is the chat room
-        ta = new JTextArea("Welcome to the Chat room\n", 80, 80);
-        JPanel centerPanel = new JPanel(new GridLayout(1,1));
-        centerPanel.add(new JScrollPane(ta));
-        ta.setEditable(false);
-        add(centerPanel, BorderLayout.CENTER);
-*/
-        
         // the event and chat room
-        JPanel center = new JPanel(new GridLayout(2,1));
-        chat = new JTextArea(80,80);
+        JPanel center = new JPanel(new GridLayout(2, 1));
+        chat = new JTextArea(80, 80);
+
         chat.setEditable(false);
-        appendChat("Chat room.\n");
+        appendText("Chat room.\n", chat);
+        appendText("fuck you\n", chat);
         center.add(new JScrollPane(chat));
-        event = new JTextArea(80,80);
+        event = new JTextArea(80, 80);
         event.setEditable(false);
-        appendEvent("Events log.\n");
+        appendText("Events log.\n", event);
         center.add(new JScrollPane(event));
         add(center);
-        
+
         // the 3 buttons
         login = new JButton("Login");
         login.addActionListener(this);
@@ -120,87 +92,67 @@ public class ClientGUI extends JFrame implements ActionListener {
     }
 
     // called by the Client to append text in the TextArea
-    void appendChat(String str) {
-        chat.append(str);
-        chat.setCaretPosition(chat.getText().length() - 1);
+    public void appendText(String str, JTextArea area) {
+        area.append(str);
+        area.setCaretPosition(area.getText().length() - 1);
     }
-    
-     void appendEvent(String str) {
-        event.append(str);
-        event.setCaretPosition(chat.getText().length() - 1);
 
+    public void clearText(JTextArea area) {
+        area.setText("");
     }
-    // called by the GUI is the connection failed
-    // we reset our buttons, label, textfield
-  /*  void connectionFailed() {
-        login.setEnabled(true);
-        logout.setEnabled(false);
-        whoIsIn.setEnabled(false);
-        label.setText("Enter your username below");
-        tf.setText("Anonymous");
-        // reset port number and host name as a construction time
-        tfPort.setText("" + defaultPort);
-        tfServer.setText(defaultHost);
-        // let the user change them
-        tfServer.setEditable(false);
-        tfPort.setEditable(false);
-        // don't react to a <CR> after the username
-        tf.removeActionListener(this);
-        connected = false;
-    }*/
+
+    Action action = new AbstractAction() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            String tmpText = tf.getText();
+            tf.setText("");
+            appendText(tmpText + "\n", chat);
+
+            // TODO SAVE TEXT
+        }
+    };
 
     /*
     * Button or JTextField clicked
-    */
+     */
     public void actionPerformed(ActionEvent e) {
         Object o = e.getSource();
         // if it is the Logout button
-        if(o == logout) {
-           // client.sendMessage(new ChatMessage(ChatMessage.LOGOUT, ""));
+        if (o == logout) {
+            // client.sendMessage(new ChatMessage(ChatMessage.LOGOUT, ""));
             System.exit(0);
         }
         // if it the who is in button
-        if(o == whoIsIn) {
+        if (o == whoIsIn) {
             //client.sendMessage(new ChatMessage(ChatMessage.WHOISIN, ""));
             return;
         }
 
         // ok it is coming from the JTextField
-        if(connected) {
+        if (connected) {
             // just have to send the message
             //client.sendMessage(new ChatMessage(ChatMessage.MESSAGE, tf.getText()));
             tf.setText("");
             return;
         }
 
+        if (o == login) {
 
-        if(o == login) {
-           
-            Thread thread1 = new Node(20015, 1, this);
-        //Thread thread2 = new Node(155, 20000, 0);
-        //Thread thread3 = new Node(155, 20030, 2);
-        
-        thread1.start();
+//            Thread thread1 = new Node(20015, 1, this);
+//
+//            thread1.start();
             // disable login button
             login.setEnabled(false);
             // enable the 2 buttons
             logout.setEnabled(true);
             //whoIsIn.setEnabled(true);
-           
+
         }
 
     }
 
-   /* // to start the whole thing the server
-    public static void main(String[] args) {
-        new ClientGUI("localhost", 1500);
-    }
-*/
-    
-     
-    
     public String getIpAddress() {
-        String ip="";
+        String ip = "";
         try {
             Enumeration<NetworkInterface> networkInterfaces = NetworkInterface
                     .getNetworkInterfaces();
@@ -208,19 +160,18 @@ public class ClientGUI extends JFrame implements ActionListener {
                 NetworkInterface ni = (NetworkInterface) networkInterfaces
                         .nextElement();
                 Enumeration<InetAddress> nias = ni.getInetAddresses();
-                while(nias.hasMoreElements()) {
-                    InetAddress ia= (InetAddress) nias.nextElement();
+                while (nias.hasMoreElements()) {
+                    InetAddress ia = (InetAddress) nias.nextElement();
                     if (!ia.isLinkLocalAddress()
                             && !ia.isLoopbackAddress()
                             && ia instanceof Inet4Address) {
-                        ip=ia.getHostAddress();
+                        ip = ia.getHostAddress();
                     }
                 }
             }
         } catch (SocketException e) {
             Logger.getLogger(Node.class.getName()).log(Level.SEVERE, null, e);
         }
-       return ip; 
+        return ip;
     }
 }
-

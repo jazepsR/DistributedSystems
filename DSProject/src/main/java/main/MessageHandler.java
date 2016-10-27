@@ -7,8 +7,9 @@ package main;
 
 
 import algorithms.BullyAlgo;
-import data.Buffer;
+import data.InBuffer;
 import data.ChatDataUnit;
+import data.ChatMessageLog;
 import data.DataUnit;
 import data.MessageLogger;
 import data.MessageType;
@@ -27,13 +28,15 @@ public class MessageHandler {
     private DataUnit replyMsg;
     private final VectorChat vChat;
     private final VectorClock vClock;
-    private final Buffer buff;
+    private final InBuffer buff;
+    private final ChatMessageLog msgLog;
 
-    MessageHandler(BullyAlgo bAlgo, VectorClock vClock, VectorChat vChat, Buffer buff) {
+    MessageHandler(BullyAlgo bAlgo, VectorClock vClock, VectorChat vChat, InBuffer buff, ChatMessageLog msgLog) {
         this.bAlgo = bAlgo;
         this.vClock = vClock;
         this.vChat = vChat;
         this.buff = buff;
+        this.msgLog = msgLog;
         multicast = new Multicast();
     }
 
@@ -76,27 +79,25 @@ public class MessageHandler {
                     vChat.addHost(chatMsg.getIpAddress(), chatMsg.getSequenceNumber());
                     System.out.println("GOOD CHAT MSG: " + chatMsg.getMsg());
 
-                    int BufKeyNumber = seqNumber + 1;
-                    String BufferKey = chatMsg.getIpAddress().toString().substring(1)+":" +(BufKeyNumber);
-                    while (MessageLogger.Buffer.containsKey(BufferKey)) {
-                        ChatDataUnit MessageFormBuf = (ChatDataUnit)MessageLogger.Buffer.get(BufferKey);
-                        System.out.println("CHAT MSG FROM BUFFER: " + MessageFormBuf.getMsg());
-                        if(MessageFormBuf.getIpAddress().equals(Config.ipAddress)){
-                            //int o = 0;
-                        }
-                        //this.switchMsg();
-                        MessageLogger.Buffer.remove(BufferKey);
+                    int bufKeyNumber = seqNumber + 1;
+                    String bufferKey = chatMsg.getUUID();//getIpAddress().toString().substring(1)+":" +(bufKeyNumber);
+                    buff.addMsg(chatMsg);
+                    while (buff.contains(bufferKey)) {
+                        ChatDataUnit messageFormBuf = buff.get(bufferKey);
+                        System.out.println("CHAT MSG FROM BUFFER: " + messageFormBuf.getMsg());
+                        
+                        msgLog.addMsg(buff.pop(bufferKey));
                         vChat.addHost(chatMsg.getIpAddress(), chatMsg.getSequenceNumber());
-                        BufKeyNumber++;
-                        BufferKey = chatMsg.getIpAddress()+":" +(BufKeyNumber);
+                        bufKeyNumber++;
+                        bufferKey = chatMsg.getIpAddress()+":" +(bufKeyNumber);
                     }
-                    replyMsg = new ChatDataUnit(Config.ipAddress, MessageType.ACK, vClock,data.getIpAddress().toString()+":" + ((ChatDataUnit) data).getSequenceNumber());
-                    multicast.SendMulticast(data.getIpAddress(), replyMsg);
+                    replyMsg = new ChatDataUnit(Config.ipAddress, MessageType.ACK, vClock, chatMsg.getIpAddress().toString()+":" + chatMsg.getSequenceNumber());
+                    multicast.SendMulticast(chatMsg.getIpAddress(), replyMsg);
                 } else {
-                    MessageLogger.Buffer.put(chatMsg.getIpAddress().toString().substring(1)+":" +chatMsg.getSequenceNumber(),chatMsg);
-                    //buff.addMsg(chatMsg);
+                    buff.addMsg(chatMsg);
+                    buff.sortBuffer();
                     for (int i = currentSeqNumber+1; i < seqNumber; i++) {
-                        multicast.SendMulticast(data.getIpAddress(), new ChatDataUnit(Config.ipAddress, MessageType.NEGATIVEACK, vClock, Integer.toString(i)));
+                        multicast.SendMulticast(chatMsg.getIpAddress(), new ChatDataUnit(Config.ipAddress, MessageType.NEGATIVEACK, vClock, Integer.toString(i)));
                     }
                 }
                 //buff.messageLog.add(chatMsg);

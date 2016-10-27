@@ -9,10 +9,11 @@ package data;
  *
  * @author Euaggelos
  */
-public class VectorChat extends Tree{
+public class ChatMessageLog extends Buffers {
     
-    public VectorChat(){
+    public ChatMessageLog(){
         super();
+        
     }
     
 }

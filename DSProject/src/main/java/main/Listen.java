@@ -31,13 +31,13 @@ public class Listen implements Runnable {
     private final VectorChat vChat;
     private final VectorClock vClock;
 
-    public Listen(BullyAlgo bAlgo, VectorClock vClock, VectorChat vChat, Node node, Buffer buff) {
+    public Listen(BullyAlgo bAlgo, VectorClock vClock, VectorChat vChat, Node node, InBuffer buff, ChatMessageLog chatLog) {
         multicast = new Multicast();
         this.port = Config.port;
         this.packetSize = Config.packetSize;
         this.vClock = vClock;
         this.vChat = vChat;
-        this.mh = new MessageHandler(bAlgo, vClock, vChat, buff);
+        this.mh = new MessageHandler(bAlgo, vClock, vChat, buff, chatLog);
     }
 
     public void run() {

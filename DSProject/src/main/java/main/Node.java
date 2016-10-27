@@ -5,9 +5,9 @@
  */
 package main;
 
-import data.Tree;
 import algorithms.BullyAlgo;
-import data.Buffer;
+import data.InBuffer;
+import data.ChatMessageLog;
 import data.ChatDataUnit;
 import data.DataUnit;
 import data.MessageType;
@@ -42,7 +42,8 @@ public class Node extends Thread {
     private int send;
     private final VectorClock vectorClock;
     private final VectorChat vectorChat;
-    private Buffer buffer;
+    private InBuffer buffer;
+    private ChatMessageLog chatLog;
    
     public Node( int port, int send, ClientGUI cg) {
         this(port, send);
@@ -61,20 +62,22 @@ public class Node extends Thread {
         this.bullyAlgo = new BullyAlgo(this.vectorClock);
         this.port = port;
         this.send = send;
-        this.buffer = new Buffer();
+        this.buffer = new InBuffer();
+        this.chatLog = new ChatMessageLog();
+    }
+    
+    public void startGui(){
+        new ClientGUI();
     }
 
     @Override
     public void run(){
-        new Thread(new Listen(bullyAlgo, vectorClock, vectorChat, this, buffer)).start();
+        new Thread(new Listen(bullyAlgo, vectorClock, vectorChat, this, buffer, chatLog)).start();
         new Thread(new InputHandler(this.vectorChat)).start();
-        // TODO add bully in a loop 
-        // TODO remove the tree from the DataUnit
-        // TODO de-couple the wait timer
-        // 
+        //new ClientGUI();
         System.out.println("Connected");
-        displayEvent("Connected");
-        displayChat("test");
+//        displayEvent("Connected");
+//        displayChat("test");
         if (send == 1) {
             Broadcast b = new Broadcast(new DataUnit(this.ipAddress, MessageType.DISCOVER, vectorClock));
             b.run();
@@ -85,12 +88,12 @@ public class Node extends Thread {
                     Logger.getLogger(Node.class.getName()).log(Level.SEVERE, null, ex);
                 }
             if (vectorClock.getHigherIps(this.ipAddress).isEmpty()){
-                displayEvent("imLeader");
+                //displayEvent("imLeader");
                 System.out.println("imLeader");
                 this.iAmLeader=true;
                 this.bullyAlgo.BroadcastWin();
             }else{
-                 displayEvent("I am not the leader");
+                 //displayEvent("I am not the leader");
                 System.out.println("I am not the leader");
             }
             
@@ -119,20 +122,20 @@ public class Node extends Thread {
         }
     }
     
-    private void displayEvent(String msg) {
-            String time = sdf.format(new Date()) + " " + msg;
-            if(cg == null)
-                System.out.println(time);
-            else
-                cg.appendEvent(time + "\n");
-        }
-    
-     private void displayChat(String msg) {
-            String time = sdf.format(new Date()) + " " + msg;
-            if(cg == null)
-                System.out.println(time);
-            else
-                cg.appendChat(time + "\n");
-        }
+//    private void displayEvent(String msg) {
+//            String time = sdf.format(new Date()) + " " + msg;
+//            if(cg == null)
+//                System.out.println(time);
+//            else
+//                cg.appendEvent(time + "\n");
+//        }
+//    
+//     private void displayChat(String msg) {
+//            String time = sdf.format(new Date()) + " " + msg;
+//            if(cg == null)
+//                System.out.println(time);
+//            else
+//                cg.appendChat(time + "\n");
+//        }
 }
            

@@ -16,12 +16,18 @@ public class ChatDataUnit extends DataUnit implements Comparable<ChatDataUnit>{
     
     private final String msg;
     private final int sequenceNumber;
+    private final String UUID;
 
     
     public ChatDataUnit(String ip, MessageType msgType, Tree tree, String msg){
         super(ip, msgType, tree);
         this.sequenceNumber = Config.msgCounter;
         this.msg = msg;
+        this.UUID = ip+":" +(this.sequenceNumber);
+    }
+    
+    public String getUUID(){
+        return this.UUID;
     }
     
     public String getMsg(){

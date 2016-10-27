@@ -9,7 +9,6 @@ import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
-import java.net.UnknownHostException;
 import java.util.Enumeration;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -20,18 +19,22 @@ import java.util.logging.Logger;
  */
 public class Main {
     
-    public static void main(String [] args) throws UnknownHostException, SocketException{
+    public static void main(String [] args){
         
         getIpAddress();
         System.out.println("myIP0: "+Config.ipAddress);
         
-        Thread thread1 = new Node(20015, 1);
+        
+        
+        Node node = new Node(20015, 1);
         //Thread thread2 = new Node(155, 20000, 0);
         //Thread thread3 = new Node(155, 20030, 2);
-        
-        thread1.start();
+        node.startGui();
+        node.start();
         //thread2.start();
         //thread3.start();
+        
+        
         
     }
     
