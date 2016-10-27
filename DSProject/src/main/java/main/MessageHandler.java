@@ -13,8 +13,10 @@ import data.ChatMessageLog;
 import data.DataUnit;
 import data.MessageLogger;
 import data.MessageType;
+import data.UpdateLogDataUnit;
 import data.VectorChat;
 import data.VectorClock;
+import java.util.ArrayList;
 
 /**
  *
@@ -121,6 +123,12 @@ public class MessageHandler {
                 vChat.addHost(data.getIpAddress(), vChat.getCounter(data.getIpAddress()) );
                 //HashMap<InetAddress,Integer> aa = Tree.getHmap();
                 int oo =0;
+                break;
+                
+            case MSGLOG:
+                UpdateLogDataUnit updateData = (UpdateLogDataUnit) data;
+                ArrayList<ChatDataUnit> newList = updateData.getMessages();
+                msgLog.replace(newList);
                 break;
             default:
                 break;

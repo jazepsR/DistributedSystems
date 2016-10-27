@@ -5,6 +5,8 @@
  */
 package data;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author Euaggelos
@@ -14,6 +16,10 @@ public class ChatMessageLog extends Buffers {
     public ChatMessageLog(){
         super();
         
+    }
+    
+    public void replace(ArrayList<ChatDataUnit> newList){
+        listOfChatMsgs = newList;
     }
     
 }

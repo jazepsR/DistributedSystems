@@ -50,7 +50,7 @@ public class ClientGUI extends JFrame implements ActionListener {
 
         tf = new JTextField("");
         tf.setBackground(Color.WHITE);
-        tf.addActionListener(action);
+        //tf.addActionListener(action);
         northPanel.add(tf);
         add(northPanel, BorderLayout.NORTH);
 
@@ -101,16 +101,16 @@ public class ClientGUI extends JFrame implements ActionListener {
         area.setText("");
     }
 
-    Action action = new AbstractAction() {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            String tmpText = tf.getText();
-            tf.setText("");
-            appendText(tmpText + "\n", chat);
-
-            // TODO SAVE TEXT
-        }
-    };
+//    Action action = new AbstractAction() {
+//        @Override
+//        public void actionPerformed(ActionEvent e) {
+//            String tmpText = tf.getText();
+//            tf.setText("");
+//            appendText(tmpText + "\n", chat);
+//
+//            // TODO SAVE TEXT
+//        }
+//    };
 
     /*
     * Button or JTextField clicked
@@ -132,6 +132,7 @@ public class ClientGUI extends JFrame implements ActionListener {
         if (connected) {
             // just have to send the message
             //client.sendMessage(new ChatMessage(ChatMessage.MESSAGE, tf.getText()));
+            System.out.println("ENTER WORKS");
             tf.setText("");
             return;
         }
@@ -139,7 +140,7 @@ public class ClientGUI extends JFrame implements ActionListener {
         if (o == login) {
 
 //            Thread thread1 = new Node(20015, 1, this);
-//
+            connected = true;
 //            thread1.start();
             // disable login button
             login.setEnabled(false);

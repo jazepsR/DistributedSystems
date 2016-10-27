@@ -19,7 +19,7 @@ public abstract class Buffers {
     
     // THIS IS ONLY FOR VECTOR CLOCK SORTING
 
-    protected final ArrayList<ChatDataUnit> listOfChatMsgs;
+    protected ArrayList<ChatDataUnit> listOfChatMsgs;
 
     public Buffers() {
         listOfChatMsgs = new ArrayList();
