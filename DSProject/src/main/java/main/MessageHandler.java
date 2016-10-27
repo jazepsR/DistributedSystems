@@ -72,10 +72,10 @@ public class MessageHandler {
             case CHATMESSAGE:
               
                 ChatDataUnit chatMsg = (ChatDataUnit) data;
-                  node.displayChat(data.getTree().getVector()+" "+chatMsg.toString());
+                node.displayChat(data.getTree().getVector()+" "+chatMsg.toString());
           
-                /*if(chatMsg.getTree().compareTo(vChat)!=0){
-                    //wait
+                /*if(chatMsg.getTree().compareTo(vChat)!=0){ // need to check the order
+                    //wait until compare=0 and save the previous message
                 }else*/
                 System.out.println(chatMsg.toString() + " Message:" + chatMsg.getMsg());
                 int seqNumber = chatMsg.getSequenceNumber();
