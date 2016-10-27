@@ -3,6 +3,7 @@ package main;
 /**
  * Created by User on 20.09.2016.
  */
+import data.VectorChat;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -27,14 +28,14 @@ public class ClientGUI extends JFrame implements ActionListener {
     private JButton login, logout, whoIsIn;
 
     // if it is for connection
-    private boolean connected;
-
+    private final VectorChat vectorChat;
+    
     private JTextArea chat, event;
 
     // Constructor connection receiving a socket number
-    ClientGUI() {
+    ClientGUI(VectorChat vectorChat) {
         super("Chat Client");
-
+        this.vectorChat = vectorChat;
         // The NorthPanel with:
         JPanel northPanel = new JPanel(new GridLayout(3, 1));
         // the server name anmd the port number
@@ -59,12 +60,11 @@ public class ClientGUI extends JFrame implements ActionListener {
         chat = new JTextArea(80, 80);
 
         chat.setEditable(false);
-        appendText("Chat room.\n", chat);
-        appendText("fuck you\n", chat);
-        center.add(new JScrollPane(chat));
+        appendChat("Chat room.\n");
+                center.add(new JScrollPane(chat));
         event = new JTextArea(80, 80);
         event.setEditable(false);
-        appendText("Events log.\n", event);
+        appendEvent("Events log.\n");
         center.add(new JScrollPane(event));
         add(center);
 
@@ -92,9 +92,15 @@ public class ClientGUI extends JFrame implements ActionListener {
     }
 
     // called by the Client to append text in the TextArea
-    public void appendText(String str, JTextArea area) {
-        area.append(str);
-        area.setCaretPosition(area.getText().length() - 1);
+     void appendChat(String str) {
+        chat.append(str);
+        chat.setCaretPosition(chat.getText().length() - 1);
+    }
+    
+     void appendEvent(String str) {
+        event.append(str);
+        event.setCaretPosition(chat.getText().length() - 1);
+
     }
 
     public void clearText(JTextArea area) {
@@ -106,7 +112,9 @@ public class ClientGUI extends JFrame implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             String tmpText = tf.getText();
             tf.setText("");
-            appendText(tmpText + "\n", chat);
+            appendChat(tmpText + "\n");
+            SendMsg s=new SendMsg(vectorChat);
+            s.send(tmpText);
 
             // TODO SAVE TEXT
         }
@@ -128,14 +136,6 @@ public class ClientGUI extends JFrame implements ActionListener {
             return;
         }
 
-        // ok it is coming from the JTextField
-        if (connected) {
-            // just have to send the message
-            //client.sendMessage(new ChatMessage(ChatMessage.MESSAGE, tf.getText()));
-            tf.setText("");
-            return;
-        }
-
         if (o == login) {
 
 //            Thread thread1 = new Node(20015, 1, this);
@@ -146,7 +146,7 @@ public class ClientGUI extends JFrame implements ActionListener {
             // enable the 2 buttons
             logout.setEnabled(true);
             //whoIsIn.setEnabled(true);
-
+           
         }
 
     }
