@@ -42,13 +42,14 @@ public class MessageHandler {
         multicast = new Multicast();
     }
 
-    public void switchMsg(DataUnit data) {
+    public void switchMsg(DataUnit data, Node node) {
 
         MessageType type = data.getMsgType();
         //Config.msgCounter++;
         if (type != MessageType.ACK)
             System.out.println(data.toString());
         //tree.getReliability().put(data.getIpAddress(),data.getSequenceNr());
+        
         switch (type) {
 
             case HEARTBEAT:
@@ -71,7 +72,13 @@ public class MessageHandler {
                 //this.tree.addHost(data.getIpAddress(), data.getSequenceNr());
                 break;
             case CHATMESSAGE:
+              
                 ChatDataUnit chatMsg = (ChatDataUnit) data;
+                node.displayChat(data.getTree().getVector()+" "+chatMsg.getMsg());
+          
+                /*if(chatMsg.getTree().compareTo(vChat)!=0){ // need to check the order
+                    //wait until compare=0 and save the previous message
+                }else*/
                 System.out.println(chatMsg.toString() + " Message:" + chatMsg.getMsg());
                 int seqNumber = chatMsg.getSequenceNumber();
                 int currentSeqNumber = vChat.getCounter(chatMsg.getIpAddress());

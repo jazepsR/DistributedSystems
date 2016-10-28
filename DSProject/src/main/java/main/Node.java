@@ -44,6 +44,7 @@ public class Node extends Thread {
     private final VectorChat vectorChat;
     private InBuffer buffer;
     private ChatMessageLog chatLog;
+    private ClientGUI gui;
    
     public Node( int port, int send, ClientGUI cg) {
         this(port, send);
@@ -67,7 +68,7 @@ public class Node extends Thread {
     }
     
     public void startGui(){
-        new ClientGUI();
+        this.gui=new ClientGUI(this.vectorChat);
     }
 
     @Override
@@ -122,20 +123,20 @@ public class Node extends Thread {
         }
     }
     
-//    private void displayEvent(String msg) {
-//            String time = sdf.format(new Date()) + " " + msg;
-//            if(cg == null)
-//                System.out.println(time);
-//            else
-//                cg.appendEvent(time + "\n");
-//        }
-//    
-//     private void displayChat(String msg) {
-//            String time = sdf.format(new Date()) + " " + msg;
-//            if(cg == null)
-//                System.out.println(time);
-//            else
-//                cg.appendChat(time + "\n");
-//        }
+public void displayEvent(String msg) {
+            String time = sdf.format(new Date()) + " " + msg;
+            if(gui == null)
+                System.out.println(time);
+            else
+                gui.appendEvent(time + "\n");
+        }
+    
+     public void displayChat(String msg) {
+            String time = sdf.format(new Date()) + " " + msg;
+            if(gui == null)
+                System.out.println(time);
+            else
+                gui.appendChat(time + "\n");
+        }
 }
            
