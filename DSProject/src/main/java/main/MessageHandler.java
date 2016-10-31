@@ -136,9 +136,12 @@ public class MessageHandler {
                 break;
                 
             case MSGLOG:
-                UpdateLogDataUnit updateData = (UpdateLogDataUnit) data;
-                ArrayList<ChatDataUnit> newList = updateData.getMessages();
-                msgLog.replace(newList);
+                if( !("/"+Config.ipAddress).equals(data.getIpAddress().toString())) {
+                    UpdateLogDataUnit updateData = (UpdateLogDataUnit) data;
+                    ArrayList<ChatDataUnit> newList = updateData.getMessages();
+                    msgLog.replace(newList);
+                    node.addAllMsg(node.chatLog.getMsgs());
+                }
                 break;
             default:
                 break;
