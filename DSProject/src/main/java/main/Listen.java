@@ -30,6 +30,7 @@ public class Listen implements Runnable {
     private final Multicast multicast;
     private final VectorChat vChat;
     private final VectorClock vClock;
+    private final Node node;
 
     public Listen(BullyAlgo bAlgo, VectorClock vClock, VectorChat vChat, Node node, InBuffer buff, ChatMessageLog chatLog) {
         multicast = new Multicast();
@@ -37,6 +38,7 @@ public class Listen implements Runnable {
         this.packetSize = Config.packetSize;
         this.vClock = vClock;
         this.vChat = vChat;
+        this.node=node;
         this.mh = new MessageHandler(bAlgo, vClock, vChat, buff, chatLog);
     }
 
@@ -68,8 +70,8 @@ public class Listen implements Runnable {
 
             //turn bytes back to java object
             msg = DataTranslator.bytesToObject(data);
-
-            mh.switchMsg(msg);
+            node.displayEvent(msg.getMsgType().toString()+" "+msg.getTree().getVector());
+            mh.switchMsg(msg, node);
         }
 
     }

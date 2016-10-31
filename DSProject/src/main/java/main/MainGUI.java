@@ -14,7 +14,7 @@ public class MainGUI {
         //Client client1 = new Client("servert",14,"Jekabs");
         //Client client2 = new Client("server",14,"Antons");
         
-        ClientGUI cgui1 = new ClientGUI();
+        //ClientGUI cgui1 = new ClientGUI();
         
     }
    
