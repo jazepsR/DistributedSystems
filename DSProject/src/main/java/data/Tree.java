@@ -176,9 +176,9 @@ public abstract class Tree implements Serializable, Comparable<Tree>{
         if(smallerFound == true & biggerFound == true)
             return 0;
         else if(smallerFound == true & biggerFound == false)
-            return 1;
-        else if(smallerFound == false & biggerFound == true)
             return -1;
+        else if(smallerFound == false & biggerFound == true)
+            return 1;
         return 0;
     }
     
