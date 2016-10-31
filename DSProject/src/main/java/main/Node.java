@@ -43,7 +43,7 @@ public class Node extends Thread {
     private final VectorClock vectorClock;
     private final VectorChat vectorChat;
     private InBuffer buffer;
-    private ChatMessageLog chatLog;
+    public ChatMessageLog chatLog;
     private ClientGUI gui;
    
     public Node( int port, int send, ClientGUI cg) {

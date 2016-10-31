@@ -76,7 +76,7 @@ public class MessageHandler {
             case CHATMESSAGE:
                 msgLog.sortBuffer();
                 ChatDataUnit chatMsg = (ChatDataUnit) data;
-                node.displayChat(data.getTree().getVector()+" "+chatMsg.getMsg());
+                //node.displayChat(data.getTree().getVector()+" "+chatMsg.getMsg());
           
                 /*if(chatMsg.getTree().compareTo(vChat)!=0){ // need to check the order
                     //wait until compare=0 and save the previous message
@@ -104,6 +104,7 @@ public class MessageHandler {
                     }
                     replyMsg = new ChatDataUnit(Config.ipAddress, MessageType.ACK, vClock, chatMsg.getIpAddress().toString()+":" + chatMsg.getSequenceNumber());
                     multicast.SendMulticast(chatMsg.getIpAddress(), replyMsg);
+                    node.addAllMsg(node.chatLog.getMsgs());
                 } else {
                     buff.addMsg(chatMsg);
                     buff.sortBuffer();
