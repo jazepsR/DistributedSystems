@@ -69,6 +69,8 @@ public class MessageHandler {
                 multicast.SendMulticast(data.getIpAddress(), replyMsg);
                 vClock.addHost(data.getIpAddress(), vClock.getCounter(data.getIpAddress()) );
                 vChat.addHost(data.getIpAddress(), vChat.getCounter(data.getIpAddress()) );
+                UpdateLogDataUnit log = new UpdateLogDataUnit(Config.ipAddress,MessageType.MSGLOG,vClock,msgLog.getMsgs());
+                multicast.SendMulticast(data.getIpAddress(), log);
                 //this.tree.addHost(data.getIpAddress(), data.getSequenceNr());
                 break;
             case CHATMESSAGE:
