@@ -5,6 +5,8 @@ import data.*;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.Inet4Address;
+import java.net.UnknownHostException;
 
 /**
  * Created by User on 07.10.2016.
@@ -49,10 +51,15 @@ public class InputHandler implements Runnable {
             multicast.SendMulticast(vector.getAllIps(), chatMessage);
             // REMEMBER THIS 
             MessageLogger.MessageLog.put(Config.ipAddress+":" +Config.msgCounter , chatMessage);
+
             //For testing
             // SHOULDNT THIS INCREASE MORE?
             Config.msgCounter++;
-
+            try {
+                vector.changeCounter(Inet4Address.getByName(Config.ipAddress),Config.msgCounter);
+            } catch (UnknownHostException e) {
+                e.printStackTrace();
+            }
             int o = 0;
 
         }
