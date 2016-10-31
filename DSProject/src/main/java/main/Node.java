@@ -105,6 +105,7 @@ public class Node extends Thread {
                 } catch (InterruptedException ex) {
                     Logger.getLogger(Node.class.getName()).log(Level.SEVERE, null, ex);
                 }
+                
                 bullyAlgo.bullyThem();
             }
         }
@@ -137,6 +138,15 @@ public void displayEvent(String msg) {
                 System.out.println(time);
             else
                 gui.appendChat(time + "\n");
+        }
+     
+     public void addAllMsg(ArrayList<ChatDataUnit> array) {
+         
+         gui.clearChat();
+         for (int i=0; i<array.size();i++)
+                        if(gui != null){
+                            gui.appendChat( array.get(i).getMsg() + "\n");
+                        }
         }
 }
            

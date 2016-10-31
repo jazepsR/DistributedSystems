@@ -73,15 +73,15 @@ public class ClientGUI extends JFrame implements ActionListener {
         login.addActionListener(this);
         logout = new JButton("Logout");
         logout.addActionListener(this);
-        logout.setEnabled(false);		// you have to login before being able to logout
-        whoIsIn = new JButton("Who is in");
-        whoIsIn.addActionListener(this);
-        whoIsIn.setEnabled(false);		// you have to login before being able to Who is in
+       // logout.setEnabled(false);		// you have to login before being able to logout
+       // whoIsIn = new JButton("Who is in");
+        //whoIsIn.addActionListener(this);
+       // whoIsIn.setEnabled(false);		// you have to login before being able to Who is in
 
         JPanel southPanel = new JPanel();
-        southPanel.add(login);
+        //southPanel.add(login);
         southPanel.add(logout);
-        southPanel.add(whoIsIn);
+        //southPanel.add(whoIsIn);
         add(southPanel, BorderLayout.SOUTH);
 
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -99,14 +99,17 @@ public class ClientGUI extends JFrame implements ActionListener {
     
      void appendEvent(String str) {
         event.append(str);
-        event.setCaretPosition(chat.getText().length() - 1);
+        event.setCaretPosition(event.getText().length() - 1);
 
     }
 
-    public void clearText(JTextArea area) {
-        area.setText("");
+    public void clearChat() {
+        chat.setText("");
     }
-
+    
+    public void clearEvent() {
+        event.setText("");
+    }
     Action action = new AbstractAction() {
         @Override
         public void actionPerformed(ActionEvent e) {
