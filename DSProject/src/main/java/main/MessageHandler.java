@@ -72,7 +72,7 @@ public class MessageHandler {
                 //this.tree.addHost(data.getIpAddress(), data.getSequenceNr());
                 break;
             case CHATMESSAGE:
-              
+                msgLog.sortBuffer();
                 ChatDataUnit chatMsg = (ChatDataUnit) data;
                 node.displayChat(data.getTree().getVector()+" "+chatMsg.getMsg());
           
