@@ -67,7 +67,6 @@ public class MessageHandler {
             case DISCOVER:
                 int number = Math.max(vChat.getCounter(data.getIpAddress()),data.getTree().getCounter(data.getIpAddress()));
                 vChat.addHost(data.getIpAddress(), number );
-                vChat.addHost(data.getIpAddress(), number);
                 replyMsg = new DataUnit(Config.ipAddress, MessageType.DISCOVERRESPONSE, vChat);
                 multicast.SendMulticast(data.getIpAddress(), replyMsg);
                 UpdateLogDataUnit log = new UpdateLogDataUnit(Config.ipAddress,MessageType.MSGLOG,vClock,msgLog.getMsgs());
@@ -146,6 +145,9 @@ public class MessageHandler {
                 }
                 int num  = data.getTree().getCounter(data.getIpAddress());
                 vChat.addHost(data.getIpAddress(), num);
+                if(vClock.vectorHmap.get(data.getIpAddress())==null){
+                    vClock.addHost(data.getIpAddress(),0);
+                }
                 Config.msgCounter = Math.max(Config.msgCounter, data.getTree().getCounter(Config.ipAddress));
                 //HashMap<InetAddress,Integer> aa = Tree.getHmap();
 
@@ -158,6 +160,7 @@ public class MessageHandler {
                     msgLog.replace(newList);
                     node.addAllMsg(node.chatLog.getMsgs());
                     vClock.addHost(data.getIpAddress(),data.getTree().getCounter(data.getIpAddress()));
+                    vClock.addHost(Config.ipAddress,data.getTree().getCounter(Config.ipAddress));
                 }
 
                 break;
