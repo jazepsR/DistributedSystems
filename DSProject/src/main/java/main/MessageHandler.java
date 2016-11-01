@@ -80,7 +80,9 @@ public class MessageHandler {
             }
                 msgLog.sortBuffer();
                 ChatDataUnit chatMsg = (ChatDataUnit) data;
-                vClock.increaseCounter(Config.ipAddress);
+                if( !("/"+Config.ipAddress).equals(data.getIpAddress().toString())) {
+                    vClock.increaseCounter(Config.ipAddress);
+                }
                 //node.displayChat(data.getTree().getVector()+" "+chatMsg.getMsg());
           
                 /*if(chatMsg.getTree().compareTo(vChat)!=0){ // need to check the order
@@ -155,8 +157,9 @@ public class MessageHandler {
                     ArrayList<ChatDataUnit> newList = updateData.getMessages();
                     msgLog.replace(newList);
                     node.addAllMsg(node.chatLog.getMsgs());
+                    vClock.addHost(data.getIpAddress(),data.getTree().getCounter(data.getIpAddress()));
                 }
-                vClock.addHost(data.getIpAddress(),data.getTree().getCounter(data.getIpAddress()));
+
                 break;
             default:
                 break;
