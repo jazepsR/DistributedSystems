@@ -5,12 +5,7 @@
  */
 package main;
 
-import data.AckObject;
-import data.ChatDataUnit;
-import data.MessageLogger;
-import data.MessageType;
-import data.Tree;
-import data.VectorChat;
+import data.*;
 
 /**
  *
@@ -20,8 +15,10 @@ public class SendMsg {
    
     Tree vector;
     Multicast multicast;
+    VectorClock vClock;
 
-    SendMsg(VectorChat vector) {
+    SendMsg(VectorChat vector, VectorClock vClock) {
+        this.vClock = vClock;
         this.vector = vector;
         multicast = new Multicast();
     }
@@ -49,6 +46,8 @@ public class SendMsg {
            // multicast.SendMulticast(vector.getAllIps(), chatMessage);
             //MessageLogger.MessageLog.put(Config.msgCounter , chatMessage);
             Config.msgCounter++;
+            vector.changeCounter(Config.ipAddress,Config.msgCounter);
+            vClock.changeCounter(Config.ipAddress,Config.msgCounter);
 
     }
 }

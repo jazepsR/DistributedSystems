@@ -68,13 +68,13 @@ public class Node extends Thread {
     }
     
     public void startGui(){
-        this.gui=new ClientGUI(this.vectorChat);
+        this.gui=new ClientGUI(this.vectorChat,this.vectorClock);
     }
 
     @Override
     public void run(){
         new Thread(new Listen(bullyAlgo, vectorClock, vectorChat, this, buffer, chatLog)).start();
-        new Thread(new InputHandler(this.vectorChat)).start();
+        new Thread(new InputHandler(this.vectorChat,this.vectorClock)).start();
         //new ClientGUI();
         System.out.println("Connected");
 //        displayEvent("Connected");
