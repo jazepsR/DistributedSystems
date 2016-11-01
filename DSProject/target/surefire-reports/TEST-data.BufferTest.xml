@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite tests="7" failures="3" name="data.BufferTest" time="0.103" errors="0" skipped="0">
+<testsuite tests="7" failures="3" name="data.BufferTest" time="0.17" errors="0" skipped="0">
   <properties>
     <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
     <property name="sun.boot.library.path" value="C:\Program Files\Java\jdk1.8.0_77\jre\bin"/>
@@ -14,7 +14,6 @@
     <property name="user.country" value="US"/>
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="sun.os.patch.level" value=""/>
-    <property name="test" value="data.BufferTest"/>
     <property name="java.vm.specification.name" value="Java Virtual Machine Specification"/>
     <property name="user.dir" value="C:\Users\Euaggelos\Desktop\ds\DistributedSystems\DSProject"/>
     <property name="java.runtime.version" value="1.8.0_77-b03"/>
@@ -45,7 +44,7 @@
     <property name="java.vm.specification.version" value="1.8"/>
     <property name="sun.arch.data.model" value="64"/>
     <property name="java.home" value="C:\Program Files\Java\jdk1.8.0_77\jre"/>
-    <property name="sun.java.command" value="org.codehaus.plexus.classworlds.launcher.Launcher -Dtest=data.BufferTest -Dmaven.ext.class.path=C:\Program Files\NetBeans 8.1\java\maven-nblib\netbeans-eventspy.jar surefire:test"/>
+    <property name="sun.java.command" value="org.codehaus.plexus.classworlds.launcher.Launcher -Dmaven.ext.class.path=C:\Program Files\NetBeans 8.1\java\maven-nblib\netbeans-eventspy.jar clean install"/>
     <property name="java.specification.vendor" value="Oracle Corporation"/>
     <property name="user.language" value="en"/>
     <property name="awt.toolkit" value="sun.awt.windows.WToolkit"/>
@@ -62,7 +61,7 @@
     <property name="sun.desktop" value="windows"/>
     <property name="sun.cpu.isalist" value="amd64"/>
   </properties>
-  <testcase classname="data.BufferTest" name="testSortBuffer" time="0.025">
+  <testcase classname="data.BufferTest" name="testSortBuffer" time="0.036">
     <failure message="The test case is a prototype." type="java.lang.AssertionError">java.lang.AssertionError: The test case is a prototype.
 	at org.junit.Assert.fail(Assert.java:88)
 	at data.BufferTest.testSortBuffer(BufferTest.java:134)
@@ -104,7 +103,7 @@
 </system-out>
   </testcase>
   <testcase classname="data.BufferTest" name="testAddMsgs" time="0"/>
-  <testcase classname="data.BufferTest" name="testGet" time="0">
+  <testcase classname="data.BufferTest" name="testGet" time="0.001">
     <failure message="The test case is a prototype." type="java.lang.AssertionError">java.lang.AssertionError: The test case is a prototype.
 	at org.junit.Assert.fail(Assert.java:88)
 	at data.BufferTest.testGet(BufferTest.java:82)
@@ -145,7 +144,7 @@
     <system-out>get
 </system-out>
   </testcase>
-  <testcase classname="data.BufferTest" name="testGetMsgs" time="0.001"/>
+  <testcase classname="data.BufferTest" name="testGetMsgs" time="0"/>
   <testcase classname="data.BufferTest" name="testContains" time="0"/>
   <testcase classname="data.BufferTest" name="testAddMsg" time="0"/>
   <testcase classname="data.BufferTest" name="testRemove" time="0">

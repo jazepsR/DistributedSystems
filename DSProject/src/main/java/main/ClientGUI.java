@@ -35,9 +35,8 @@ public class ClientGUI extends JFrame implements ActionListener {
     private JTextArea chat, event;
     private VectorClock vClock;
     // Constructor connection receiving a socket number
-    ClientGUI(VectorChat vectorChat, VectorClock vClock) {
+    ClientGUI(VectorChat vectorChat) {
         super("Chat Client");
-        this.vClock = vClock;
         this.vectorChat = vectorChat;
         // The NorthPanel with:
         JPanel northPanel = new JPanel(new GridLayout(3, 1));

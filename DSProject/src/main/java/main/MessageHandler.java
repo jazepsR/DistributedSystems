@@ -29,13 +29,11 @@ public class MessageHandler {
     private final BullyAlgo bAlgo;
     private DataUnit replyMsg;
     private final VectorChat vChat;
-    private final VectorClock vClock;
     private final InBuffer buff;
     private final ChatMessageLog msgLog;
 
-    MessageHandler(BullyAlgo bAlgo, VectorClock vClock, VectorChat vChat, InBuffer buff, ChatMessageLog msgLog) {
+    MessageHandler(BullyAlgo bAlgo, VectorChat vChat, InBuffer buff, ChatMessageLog msgLog) {
         this.bAlgo = bAlgo;
-        this.vClock = vClock;
         this.vChat = vChat;
         this.buff = buff;
         this.msgLog = msgLog;
@@ -55,22 +53,22 @@ public class MessageHandler {
             case HEARTBEAT:
                 break;
             case IAMLEADER:
-                vClock.setIPLeader(data.getIpAddress());
+                vChat.setIPLeader(data.getIpAddress());
                 break;
             case WANNABELEADER:
-                bAlgo.run(data.getIpAddress(), Config.ipAddress, vClock);
+                bAlgo.run(data.getIpAddress(), Config.ipAddress, vChat);
                 break;
             case IAMHIGHER:
                 bAlgo.LostElection = true;
                 System.out.println("Recieved IAMHIGHER");
                 break;
             case DISCOVER:
-                int number = Math.max(vClock.getCounter(data.getIpAddress()),data.getTree().getCounter(data.getIpAddress()));
-                vClock.addHost(data.getIpAddress(), number );
+                int number = Math.max(vChat.getCounter(data.getIpAddress()),data.getTree().getCounter(data.getIpAddress()));
+                vChat.addHost(data.getIpAddress(), number );
                 vChat.addHost(data.getIpAddress(), number);
-                replyMsg = new DataUnit(Config.ipAddress, MessageType.DISCOVERRESPONSE, vClock);
+                replyMsg = new DataUnit(Config.ipAddress, MessageType.DISCOVERRESPONSE, vChat);
                 multicast.SendMulticast(data.getIpAddress(), replyMsg);
-                UpdateLogDataUnit log = new UpdateLogDataUnit(Config.ipAddress,MessageType.MSGLOG,vClock,msgLog.getMsgs());
+                UpdateLogDataUnit log = new UpdateLogDataUnit(Config.ipAddress,MessageType.MSGLOG,vChat,msgLog.getMsgs());
                 multicast.SendMulticast(data.getIpAddress(), log);
                 //this.tree.addHost(data.getIpAddress(), data.getSequenceNr());
                 break;
@@ -103,14 +101,14 @@ public class MessageHandler {
                         bufKeyNumber++;
                         bufferKey = chatMsg.getIpAddress()+":" +(bufKeyNumber);
                     }
-                    replyMsg = new ChatDataUnit(Config.ipAddress, MessageType.ACK, vClock, chatMsg.getIpAddress().toString()+":" + chatMsg.getSequenceNumber());
+                    replyMsg = new ChatDataUnit(Config.ipAddress, MessageType.ACK, vChat, chatMsg.getIpAddress().toString()+":" + chatMsg.getSequenceNumber());
                     multicast.SendMulticast(chatMsg.getIpAddress(), replyMsg);
                     node.addAllMsg(node.chatLog.getMsgs());
                 } else {
                     buff.addMsg(chatMsg);
                     buff.sortBuffer();
                     for (int i = currentSeqNumber+1; i < seqNumber; i++) {
-                        multicast.SendMulticast(chatMsg.getIpAddress(), new ChatDataUnit(Config.ipAddress, MessageType.NEGATIVEACK, vClock, Integer.toString(i)));
+                        multicast.SendMulticast(chatMsg.getIpAddress(), new ChatDataUnit(Config.ipAddress, MessageType.NEGATIVEACK, vChat, Integer.toString(i)));
                     }
                 }
                 //buff.messageLog.add(chatMsg);
@@ -138,10 +136,9 @@ public class MessageHandler {
                 if( !("/"+Config.ipAddress).equals(data.getIpAddress().toString())) {
                     int oo =0;
                 }
-                int num  = Math.max(Config.msgCounter, data.getTree().getCounter(data.getIpAddress()));
-                vClock.addHost(data.getIpAddress(), num);
+                int num  = data.getTree().getCounter(data.getIpAddress());
                 vChat.addHost(data.getIpAddress(), num);
-                Config.msgCounter = num;
+                Config.msgCounter = Math.max(Config.msgCounter, data.getTree().getCounter(Config.ipAddress));
                 //HashMap<InetAddress,Integer> aa = Tree.getHmap();
 
                 break;

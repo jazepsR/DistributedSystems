@@ -47,7 +47,7 @@ public class SendMsg {
             //MessageLogger.MessageLog.put(Config.msgCounter , chatMessage);
             Config.msgCounter++;
             vector.changeCounter(Config.ipAddress,Config.msgCounter);
-            vClock.changeCounter(Config.ipAddress,Config.msgCounter);
+//            vClock.changeCounter(Config.ipAddress,Config.msgCounter);
 
     }
 }

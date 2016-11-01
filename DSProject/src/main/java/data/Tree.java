@@ -46,10 +46,6 @@ public abstract class Tree implements Serializable, Comparable<Tree>{
      * @param counter
      */
     public void addHost(InetAddress ip, int counter) {
-        if(vectorHmap.get(ip) == null)
-            vectorHmap.put(ip, 0);
-
-        else
             vectorHmap.put(ip,counter);
     }
     

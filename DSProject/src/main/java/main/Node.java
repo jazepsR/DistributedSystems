@@ -40,7 +40,6 @@ public class Node extends Thread {
     public List<ChatDataUnit> messageLog;
     // TODO to be removed at some point
     private int send;
-    private final VectorClock vectorClock;
     private final VectorChat vectorChat;
     private InBuffer buffer;
     public ChatMessageLog chatLog;
@@ -58,9 +57,9 @@ public class Node extends Thread {
         this.ipAddress = Parser.strToInet(Config.ipAddress);
         this.iAmLeader = false;
         this.electionInProgress = false;
-        this.vectorClock = new VectorClock();
+        //this.vectorClock = new VectorClock();
         this.vectorChat = new VectorChat();
-        this.bullyAlgo = new BullyAlgo(this.vectorClock);
+        this.bullyAlgo = new BullyAlgo(this.vectorChat);
         this.port = port;
         this.send = send;
         this.buffer = new InBuffer();
@@ -68,19 +67,19 @@ public class Node extends Thread {
     }
     
     public void startGui(){
-        this.gui=new ClientGUI(this.vectorChat,this.vectorClock);
+        this.gui=new ClientGUI(this.vectorChat);
     }
 
     @Override
     public void run(){
-        new Thread(new Listen(bullyAlgo, vectorClock, vectorChat, this, buffer, chatLog)).start();
-        new Thread(new InputHandler(this.vectorChat,this.vectorClock)).start();
+        new Thread(new Listen(bullyAlgo, vectorChat, this, buffer, chatLog)).start();
+        //new Thread(new InputHandler(this.vectorChat,this.vectorClock)).start();
         //new ClientGUI();
         System.out.println("Connected");
 //        displayEvent("Connected");
 //        displayChat("test");
         if (send == 1) {
-            Broadcast b = new Broadcast(new DataUnit(this.ipAddress, MessageType.DISCOVER, vectorClock));
+            Broadcast b = new Broadcast(new DataUnit(this.ipAddress, MessageType.DISCOVER, vectorChat));
             b.run();
 
            try {
@@ -88,7 +87,7 @@ public class Node extends Thread {
                 } catch (InterruptedException ex) {
                     Logger.getLogger(Node.class.getName()).log(Level.SEVERE, null, ex);
                 }
-            if (vectorClock.getHigherIps(this.ipAddress).isEmpty()){
+            if (vectorChat.getHigherIps(this.ipAddress).isEmpty()){
                 //displayEvent("imLeader");
                 System.out.println("imLeader");
                 this.iAmLeader=true;

@@ -29,17 +29,15 @@ public class Listen implements Runnable {
     private final MessageHandler mh;
     private final Multicast multicast;
     private final VectorChat vChat;
-    private final VectorClock vClock;
     private final Node node;
 
-    public Listen(BullyAlgo bAlgo, VectorClock vClock, VectorChat vChat, Node node, InBuffer buff, ChatMessageLog chatLog) {
+    public Listen(BullyAlgo bAlgo, VectorChat vChat, Node node, InBuffer buff, ChatMessageLog chatLog) {
         multicast = new Multicast();
         this.port = Config.port;
         this.packetSize = Config.packetSize;
-        this.vClock = vClock;
         this.vChat = vChat;
         this.node=node;
-        this.mh = new MessageHandler(bAlgo, vClock, vChat, buff, chatLog);
+        this.mh = new MessageHandler(bAlgo, vChat, buff, chatLog);
     }
 
     public void run() {

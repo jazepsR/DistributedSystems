@@ -5,14 +5,38 @@
  */
 package data;
 
+import java.net.InetAddress;
+import utils.Parser;
+
 /**
  *
  * @author Euaggelos
  */
 public class VectorChat extends Tree{
+
+    private InetAddress ipLeader;
     
     public VectorChat(){
         super();
+    }
+    
+    
+        /**
+     * @return the IPLeader
+     */
+    public InetAddress getIPLeader() {
+        return ipLeader;
+    }
+    
+        /**
+     * @param ip
+     */
+    public void setIPLeader(InetAddress ip) {
+        ipLeader = ip;
+    }
+    
+    public void setIPLeader(String ip){
+        setIPLeader(Parser.strToInet(ip));
     }
     
 }
