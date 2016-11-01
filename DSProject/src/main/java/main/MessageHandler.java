@@ -117,7 +117,13 @@ public class MessageHandler {
                 break;
             case ACK:
                 ChatDataUnit recieveData = (ChatDataUnit) data;
+                try{
+               
                 MessageLogger.AckLog.get(recieveData.getMsg()).AckHashMap.put(recieveData.getIpAddress(),true);
+                }catch(Exception e){
+                    
+                }
+               
                 int a = 0;
                 break;
             case NEGATIVEACK:
