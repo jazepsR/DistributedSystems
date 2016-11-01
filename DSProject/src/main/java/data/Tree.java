@@ -153,8 +153,8 @@ public abstract class Tree implements Serializable, Comparable<Tree>{
         boolean smallerFound = false, biggerFound = false;
         
         for(int i = 0; i < v1.size(); i++){
-            int v1val;
-            int v2val;
+            int v1val=0;
+            int v2val=0;
             try{
                 v1val = v1.get(i);
             }catch (Exception e){

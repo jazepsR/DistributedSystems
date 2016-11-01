@@ -16,9 +16,11 @@ public class InputHandler implements Runnable {
     String text;
     Tree vector;
     Multicast multicast;
+    Tree vClock;
 
-    InputHandler(VectorChat vector) {
+    InputHandler(VectorChat vector,VectorClock vClock) {
         this.vector = vector;
+        this.vClock = vClock;
         multicast = new Multicast();
     }
 
@@ -55,13 +57,9 @@ public class InputHandler implements Runnable {
             //For testing
             // SHOULDNT THIS INCREASE MORE?
             Config.msgCounter++;
-            try {
-                vector.changeCounter(Inet4Address.getByName(Config.ipAddress),Config.msgCounter);
-            } catch (UnknownHostException e) {
-                e.printStackTrace();
-            }
-            int o = 0;
 
+            vector.changeCounter(Config.ipAddress,Config.msgCounter);
+            vClock.changeCounter(Config.ipAddress,Config.msgCounter);
         }
     }
 }
