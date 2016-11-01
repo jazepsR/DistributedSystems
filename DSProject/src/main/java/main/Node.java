@@ -68,7 +68,7 @@ public class Node extends Thread {
     }
     
     public void startGui(){
-        this.gui=new ClientGUI(this.vectorChat);
+        this.gui=new ClientGUI(this.vectorChat,this.vectorClock);
     }
 
     @Override

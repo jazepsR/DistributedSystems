@@ -57,7 +57,6 @@ public class InputHandler implements Runnable {
             //For testing
             // SHOULDNT THIS INCREASE MORE?
             Config.msgCounter++;
-
             vector.changeCounter(Config.ipAddress,Config.msgCounter);
             vClock.changeCounter(Config.ipAddress,Config.msgCounter);
         }

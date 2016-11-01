@@ -135,11 +135,15 @@ public class MessageHandler {
                 //Config.msgCounter--;
                 break;
             case DISCOVERRESPONSE:
-                vClock.addHost(data.getIpAddress(), data.getTree().getCounter(data.getIpAddress()));
-                vChat.addHost(data.getIpAddress(), data.getTree().getCounter(data.getIpAddress()) );
-                Config.msgCounter =Math.max(Config.msgCounter, data.getTree().getCounter(data.getIpAddress()));
+                if( !("/"+Config.ipAddress).equals(data.getIpAddress().toString())) {
+                    int oo =0;
+                }
+                int num  = Math.max(Config.msgCounter, data.getTree().getCounter(data.getIpAddress()));
+                vClock.addHost(data.getIpAddress(), num);
+                vChat.addHost(data.getIpAddress(), num);
+                Config.msgCounter = num;
                 //HashMap<InetAddress,Integer> aa = Tree.getHmap();
-                int oo =0;
+
                 break;
                 
             case MSGLOG:
