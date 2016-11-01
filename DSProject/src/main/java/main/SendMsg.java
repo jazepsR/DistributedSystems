@@ -18,7 +18,7 @@ public class SendMsg {
     VectorClock vClock;
     ChatMessageLog msgLog;
 
-    SendMsg(VectorChat vector, ChatMessageLog msgLog) {
+    SendMsg(VectorChat vector, VectorClock vClock, ChatMessageLog msgLog) {
         this.vClock = vClock;
         this.vChat = vector;
         multicast = new Multicast();

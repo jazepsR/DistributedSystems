@@ -41,6 +41,7 @@ public class ClientGUI extends JFrame implements ActionListener {
         super("Chat Client");
         this.msgLog = msgLog;
         this.vectorChat = vectorChat;
+        this.vClock = vectorClock;
         // The NorthPanel with:
         JPanel northPanel = new JPanel(new GridLayout(3, 1));
         // the server name anmd the port number
@@ -121,7 +122,7 @@ public class ClientGUI extends JFrame implements ActionListener {
             String tmpText = tf.getText();
             tf.setText("");
             appendChat(tmpText + "\n");
-            SendMsg s = new SendMsg(vectorChat, msgLog);
+            SendMsg s = new SendMsg(vectorChat, vClock, msgLog);
             s.send(tmpText);
 
             // TODO SAVE TEXT
