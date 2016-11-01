@@ -3,6 +3,7 @@ package main;
 /**
  * Created by User on 20.09.2016.
  */
+import data.ChatMessageLog;
 import data.VectorChat;
 import data.VectorClock;
 
@@ -34,9 +35,11 @@ public class ClientGUI extends JFrame implements ActionListener {
     
     private JTextArea chat, event;
     private VectorClock vClock;
+    private ChatMessageLog msgLog;
     // Constructor connection receiving a socket number
-    ClientGUI(VectorChat vectorChat) {
+    ClientGUI(VectorChat vectorChat, ChatMessageLog msgLog) {
         super("Chat Client");
+        this.msgLog = msgLog;
         this.vectorChat = vectorChat;
         // The NorthPanel with:
         JPanel northPanel = new JPanel(new GridLayout(3, 1));
@@ -118,7 +121,7 @@ public class ClientGUI extends JFrame implements ActionListener {
             String tmpText = tf.getText();
             tf.setText("");
             appendChat(tmpText + "\n");
-            SendMsg s=new SendMsg(vectorChat,vClock);
+            SendMsg s = new SendMsg(vectorChat, msgLog);
             s.send(tmpText);
 
             // TODO SAVE TEXT

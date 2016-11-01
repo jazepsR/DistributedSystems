@@ -16,11 +16,13 @@ public class SendMsg {
     Tree vector;
     Multicast multicast;
     VectorClock vClock;
+    ChatMessageLog msgLog;
 
-    SendMsg(VectorChat vector, VectorClock vClock) {
+    SendMsg(VectorChat vector, ChatMessageLog msgLog) {
         this.vClock = vClock;
         this.vector = vector;
         multicast = new Multicast();
+        this.msgLog = msgLog;
     }
     
     public void send(String text){
@@ -39,7 +41,8 @@ public class SendMsg {
                     500
             );
             multicast.SendMulticast(vector.getAllIps(), chatMessage);
-            MessageLogger.MessageLog.put(Config.ipAddress+":" +Config.msgCounter , chatMessage);
+            //MessageLogger.MessageLog.put(Config.ipAddress+":" +Config.msgCounter , chatMessage);
+            msgLog.addMsg(chatMessage);
             //For testing
 
             //ChatDataUnit chatMessage = new ChatDataUnit(Config.ipAddress, MessageType.CHATMESSAGE, vector, text);
