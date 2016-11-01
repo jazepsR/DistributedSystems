@@ -65,10 +65,11 @@ public class MessageHandler {
                 System.out.println("Recieved IAMHIGHER");
                 break;
             case DISCOVER:
+                int number = Math.max(vClock.getCounter(data.getIpAddress()),data.getTree().getCounter(data.getIpAddress()));
+                vClock.addHost(data.getIpAddress(), number );
+                vChat.addHost(data.getIpAddress(), number);
                 replyMsg = new DataUnit(Config.ipAddress, MessageType.DISCOVERRESPONSE, vClock);
                 multicast.SendMulticast(data.getIpAddress(), replyMsg);
-                vClock.addHost(data.getIpAddress(), vClock.getCounter(data.getIpAddress()) );
-                vChat.addHost(data.getIpAddress(), vChat.getCounter(data.getIpAddress()) );
                 UpdateLogDataUnit log = new UpdateLogDataUnit(Config.ipAddress,MessageType.MSGLOG,vClock,msgLog.getMsgs());
                 multicast.SendMulticast(data.getIpAddress(), log);
                 //this.tree.addHost(data.getIpAddress(), data.getSequenceNr());
@@ -117,7 +118,12 @@ public class MessageHandler {
                 break;
             case ACK:
                 ChatDataUnit recieveData = (ChatDataUnit) data;
-                MessageLogger.AckLog.get(recieveData.getMsg()).AckHashMap.put(recieveData.getIpAddress(),true);
+                System.out.println(recieveData.getIpAddress().toString());
+                try{
+                    MessageLogger.AckLog.get(recieveData.getMsg()).AckHashMap.put(recieveData.getIpAddress(),true);
+                }catch (Exception e){
+                    int oo =0 ;
+                }
                 int a = 0;
                 break;
             case NEGATIVEACK:
@@ -129,8 +135,9 @@ public class MessageHandler {
                 //Config.msgCounter--;
                 break;
             case DISCOVERRESPONSE:
-                vClock.addHost(data.getIpAddress(), vClock.getCounter(data.getIpAddress()) );
-                vChat.addHost(data.getIpAddress(), vChat.getCounter(data.getIpAddress()) );
+                vClock.addHost(data.getIpAddress(), data.getTree().getCounter(data.getIpAddress()));
+                vChat.addHost(data.getIpAddress(), data.getTree().getCounter(data.getIpAddress()) );
+                Config.msgCounter =Math.max(Config.msgCounter, data.getTree().getCounter(data.getIpAddress()));
                 //HashMap<InetAddress,Integer> aa = Tree.getHmap();
                 int oo =0;
                 break;
