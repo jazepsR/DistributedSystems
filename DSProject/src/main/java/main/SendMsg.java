@@ -26,6 +26,8 @@ public class SendMsg {
     }
     
     public void send(String text){
+        Config.msgCounter++;
+        vector.changeCounter(Config.ipAddress,Config.msgCounter);
         System.out.println("text: "+text);
          ChatDataUnit chatMessage = new ChatDataUnit(Config.ipAddress, MessageType.CHATMESSAGE, vector, text);
             //Checking Ack buffer
@@ -48,8 +50,7 @@ public class SendMsg {
             //ChatDataUnit chatMessage = new ChatDataUnit(Config.ipAddress, MessageType.CHATMESSAGE, vector, text);
            // multicast.SendMulticast(vector.getAllIps(), chatMessage);
             //MessageLogger.MessageLog.put(Config.msgCounter , chatMessage);
-            Config.msgCounter++;
-            vector.changeCounter(Config.ipAddress,Config.msgCounter);
+
 //            vClock.changeCounter(Config.ipAddress,Config.msgCounter);
 
     }

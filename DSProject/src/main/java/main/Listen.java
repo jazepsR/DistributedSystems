@@ -68,7 +68,7 @@ public class Listen implements Runnable {
 
             //turn bytes back to java object
             msg = DataTranslator.bytesToObject(data);
-            node.displayEvent(msg.getMsgType().toString()+" "+msg.getTree().getVector());
+            node.displayEvent(" ip:" + msg.getIpAddress().toString() +" " +msg.getMsgType().toString()+ " "+msg.getTree().getVector());
             mh.switchMsg(msg, node);
         }
 
