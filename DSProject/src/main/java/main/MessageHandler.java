@@ -69,9 +69,24 @@ public class MessageHandler {
                 vChat.addHost(data.getIpAddress(), number );
                 replyMsg = new DataUnit(Config.ipAddress, MessageType.DISCOVERRESPONSE, vChat);
                 multicast.SendMulticast(data.getIpAddress(), replyMsg);
+                if(vClock.vectorHmap.get(data.getIpAddress())==null){
+                    vClock.addHost(data.getIpAddress(),0);
+                }
                 UpdateLogDataUnit log = new UpdateLogDataUnit(Config.ipAddress,MessageType.MSGLOG,vClock,msgLog.getMsgs());
                 multicast.SendMulticast(data.getIpAddress(), log);
+
                 //this.tree.addHost(data.getIpAddress(), data.getSequenceNr());
+                break;
+            case DISCOVERRESPONSE:
+                if( !("/"+Config.ipAddress).equals(data.getIpAddress().toString())) {
+                    int oo =0;
+                }
+                int num  = data.getTree().getCounter(data.getIpAddress());
+                vChat.addHost(data.getIpAddress(), num);
+
+                Config.msgCounter = Math.max(Config.msgCounter, data.getTree().getCounter(Config.ipAddress));
+                //HashMap<InetAddress,Integer> aa = Tree.getHmap();
+
                 break;
             case CHATMESSAGE:
                 if(vClock.vectorHmap.get(data.getIpAddress())== null){
@@ -81,6 +96,7 @@ public class MessageHandler {
                 ChatDataUnit chatMsg = (ChatDataUnit) data;
                 if( !("/"+Config.ipAddress).equals(data.getIpAddress().toString())) {
                     vClock.increaseCounter(Config.ipAddress);
+                    vClock.addHost(data.getIpAddress(),data.getTree().getCounter(data.getIpAddress()));
                 }
                 //node.displayChat(data.getTree().getVector()+" "+chatMsg.getMsg());
           
@@ -139,19 +155,7 @@ public class MessageHandler {
                 int o =0 ;
                 //Config.msgCounter--;
                 break;
-            case DISCOVERRESPONSE:
-                if( !("/"+Config.ipAddress).equals(data.getIpAddress().toString())) {
-                    int oo =0;
-                }
-                int num  = data.getTree().getCounter(data.getIpAddress());
-                vChat.addHost(data.getIpAddress(), num);
-                if(vClock.vectorHmap.get(data.getIpAddress())==null){
-                    vClock.addHost(data.getIpAddress(),0);
-                }
-                Config.msgCounter = Math.max(Config.msgCounter, data.getTree().getCounter(Config.ipAddress));
-                //HashMap<InetAddress,Integer> aa = Tree.getHmap();
 
-                break;
                 
             case MSGLOG:
                 if( !("/"+Config.ipAddress).equals(data.getIpAddress().toString())) {
