@@ -19,7 +19,7 @@ import utils.Parser;
 
 public abstract class Tree implements Serializable, Comparable<Tree>{
     
-    private final HashMap<InetAddress, Integer> vectorHmap;
+    public final HashMap<InetAddress, Integer> vectorHmap;
     
     public Tree(){
         vectorHmap = new HashMap<InetAddress, Integer>(); 

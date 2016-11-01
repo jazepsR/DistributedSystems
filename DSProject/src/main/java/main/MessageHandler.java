@@ -75,6 +75,9 @@ public class MessageHandler {
                 //this.tree.addHost(data.getIpAddress(), data.getSequenceNr());
                 break;
             case CHATMESSAGE:
+                if(vClock.vectorHmap.get(data.getIpAddress())== null){
+                    vClock.addHost(data.getIpAddress(),data.getTree().getCounter(data.getIpAddress()));
+            }
                 msgLog.sortBuffer();
                 ChatDataUnit chatMsg = (ChatDataUnit) data;
                 vClock.increaseCounter(Config.ipAddress);
@@ -151,9 +154,9 @@ public class MessageHandler {
                     UpdateLogDataUnit updateData = (UpdateLogDataUnit) data;
                     ArrayList<ChatDataUnit> newList = updateData.getMessages();
                     msgLog.replace(newList);
-                    vClock.addHost(data.getIpAddress(),data.getTree().getCounter(data.getIpAddress()));
                     node.addAllMsg(node.chatLog.getMsgs());
                 }
+                vClock.addHost(data.getIpAddress(),data.getTree().getCounter(data.getIpAddress()));
                 break;
             default:
                 break;
