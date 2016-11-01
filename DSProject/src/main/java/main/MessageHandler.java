@@ -31,10 +31,12 @@ public class MessageHandler {
     private final VectorChat vChat;
     private final InBuffer buff;
     private final ChatMessageLog msgLog;
+    private final VectorClock vClock;
 
-    MessageHandler(BullyAlgo bAlgo, VectorChat vChat, InBuffer buff, ChatMessageLog msgLog) {
+    MessageHandler(BullyAlgo bAlgo, VectorChat vChat, VectorClock vClock, InBuffer buff, ChatMessageLog msgLog) {
         this.bAlgo = bAlgo;
         this.vChat = vChat;
+        this.vClock = vClock;
         this.buff = buff;
         this.msgLog = msgLog;
         multicast = new Multicast();
@@ -75,6 +77,7 @@ public class MessageHandler {
             case CHATMESSAGE:
                 msgLog.sortBuffer();
                 ChatDataUnit chatMsg = (ChatDataUnit) data;
+                vClock.increaseCounter(Config.ipAddress);
                 //node.displayChat(data.getTree().getVector()+" "+chatMsg.getMsg());
           
                 /*if(chatMsg.getTree().compareTo(vChat)!=0){ // need to check the order

@@ -37,7 +37,7 @@ public class ClientGUI extends JFrame implements ActionListener {
     private VectorClock vClock;
     private ChatMessageLog msgLog;
     // Constructor connection receiving a socket number
-    ClientGUI(VectorChat vectorChat, ChatMessageLog msgLog) {
+    ClientGUI(VectorChat vectorChat, VectorClock vectorClock, ChatMessageLog msgLog) {
         super("Chat Client");
         this.msgLog = msgLog;
         this.vectorChat = vectorChat;

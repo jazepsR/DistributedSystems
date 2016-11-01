@@ -40,6 +40,7 @@ public class Node extends Thread {
     public List<ChatDataUnit> messageLog;
     // TODO to be removed at some point
     private int send;
+    private VectorClock vectorClock;
     private final VectorChat vectorChat;
     private InBuffer buffer;
     public ChatMessageLog chatLog;
@@ -57,7 +58,7 @@ public class Node extends Thread {
         this.ipAddress = Parser.strToInet(Config.ipAddress);
         this.iAmLeader = false;
         this.electionInProgress = false;
-        //this.vectorClock = new VectorClock();
+        this.vectorClock = new VectorClock();
         this.vectorChat = new VectorChat();
         this.bullyAlgo = new BullyAlgo(this.vectorChat);
         this.port = port;
@@ -67,12 +68,12 @@ public class Node extends Thread {
     }
     
     public void startGui(){
-        this.gui=new ClientGUI(this.vectorChat,chatLog);
+        this.gui=new ClientGUI(this.vectorChat, vectorClock, chatLog);
     }
 
     @Override
     public void run(){
-        new Thread(new Listen(bullyAlgo, vectorChat, this, buffer, chatLog)).start();
+        new Thread(new Listen(bullyAlgo, vectorChat, vectorClock, this, buffer, chatLog)).start();
         //new Thread(new InputHandler(this.vectorChat,this.vectorClock)).start();
         //new ClientGUI();
         System.out.println("Connected");

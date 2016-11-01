@@ -13,25 +13,26 @@ import data.*;
  */
 public class SendMsg {
    
-    Tree vector;
+    VectorChat vChat;
     Multicast multicast;
     VectorClock vClock;
     ChatMessageLog msgLog;
 
     SendMsg(VectorChat vector, ChatMessageLog msgLog) {
         this.vClock = vClock;
-        this.vector = vector;
+        this.vChat = vector;
         multicast = new Multicast();
         this.msgLog = msgLog;
     }
     
     public void send(String text){
         Config.msgCounter++;
-        vector.changeCounter(Config.ipAddress,Config.msgCounter);
+        vChat.changeCounter(Config.ipAddress,Config.msgCounter);
+        vClock.increaseCounter(Config.ipAddress);
         System.out.println("text: "+text);
-         ChatDataUnit chatMessage = new ChatDataUnit(Config.ipAddress, MessageType.CHATMESSAGE, vector, text);
+         ChatDataUnit chatMessage = new ChatDataUnit(Config.ipAddress, MessageType.CHATMESSAGE, vClock, text);
             //Checking Ack buffer
-            final AckObject ack = new AckObject(vector,"/"+Config.ipAddress+":" +(Config.msgCounter));
+            final AckObject ack = new AckObject(vChat,"/"+Config.ipAddress+":" +(Config.msgCounter));
             MessageLogger.AckLog.put("/"+Config.ipAddress+":" +(Config.msgCounter),ack);
             new java.util.Timer().schedule(
                     new java.util.TimerTask() {
@@ -42,13 +43,13 @@ public class SendMsg {
                     },
                     500
             );
-            multicast.SendMulticast(vector.getAllIps(), chatMessage);
+            multicast.SendMulticast(vChat.getAllIps(), chatMessage);
             //MessageLogger.MessageLog.put(Config.ipAddress+":" +Config.msgCounter , chatMessage);
             msgLog.addMsg(chatMessage);
             //For testing
 
-            //ChatDataUnit chatMessage = new ChatDataUnit(Config.ipAddress, MessageType.CHATMESSAGE, vector, text);
-           // multicast.SendMulticast(vector.getAllIps(), chatMessage);
+            //ChatDataUnit chatMessage = new ChatDataUnit(Config.ipAddress, MessageType.CHATMESSAGE, vChat, text);
+           // multicast.SendMulticast(vChat.getAllIps(), chatMessage);
             //MessageLogger.MessageLog.put(Config.msgCounter , chatMessage);
 
 //            vClock.changeCounter(Config.ipAddress,Config.msgCounter);
