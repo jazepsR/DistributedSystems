@@ -7,9 +7,8 @@ package data;
 
 import java.io.Serializable;
 import java.net.InetAddress;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashMap;
+import java.util.*;
+
 import utils.Parser;
 
 /**
@@ -113,9 +112,18 @@ public abstract class Tree implements Serializable, Comparable<Tree>{
 
     public ArrayList<Integer> getVector(){
         ArrayList<Integer> vector = new ArrayList<Integer>();
-        for (Integer value : vectorHmap.values()) {
-            vector.add(value);
+        ArrayList<InetAddress> numsToSort = new ArrayList<InetAddress>();
+        for(InetAddress key : vectorHmap.keySet()){
+            numsToSort.add(key);
         }
+        Collections.sort(numsToSort,new ComparatorOfInet());
+        int a =0 ;
+        for(int i=0;i<vectorHmap.size();i++){
+            vector.add(vectorHmap.get(numsToSort.get(i)));
+        }
+        //for (Integer value : vectorHmap.values()) {
+        //    vector.add(value);
+        //}
         return vector;
     }
     
@@ -189,5 +197,14 @@ public abstract class Tree implements Serializable, Comparable<Tree>{
                 return o1.compareTo(o2);
             }
         };
+    }
+
+    public static class ComparatorOfInet implements Comparator<InetAddress> {
+
+
+        @Override
+        public int compare(InetAddress o1, InetAddress o2) {
+            return Parser.parseIp(o1).compareTo(Parser.parseIp(o2));
+        }
     }
 }
