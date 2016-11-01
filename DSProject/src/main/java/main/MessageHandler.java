@@ -16,6 +16,9 @@ import data.MessageType;
 import data.UpdateLogDataUnit;
 import data.VectorChat;
 import data.VectorClock;
+import utils.Parser;
+
+import java.net.InetAddress;
 import java.util.ArrayList;
 
 /**
@@ -31,7 +34,7 @@ public class MessageHandler {
     private final VectorChat vChat;
     private final InBuffer buff;
     private final ChatMessageLog msgLog;
-    private final VectorClock vClock;
+    private VectorClock vClock;
 
     MessageHandler(BullyAlgo bAlgo, VectorChat vChat, VectorClock vClock, InBuffer buff, ChatMessageLog msgLog) {
         this.bAlgo = bAlgo;
@@ -95,8 +98,15 @@ public class MessageHandler {
                 msgLog.sortBuffer();
                 ChatDataUnit chatMsg = (ChatDataUnit) data;
                 if( !("/"+Config.ipAddress).equals(data.getIpAddress().toString())) {
-                    vClock.increaseCounter(Config.ipAddress);
-                    vClock.addHost(data.getIpAddress(),data.getTree().getCounter(data.getIpAddress()));
+                    int myCounter = vClock.getCounter(Config.ipAddress);
+                    for (InetAddress key:vClock.getHmap().keySet()
+                         ) {
+                        int ip1 = vClock.getCounter(key);
+                        int ip2 = data.getTree().getCounter(key);
+                        vClock.addHost(key,Math.max(ip1,ip2));
+                    }
+                    //vClock.addHost(data.getIpAddress(),data.getTree().getCounter(data.getIpAddress()));
+                    vClock.addHost(Config.ipAddress,myCounter+1);
                 }
                 //node.displayChat(data.getTree().getVector()+" "+chatMsg.getMsg());
           
