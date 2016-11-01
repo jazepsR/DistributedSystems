@@ -70,7 +70,7 @@ public class MessageHandler {
                 vChat.addHost(data.getIpAddress(), number);
                 replyMsg = new DataUnit(Config.ipAddress, MessageType.DISCOVERRESPONSE, vChat);
                 multicast.SendMulticast(data.getIpAddress(), replyMsg);
-                UpdateLogDataUnit log = new UpdateLogDataUnit(Config.ipAddress,MessageType.MSGLOG,vChat,msgLog.getMsgs());
+                UpdateLogDataUnit log = new UpdateLogDataUnit(Config.ipAddress,MessageType.MSGLOG,vClock,msgLog.getMsgs());
                 multicast.SendMulticast(data.getIpAddress(), log);
                 //this.tree.addHost(data.getIpAddress(), data.getSequenceNr());
                 break;
@@ -151,6 +151,7 @@ public class MessageHandler {
                     UpdateLogDataUnit updateData = (UpdateLogDataUnit) data;
                     ArrayList<ChatDataUnit> newList = updateData.getMessages();
                     msgLog.replace(newList);
+                    vClock.addHost(data.getIpAddress(),data.getTree().getCounter(data.getIpAddress()));
                     node.addAllMsg(node.chatLog.getMsgs());
                 }
                 break;
